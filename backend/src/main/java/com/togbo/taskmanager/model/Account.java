@@ -1,7 +1,7 @@
-package com.togbo.taskmanager.entity;
+package main.java.com.togbo.taskmanager.model;
 
-import com.togbo.taskmanager.enums.Role;
 import jakarta.persistence.*;
+import main.java.com.togbo.taskmanager.enums.Role;
 
 import java.time.LocalDate;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.togbo.taskmanager;
+package main.java.com.togbo.taskmanager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
