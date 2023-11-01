@@ -1,4 +1,4 @@
-package main.java.com.togbo.taskmanager.model;
+package com.togbo.taskmanager.model;
 
 import jakarta.persistence.*;
 
