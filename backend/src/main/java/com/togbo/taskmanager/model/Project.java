@@ -16,17 +16,17 @@ public class Project {
 
     private LocalDate dueDate;
 
-    private Set<Employee> employees;
-    private Set<Task> tasks;
+ //   private Set<Employee> employees;
+  //  private Set<Task> tasks;
 
 
-    public Project(UUID uuid, String title, String description, LocalDate dueDate, Set<Employee> employees, Set<Task> tasks) {
+    public Project(UUID uuid, String title, String description, LocalDate dueDate){// Set<Employee> employees, Set<Task> tasks) {
         this.uuid = uuid;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
-        this.employees = employees;
-        this.tasks = tasks;
+    //    this.employees = employees;
+     //   this.tasks = tasks;
     }
 
     public UUID getUuid() {
@@ -61,7 +61,7 @@ public class Project {
         this.dueDate = dueDate;
     }
 
-    public Set<Employee> getEmployees() {
+ /*   public Set<Employee> getEmployees() {
         return employees;
     }
 
@@ -77,6 +77,8 @@ public class Project {
         this.tasks = tasks;
     }
 
+
+  */
     @Override
     public String toString() {
         return "Project{" +
@@ -84,8 +86,8 @@ public class Project {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", dueDate=" + dueDate +
-                ", employees=" + employees +
-                ", tasks=" + tasks +
+          //      ", employees=" + employees +
+          //      ", tasks=" + tasks +
                 '}';
     }
 }
