@@ -1,0 +1,6 @@
+how to implements a CustomAuthentication and a DefaultAuthentication (API KEY , HTTP BASIC)
+both of them are Filters
+In a real world app i will usually have maxim 2 default filters
+
+A Custom Authentication will need it`s own Authentication Manager, Provider
+A Default Authentication can use same Authentication Manager, Provider together with other Default Authentication

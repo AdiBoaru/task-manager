@@ -23,4 +23,12 @@ public class SecurityConfig {
                 .and()
                 .build();
     }
+    //HttpSecurity -> is the object that creates behind the scene the entire structure
+    @Bean
+    public SecurityFilterChain securityFilterChainMultiple(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity.httpBasic()
+                .and()
+                .build();
+
+    }
 }
