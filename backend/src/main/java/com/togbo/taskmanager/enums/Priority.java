@@ -1,4 +1,4 @@
-package com.togbo.taskmanager.enums;
+package main.java.com.togbo.taskmanager.enums;
 
 public enum Priority {
     HIGH,

@@ -1,4 +1,4 @@
-package com.togbo.taskmanager.model;
+package main.java.com.togbo.taskmanager.model;
 
 import com.togbo.taskmanager.enums.Role;
 import jakarta.persistence.*;

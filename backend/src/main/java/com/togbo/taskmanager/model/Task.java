@@ -1,7 +1,7 @@
 package main.java.com.togbo.taskmanager.model;
 
-import com.togbo.taskmanager.enums.Priority;
 import jakarta.persistence.*;
+import main.java.com.togbo.taskmanager.enums.Priority;
 import main.java.com.togbo.taskmanager.enums.Status;
 
 import java.io.File;
