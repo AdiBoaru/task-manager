@@ -1,38 +1,23 @@
-package main.java.com.togbo.taskmanager.model;
+package main.java.com.togbo.taskmanager.dto;
 
-import jakarta.persistence.*;
+import main.java.com.togbo.taskmanager.model.Account;
+import main.java.com.togbo.taskmanager.model.Project;
+import main.java.com.togbo.taskmanager.model.Task;
 
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity
-@Table(name = "employees")
-public class Employee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class EmployeeDto {
     private UUID id;
-    @Column(name = "first_name")
     private String firstName;
-    @Column(name = "last_name")
     private String lastName;
-    @Column(name = "birth_date")
     private LocalDate birthDate;
-    @OneToOne(mappedBy = "account")
     private Account account;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "employee_task",
-            joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
     private Set<Task> task;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "employee_project",
-            joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
     private Set<Project> project;
 
-    public Employee(UUID id, String firstName, String lastName, LocalDate birthDate, Account account, Set<Task> task, Set<Project> project) {
+    public EmployeeDto(UUID id, String firstName, String lastName, LocalDate birthDate, Account account, Set<Task> task, Set<Project> project) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -40,6 +25,9 @@ public class Employee {
         this.account = account;
         this.task = task;
         this.project = project;
+    }
+
+    public EmployeeDto() {
     }
 
     public UUID getId() {
@@ -96,18 +84,5 @@ public class Employee {
 
     public void setProject(Set<Project> project) {
         this.project = project;
-    }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthDate=" + birthDate +
-                ", account=" + account +
-                ", task=" + task +
-                ", project=" + project +
-                '}';
     }
 }

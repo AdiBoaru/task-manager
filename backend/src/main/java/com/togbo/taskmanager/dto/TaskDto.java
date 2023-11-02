@@ -1,43 +1,28 @@
-package main.java.com.togbo.taskmanager.model;
+package main.java.com.togbo.taskmanager.dto;
 
-import jakarta.persistence.*;
 import main.java.com.togbo.taskmanager.enums.Priority;
 import main.java.com.togbo.taskmanager.enums.Status;
+import main.java.com.togbo.taskmanager.model.Employee;
+import main.java.com.togbo.taskmanager.model.Project;
 
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity
-@Table(name = "tasks")
-public class Task {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TaskDto {
     private UUID id;
     private String name;
     private String description;
     private File file;
-    @Column(name = "start_date")
     private LocalDate startDate;
-    @Column(name = "end_date")
     private LocalDate endDate;
     private Status status;
     private Priority priority;
-    @ManyToMany(mappedBy = "tasks")
     private Set<Employee> employees;
-    @ManyToOne
-    @JoinColumn(name = "project_id")
     private Project project;
 
-    public Task(UUID id,
-                String name,
-                String description,
-                File file,
-                LocalDate startDate,
-                LocalDate endDate,
-                Status status,
-                Priority priority) {
+    public TaskDto(UUID id, String name, String description, File file, LocalDate startDate, LocalDate endDate, Status status, Priority priority, Set<Employee> employees, Project project) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -46,6 +31,11 @@ public class Task {
         this.endDate = endDate;
         this.status = status;
         this.priority = priority;
+        this.employees = employees;
+        this.project = project;
+    }
+
+    public TaskDto() {
     }
 
     public UUID getId() {
@@ -126,19 +116,5 @@ public class Task {
 
     public void setProject(Project project) {
         this.project = project;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", file=" + file +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", status=" + status +
-                ", priority=" + priority +
-                '}';
     }
 }

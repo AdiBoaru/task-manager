@@ -3,6 +3,7 @@ package main.java.com.togbo.taskmanager.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -13,12 +14,11 @@ public class Project {
     private UUID uuid;
     private String title;
     private String description;
-
     private LocalDate dueDate;
-
- //   private Set<Employee> employees;
-  //  private Set<Task> tasks;
-
+    @ManyToMany(mappedBy = "projects")
+    private Set<Employee> employees;
+    @OneToMany(mappedBy = "projects")
+    private Set<Task> tasks;
 
     public Project(UUID uuid, String title, String description, LocalDate dueDate){// Set<Employee> employees, Set<Task> tasks) {
         this.uuid = uuid;
@@ -61,7 +61,7 @@ public class Project {
         this.dueDate = dueDate;
     }
 
- /*   public Set<Employee> getEmployees() {
+    public Set<Employee> getEmployees() {
         return employees;
     }
 
@@ -77,8 +77,6 @@ public class Project {
         this.tasks = tasks;
     }
 
-
-  */
     @Override
     public String toString() {
         return "Project{" +
