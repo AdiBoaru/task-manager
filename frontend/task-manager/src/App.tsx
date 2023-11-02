@@ -1,5 +1,11 @@
+import SwitchRoutes from "./components/SwitchRoutes";
+
 function App() {
-  return <h1 className="text-blue-900">Task manager for your businessss</h1>;
+  return (
+    <div>
+      <SwitchRoutes />
+    </div>
+  );
 }
 
 export default App;
