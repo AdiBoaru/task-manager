@@ -12,22 +12,32 @@ import java.util.UUID;
 public class TaskService {
     private TaskRepository taskRepository;
 
-    private void addTask(Task task){
+    public void addTask(Task task){
         taskRepository.save(task);
     }
 
-    private void deleteTask(Task task){
+    public void deleteTask(Task task){
         taskRepository.delete(task);
     }
 
-    private void updateTask(UUID id, Task task){
+    public void updateTask(UUID id, Task task){
         Optional<Task> foundTask = taskRepository.findById(id);
         if(foundTask.isPresent()){
             taskRepository.save(task);
         }
     }
 
-    private List<Task> findAll(){
+    public List<Task> findAll(){
         return taskRepository.findAll();
+    }
+
+    public Task findById(UUID id){
+        Optional<Task> foundTask = taskRepository.findById(id);
+
+        return foundTask.orElse(null);
+    }
+
+    public void deleteById(UUID id){
+        taskRepository.deleteById(id);
     }
 }

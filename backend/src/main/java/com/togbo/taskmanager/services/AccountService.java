@@ -14,12 +14,15 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    private void addAccount(Account account){
+    public void addAccount(Account account){
         accountRepository.save(account);
     }
 
-    public void deleteAccount(Account account){
-        accountRepository.delete(account);
+    public void deleteAccount(UUID id, Account account) {
+        Optional<Account> foundAccount = accountRepository.findById(id);
+        if (foundAccount.isPresent()) {
+            accountRepository.delete(account);
+        }
     }
 
     public void updateAccount(UUID id, Account account) {
@@ -31,5 +34,14 @@ public class AccountService {
 
     public List<Account> findAll(){
         return accountRepository.findAll();
+    }
+
+    public Account findById(UUID id){
+        Optional<Account> foundAccount = accountRepository.findById(id);
+        return foundAccount.orElse(null);
+    }
+
+    public void deleteAccountById(UUID id){
+        accountRepository.deleteById(id);
     }
 }
