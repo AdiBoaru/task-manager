@@ -28,9 +28,9 @@ public class Employee {
     @ManyToMany(mappedBy = "employees")
     private Set<Project> projects = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "employee_project",
-            joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
+    @ManyToMany
+    @JoinTable(name = "employee_task",
+            joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
     private Set<Task> tasks = new HashSet<>();
 

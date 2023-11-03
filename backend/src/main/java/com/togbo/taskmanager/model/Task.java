@@ -33,7 +33,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(UUID id, String name, String description, File file, LocalDate startDate, LocalDate endDate, Status status, Priority priority, Set<Employee> employees, Project project) {
+    public Task(UUID id, String name, String description, File file, LocalDate startDate, LocalDate endDate, Status status, Priority priority) {
         this.id = id;
         this.name = name;
         this.description = description;
