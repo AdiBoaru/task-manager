@@ -1,11 +1,13 @@
 package com.togbo.taskmanager.model;
 
+import com.togbo.taskmanager.enums.Priority;
+import com.togbo.taskmanager.enums.Status;
 import jakarta.persistence.*;
-import main.java.com.togbo.taskmanager.enums.Priority;
-import main.java.com.togbo.taskmanager.enums.Status;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -19,30 +21,30 @@ public class Task {
     private File file;
     @Column(name = "start_date")
     private LocalDate startDate;
-    @Column(name = "end_date")
-    private LocalDate endDate;
+    @Column(name = "due_date")
+    private LocalDate dueDate;
     private Status status;
     private Priority priority;
+    @ManyToMany(mappedBy = "tasks")
+    private Set<Employee> employees = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     public Task() {
     }
 
-    public Task(UUID id,
-                String name,
-                String description,
-                File file,
-                LocalDate startDate,
-                LocalDate endDate,
-                Status status,
-                Priority priority) {
+    public Task(UUID id, String name, String description, File file, LocalDate startDate, LocalDate endDate, Status status, Priority priority, Set<Employee> employees, Project project) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.file = file;
         this.startDate = startDate;
-        this.endDate = endDate;
+        this.dueDate = endDate;
         this.status = status;
         this.priority = priority;
+        this.employees = employees;
+        this.project = project;
     }
 
     public UUID getId() {
@@ -85,12 +87,12 @@ public class Task {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 
     public Status getStatus() {
@@ -109,6 +111,22 @@ public class Task {
         this.priority = priority;
     }
 
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
@@ -117,7 +135,7 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", file=" + file +
                 ", startDate=" + startDate +
-                ", endDate=" + endDate +
+                ", endDate=" + dueDate +
                 ", status=" + status +
                 ", priority=" + priority +
                 '}';

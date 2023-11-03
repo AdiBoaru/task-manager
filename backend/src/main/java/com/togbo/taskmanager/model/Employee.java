@@ -1,8 +1,11 @@
 package com.togbo.taskmanager.model;
 
+import com.togbo.taskmanager.enums.Role;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,33 +20,30 @@ public class Employee {
     private String lastName;
     @Column(name = "birth_date")
     private LocalDate birthDate;
-    @ManyToOne
+
+    private Role role;
+    @OneToOne
     @JoinColumn(name = "account_id")
     private Account account;
-    @ManyToOne
-    @JoinColumn(name = "task_id")
-    private Task task;
-    @ManyToOne
-    @JoinColumn(name = "project_uuid")
-    private Project project;
+
+    @ManyToMany(mappedBy = "employees")
+    private Set<Project> projects = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "employee_project",
+            joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
+    private Set<Task> tasks = new HashSet<>();
 
     public Employee() {
     }
 
-    public Employee(UUID id,
-                    String firstName,
-                    String lastName,
-                    LocalDate birthDate,
-                    Account account,
-                    Task task,
-                    Project project) {
+    public Employee(UUID id, String firstName, String lastName, LocalDate birthDate, Account account) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.account = account;
-        this.task = task;
-        this.project = project;
     }
 
     public UUID getId() {
@@ -86,21 +86,7 @@ public class Employee {
         this.account = account;
     }
 
-    public Task getTask() {
-        return task;
-    }
 
-    public void setTask(Task task) {
-        this.task = task;
-    }
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
 
     @Override
     public String toString() {
@@ -110,8 +96,6 @@ public class Employee {
                 ", lastName='" + lastName + '\'' +
                 ", birthDate=" + birthDate +
                 ", account=" + account +
-                ", task=" + task +
-                ", project=" + project +
                 '}';
     }
 }

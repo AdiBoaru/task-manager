@@ -1,4 +1,4 @@
-package main.java.com.togbo.taskmanager.enums;
+package com.togbo.taskmanager.enums;
 
 public enum Role {
     DEVELOPER,

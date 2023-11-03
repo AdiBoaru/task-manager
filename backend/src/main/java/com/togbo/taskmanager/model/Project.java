@@ -3,6 +3,8 @@ package com.togbo.taskmanager.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -10,34 +12,41 @@ import java.util.UUID;
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID uuid;
+    private UUID id;
     private String title;
     private String description;
-
+    @Column(name = "creation_date")
+    private LocalDate creationDate;
+    @Column(name = "due_date")
     private LocalDate dueDate;
+    @ManyToMany
+    @JoinTable(
+            name = "employee_project",
+            joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    )
+    private final Set<Employee> employees = new HashSet<>();
 
- //   private Set<Employee> employees;
-  //  private Set<Task> tasks;
-
+    @OneToMany(mappedBy = "project")
+    private Set<Task> tasks = new HashSet<>();
 
     public Project() {
     }
 
-    public Project(UUID uuid, String title, String description, LocalDate dueDate){// Set<Employee> employees, Set<Task> tasks) {
-        this.uuid = uuid;
+    public Project(UUID id, String title, String description, LocalDate creationDate, LocalDate dueDate) {
+        this.id = id;
         this.title = title;
         this.description = description;
+        this.creationDate = creationDate;
         this.dueDate = dueDate;
-    //    this.employees = employees;
-     //   this.tasks = tasks;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getId() {
+        return id;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -56,6 +65,14 @@ public class Project {
         this.description = description;
     }
 
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
     public LocalDate getDueDate() {
         return dueDate;
     }
@@ -64,12 +81,8 @@ public class Project {
         this.dueDate = dueDate;
     }
 
- /*   public Set<Employee> getEmployees() {
+    public Set<Employee> getEmployees() {
         return employees;
-    }
-
-    public void setEmployees(Set<Employee> employees) {
-        this.employees = employees;
     }
 
     public Set<Task> getTasks() {
@@ -80,17 +93,16 @@ public class Project {
         this.tasks = tasks;
     }
 
-
-  */
     @Override
     public String toString() {
         return "Project{" +
-                "uuid=" + uuid +
+                "uuid=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", creationDate=" + creationDate +
                 ", dueDate=" + dueDate +
-          //      ", employees=" + employees +
-          //      ", tasks=" + tasks +
+                ", employees=" + employees +
+                ", tasks=" + tasks +
                 '}';
     }
 }
