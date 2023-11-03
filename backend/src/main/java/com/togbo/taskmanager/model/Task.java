@@ -1,4 +1,4 @@
-package main.java.com.togbo.taskmanager.model;
+package com.togbo.taskmanager.model;
 
 import jakarta.persistence.*;
 import main.java.com.togbo.taskmanager.enums.Priority;
@@ -23,6 +23,9 @@ public class Task {
     private LocalDate endDate;
     private Status status;
     private Priority priority;
+
+    public Task() {
+    }
 
     public Task(UUID id,
                 String name,

@@ -1,4 +1,4 @@
-package main.java.com.togbo.taskmanager.model;
+package com.togbo.taskmanager.model;
 
 import jakarta.persistence.*;
 import main.java.com.togbo.taskmanager.enums.Role;
@@ -17,6 +17,9 @@ public class Account {
     @Column(name = "created_date")
     private LocalDate createdDate;
     private Role role;
+
+    public Account() {
+    }
 
     public Account(UUID id, String username, String password, LocalDate createdDate, Role role) {
         this.id = id;

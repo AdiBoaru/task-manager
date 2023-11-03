@@ -1,4 +1,4 @@
-package main.java.com.togbo.taskmanager.model;
+package com.togbo.taskmanager.model;
 
 import jakarta.persistence.*;
 
@@ -19,6 +19,9 @@ public class Project {
  //   private Set<Employee> employees;
   //  private Set<Task> tasks;
 
+
+    public Project() {
+    }
 
     public Project(UUID uuid, String title, String description, LocalDate dueDate){// Set<Employee> employees, Set<Task> tasks) {
         this.uuid = uuid;

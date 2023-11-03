@@ -1,4 +1,4 @@
-package main.java.com.togbo.taskmanager.model;
+package com.togbo.taskmanager.model;
 
 import jakarta.persistence.*;
 
@@ -17,9 +17,18 @@ public class Employee {
     private String lastName;
     @Column(name = "birth_date")
     private LocalDate birthDate;
+    @ManyToOne
+    @JoinColumn(name = "account_id")
     private Account account;
+    @ManyToOne
+    @JoinColumn(name = "task_id")
     private Task task;
+    @ManyToOne
+    @JoinColumn(name = "project_uuid")
     private Project project;
+
+    public Employee() {
+    }
 
     public Employee(UUID id,
                     String firstName,
