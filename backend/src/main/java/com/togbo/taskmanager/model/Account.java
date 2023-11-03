@@ -17,6 +17,9 @@ public class Account {
     @Column(name = "created_date")
     private LocalDate createdDate;
     private Role role;
+    @OneToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 
     public Account(UUID id, String username, String password, LocalDate createdDate, Role role) {
         this.id = id;
@@ -64,6 +67,14 @@ public class Account {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     @Override

@@ -6,6 +6,7 @@ import main.java.com.togbo.taskmanager.enums.Status;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -23,6 +24,11 @@ public class Task {
     private LocalDate endDate;
     private Status status;
     private Priority priority;
+    @ManyToMany(mappedBy = "tasks")
+    private Set<Employee> employees;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     public Task(UUID id,
                 String name,
@@ -104,6 +110,22 @@ public class Task {
 
     public void setPriority(Priority priority) {
         this.priority = priority;
+    }
+
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     @Override

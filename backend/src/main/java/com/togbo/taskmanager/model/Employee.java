@@ -3,6 +3,7 @@ package main.java.com.togbo.taskmanager.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,17 +18,21 @@ public class Employee {
     private String lastName;
     @Column(name = "birth_date")
     private LocalDate birthDate;
+    @OneToOne(mappedBy = "account")
     private Account account;
-    private Task task;
-    private Project project;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "employee_task",
+            joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
+    private Set<Task> task;
 
-    public Employee(UUID id,
-                    String firstName,
-                    String lastName,
-                    LocalDate birthDate,
-                    Account account,
-                    Task task,
-                    Project project) {
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "employee_project",
+            joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
+    private Set<Project> project;
+
+    public Employee(UUID id, String firstName, String lastName, LocalDate birthDate, Account account, Set<Task> task, Set<Project> project) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -77,19 +82,19 @@ public class Employee {
         this.account = account;
     }
 
-    public Task getTask() {
+    public Set<Task> getTask() {
         return task;
     }
 
-    public void setTask(Task task) {
+    public void setTask(Set<Task> task) {
         this.task = task;
     }
 
-    public Project getProject() {
+    public Set<Project> getProject() {
         return project;
     }
 
-    public void setProject(Project project) {
+    public void setProject(Set<Project> project) {
         this.project = project;
     }
 
