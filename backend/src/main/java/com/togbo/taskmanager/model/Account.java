@@ -15,6 +15,7 @@ public class Account {
     private String password;
     @Column(name = "created_date")
     private LocalDate createdDate;
+    private Role role;
 
     public Account() {
     }
@@ -32,6 +33,14 @@ public class Account {
         this.id = id;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -46,6 +55,14 @@ public class Account {
 
     public void setCreatedDate(LocalDate createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override

@@ -43,8 +43,6 @@ public class Task {
         this.dueDate = endDate;
         this.status = status;
         this.priority = priority;
-        this.employees = employees;
-        this.project = project;
     }
 
     public UUID getId() {
