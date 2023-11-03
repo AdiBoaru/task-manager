@@ -11,7 +11,6 @@ import java.util.UUID;
 @Table(name = "projects")
 public class Project {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
     private String title;
     private String description;

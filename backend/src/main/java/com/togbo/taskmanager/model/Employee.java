@@ -12,7 +12,6 @@ import java.util.UUID;
 @Table(name = "employees")
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
     @Column(name = "first_name")
     private String firstName;
@@ -86,21 +85,6 @@ public class Employee {
         this.account = account;
     }
 
-    public Task getTask() {
-        return task;
-    }
-
-    public void setTask(Task task) {
-        this.task = task;
-    }
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
 
     @Override
     public String toString() {
