@@ -1,3 +1,5 @@
+package com.togbo.taskmanager.services;
+
 import com.togbo.taskmanager.model.Project;
 import com.togbo.taskmanager.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,22 +14,36 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
-    private void addProject(Project project){
+    public void addProject(Project project){
         projectRepository.save(project);
     }
 
-    private void deleteProject(Project project){
-        projectRepository.delete(project);
+    public void deleteProject(UUID id, Project project){
+        Optional<Project> foundProject = projectRepository.findById(id);
+
+        if(foundProject.isPresent()){
+            projectRepository.delete(project);
+        }
     }
 
-    private void updateProject(UUID id, Project project){
+    public void updateProject(UUID id, Project project){
         Optional<Project> foundProject = projectRepository.findById(id);
         if(foundProject.isPresent()){
             projectRepository.save(project);
         }
     }
 
-    private List<Project> findAll(){
+    public List<Project> findAll(){
         return projectRepository.findAll();
+    }
+
+    public Project findById(UUID id){
+        Optional<Project> foundProject = projectRepository.findById(id);
+
+        return foundProject.orElse(null);
+    }
+
+    public void deleteById(UUID id){
+        projectRepository.deleteById(id);
     }
 }
