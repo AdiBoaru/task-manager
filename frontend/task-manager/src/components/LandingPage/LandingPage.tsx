@@ -9,22 +9,34 @@ const LandingPage = () => {
     <div className="flex flex-col h-screen w-screen bg-primaryColor overflow-hidden">
       <div className="h-1/6 flex justify-between px-[12rem] items-center">
         <div className="flex justify-between w-[20rem] items-center">
-          <NavLink to={DEFAULT} className="text-secondaryColor text-5xl">
+          <NavLink
+            data-testid="landing-page-logo"
+            to={DEFAULT}
+            className="text-secondaryColor text-5xl"
+          >
             TaskFlow
           </NavLink>
           <img className="h-15 w-20" src="./assets/brain-line-icon.png" />
         </div>
-        <NavLink to={LOGIN} className="text-secondaryColor text-3xl">
+        <NavLink
+          data-testid="landing-page-login-btn"
+          to={LOGIN}
+          className="text-secondaryColor text-3xl"
+        >
           Login
         </NavLink>
       </div>
       <div className="h-screen w-screen flex">
         <div className="flex flex-col w-1/2 items-start justify-between py-[5rem] px-[12rem]">
           <div className="h-full flex w-[39rem] items-start justify-between flex-col">
-            <h2 className="text-[6rem] leading-[9rem] text-white pt-20 w-[40rem] laptop:w-[30rem] laptop:text-[4rem] laptop:leading-[7rem]">
+            <h2
+              data-testid="landing-page-title"
+              className="text-[6rem] leading-[9rem] text-white pt-20 w-[40rem] laptop:w-[30rem] laptop:text-[4rem] laptop:leading-[7rem]"
+            >
               Task Management For Your Company
             </h2>
             <NavLink
+              data-testid="landing-page-register-btn"
               className="text-secondaryColor text-xl border rounded-md p-3"
               to={REGISTER}
             >

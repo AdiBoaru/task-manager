@@ -5,7 +5,7 @@ import { Fragment } from "react";
 const SwitchRoutes = () => {
   return (
     <Routes>
-      {ROUTES.map(({ path, auth, element, roles }, index) => (
+      {ROUTES.map(({ path, element }, index) => (
         <Fragment key={index}>
           <Route path={path} element={element} />
         </Fragment>
