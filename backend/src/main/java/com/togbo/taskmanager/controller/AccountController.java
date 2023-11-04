@@ -41,6 +41,11 @@ public class AccountController {
         return new ResponseEntity<>(account, HttpStatus.CREATED);
     }
 
+    @PostMapping("/register")
+    public void registerAccount(@RequestBody Account account){
+        accountService.addAccount(account);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Account> updateAccount(@PathVariable UUID id, @RequestBody Account account){
         accountService.updateAccount(id, account);

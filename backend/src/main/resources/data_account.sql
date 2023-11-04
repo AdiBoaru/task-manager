@@ -1,0 +1,1 @@
+insert into table accounts(created_date, password, role) values ('2023-11-04', 'hashed_password_value', 'user');
