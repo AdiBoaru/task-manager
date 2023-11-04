@@ -87,7 +87,7 @@ const RegisterForm = () => {
           inputId="birthDate"
         />
         <Button type="submit" style="" onClick={() => {}} disabled>
-          Register &#x27A3;
+          Register
         </Button>
       </form>
     </FormProvider>
