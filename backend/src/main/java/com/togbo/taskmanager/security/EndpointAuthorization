@@ -1,0 +1,8 @@
+
+after the authentication next step is Authorization
+
+we have 2 type of authorization
+1 - endpoint authorization for web app
+2 - method authorization
+
+is applied through the FilterChain
