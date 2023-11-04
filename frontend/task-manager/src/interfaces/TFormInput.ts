@@ -2,7 +2,7 @@ import { RegisterOptions } from "react-hook-form";
 
 export type TFormInput = {
     inputId: string;
-    inputName: string;
+    name: string;
     placeholder:string;
     validation?:  RegisterOptions;
     labelText: string;

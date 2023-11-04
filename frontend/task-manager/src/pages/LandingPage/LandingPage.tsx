@@ -2,26 +2,19 @@ import { NavLink } from "react-router-dom";
 import { BsShieldFillCheck } from "react-icons/bs";
 import { SlOrganization } from "react-icons/sl";
 import { GiProgression } from "react-icons/gi";
-import { DEFAULT, LOGIN, REGISTER } from "../../constants/routePaths";
+
+import { LOGIN, REGISTER } from "../../constants/routePaths";
+import Logo from "../../UI/Logo/Logo";
 
 const LandingPage = () => {
   return (
     <div className="flex flex-col h-screen w-screen bg-primaryColor overflow-hidden">
       <div className="h-1/6 flex justify-between px-[12rem] items-center">
-        <div className="flex justify-between w-[20rem] items-center">
-          <NavLink
-            data-testid="landing-page-logo"
-            to={DEFAULT}
-            className="text-secondaryColor text-5xl"
-          >
-            TaskFlow
-          </NavLink>
-          <img className="h-15 w-20" src="./assets/brain-line-icon.png" />
-        </div>
+        <Logo />
         <NavLink
           data-testid="landing-page-login-btn"
           to={LOGIN}
-          className="text-secondaryColor text-3xl"
+          className="text-secondaryColor inline-block relative text-3xl transition-all duration-500 before:content-[''] before:absolute before:-bottom-2 before:left-0 before:w-0 before:h-1.5 before:rounded-full before:opacity-0 before:transition-all before:duration-500 before:bg-secondaryColor hover:before:w-full hover:before:opacity-100"
         >
           Login
         </NavLink>
@@ -37,7 +30,7 @@ const LandingPage = () => {
             </h2>
             <NavLink
               data-testid="landing-page-register-btn"
-              className="text-secondaryColor text-xl border rounded-md p-3"
+              className="text-secondaryColor text-xl border rounded-md p-3 hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor"
               to={REGISTER}
             >
               Register Now

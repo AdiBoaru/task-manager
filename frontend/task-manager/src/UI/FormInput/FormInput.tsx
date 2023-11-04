@@ -6,7 +6,7 @@ import { TFormInput } from "../../interfaces/TFormInput";
 const FormInput = ({
   inputId,
   labelText,
-  inputName,
+  name,
   placeholder,
   type,
   labelStyle,
@@ -16,25 +16,29 @@ const FormInput = ({
     register,
     formState: { errors },
   } = useFormContext();
+
   return (
-    <>
+    <div className="h-[7rem] m-1">
       <label className={labelStyle} htmlFor={inputId}>
         {labelText}
       </label>
       <div>
         <input
+          id={inputId}
           className={inputStyle}
           type={type}
           placeholder={placeholder}
-          {...register(inputName)}
+          {...register(name)}
         />
         <ErrorMessage
           errors={errors}
-          name={inputName}
-          render={({ message }) => <p>{message}</p>}
+          name={name}
+          render={({ message }) => (
+            <p className="text-red-600 pl-3">{message}</p>
+          )}
         />
       </div>
-    </>
+    </div>
   );
 };
 
