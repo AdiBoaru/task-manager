@@ -1,3 +1,5 @@
+package com.togbo.taskmanager.services;
+
 import com.togbo.taskmanager.model.Project;
 import com.togbo.taskmanager.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
