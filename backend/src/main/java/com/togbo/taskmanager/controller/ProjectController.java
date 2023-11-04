@@ -16,7 +16,7 @@ import java.util.UUID;
 public class ProjectController {
     private ProjectService projectService;
 
-    @Autowired
+
     public ProjectController (ProjectService projectService){
         this.projectService = projectService;
     }
