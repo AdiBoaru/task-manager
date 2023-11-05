@@ -11,6 +11,7 @@ const FormInput = ({
   type,
   labelStyle,
   inputStyle,
+  testId,
 }: TFormInput) => {
   const {
     register,
@@ -18,7 +19,7 @@ const FormInput = ({
   } = useFormContext();
 
   return (
-    <div className="h-[7rem] m-1">
+    <div data-testid={testId} className="h-[7rem] m-1">
       <label className={labelStyle} htmlFor={inputId}>
         {labelText}
       </label>

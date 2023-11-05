@@ -62,10 +62,12 @@ const RegisterForm = () => {
   return (
     <FormProvider {...methods}>
       <form
+        data-testid="register-form"
         className="flex flex-col flex-wrap h-full relative"
         onSubmit={handleSubmit(onSubmit, onInvalid)}
       >
         <FormInput
+          testId="first-name"
           labelStyle="px-4 text-white text-lg"
           inputStyle="ml-3 mb-[10px] w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
           placeholder="Enter your first name"
@@ -75,6 +77,7 @@ const RegisterForm = () => {
           name="firstName"
         />
         <FormInput
+          testId="last-name"
           labelStyle="p-4 text-white text-lg"
           inputStyle="ml-3 mb-[10px] w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
           placeholder="Enter your last name"
@@ -84,6 +87,7 @@ const RegisterForm = () => {
           name="lastName"
         />
         <FormInput
+          testId="email"
           labelStyle="p-4 text-white text-lg"
           inputStyle="ml-3 mb-[10px] w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
           placeholder="Enter your email"
@@ -93,6 +97,7 @@ const RegisterForm = () => {
           name="email"
         />
         <FormInput
+          testId="password"
           labelStyle="p-3 text-white text-lg"
           inputStyle="ml-3 mb-[10px] w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
           placeholder="Enter your password"
@@ -102,6 +107,7 @@ const RegisterForm = () => {
           name="password"
         />
         <FormInput
+          testId="confirm-password"
           labelStyle="p-4 text-white text-lg"
           inputStyle="ml-3 mb-[10px] w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
           placeholder="Confirm your password"
@@ -113,12 +119,14 @@ const RegisterForm = () => {
         <div>
           <label className="ml-6 text-white text-lg">Role</label>
           <Controller
+            data-testid="controller"
             name="role"
             control={control}
             rules={{ required: "Role is required" }}
             render={() => (
               <Select
                 id="role"
+                data-testid="role-select"
                 onChange={handleRoleChange}
                 options={[
                   { label: "test", id: "test" },
@@ -138,6 +146,7 @@ const RegisterForm = () => {
           />
         </div>
         <FormInput
+          testId="birth-date"
           labelStyle="p-4 text-white text-lg"
           inputStyle="ml-3 mb-[10px] w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
           labelText="Date of birth"
@@ -147,12 +156,13 @@ const RegisterForm = () => {
           inputId="birthDate"
         />
         <Button
+          testId="register-button"
           type="submit"
           style="text-secondaryColor text-xl border rounded-[10px] py-3 mx-4 my-7 w-[20%] hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor "
         >
           Register
         </Button>
-        <p className="mx-4 text-start text-white ">
+        <p data-testid="login-redirect" className="mx-4 text-start text-white ">
           Already have an account?{" "}
           <NavLink className="text-secondaryColor text-lg" to={LOGIN}>
             Login Here

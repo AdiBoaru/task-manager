@@ -1,8 +1,13 @@
 import { TButton } from "../../interfaces/TButton";
 
-const Button = ({ type, children, onClick, style }: TButton) => {
+const Button = ({ testId, type, children, onClick, style }: TButton) => {
   return (
-    <button type={type} className={style} onClick={onClick}>
+    <button
+      data-testid={testId}
+      type={type}
+      className={style}
+      onClick={onClick}
+    >
       {children}
     </button>
   );
