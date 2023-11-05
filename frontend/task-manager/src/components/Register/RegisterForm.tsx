@@ -49,6 +49,16 @@ const RegisterForm = () => {
     roleField.onChange(option?.label);
   };
 
+  const colorStyles = {
+    control: (styles: CSSObjectWithLabel) => ({
+      ...styles,
+      width: "25rem",
+      padding: "6px",
+      marginBottom: ".7rem",
+      marginLeft: "1.1rem",
+      borderRadius: "10px",
+    }),
+  };
   return (
     <FormProvider {...methods}>
       <form
@@ -115,16 +125,7 @@ const RegisterForm = () => {
                   { label: "test2", id: "test2" },
                 ]}
                 placeholder="Choose your role"
-                styles={{
-                  control: (styles: CSSObjectWithLabel) => ({
-                    ...styles,
-                    width: "25rem",
-                    padding: "6px",
-                    marginBottom: ".7rem",
-                    marginLeft: "1.1rem",
-                    borderRadius: "10px",
-                  }),
-                }}
+                styles={colorStyles}
               />
             )}
           />

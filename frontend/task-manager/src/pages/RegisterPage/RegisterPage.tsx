@@ -1,6 +1,3 @@
-import { NavLink } from "react-router-dom";
-
-import { LOGIN } from "../../constants/routePaths";
 import Logo from "../../UI/Logo/Logo";
 import RegisterForm from "../../components/Register/RegisterForm";
 
