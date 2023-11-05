@@ -5,16 +5,16 @@ import {
   Controller,
   useController,
 } from "react-hook-form";
+import { NavLink } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Select, { CSSObjectWithLabel, SingleValue } from "react-select";
+import { ErrorMessage } from "@hookform/error-message";
 
 import { TRegisterFormData } from "../../interfaces/TRegisterFormData";
 import { schema } from "../../constants/formValidations";
+import { LOGIN } from "../../constants/routePaths";
 import FormInput from "../../UI/FormInput/FormInput";
 import Button from "../../UI/Button/Button";
-import { ErrorMessage } from "@hookform/error-message";
-import { NavLink } from "react-router-dom";
-import { LOGIN } from "../../constants/routePaths";
 
 type TRole = {
   label: string;
@@ -119,8 +119,8 @@ const RegisterForm = () => {
                   control: (styles: CSSObjectWithLabel) => ({
                     ...styles,
                     width: "25rem",
-                    padding: "5px",
-                    marginBottom: ".5rem",
+                    padding: "6px",
+                    marginBottom: ".7rem",
                     marginLeft: "1.1rem",
                     borderRadius: "10px",
                   }),
@@ -147,11 +147,11 @@ const RegisterForm = () => {
         />
         <Button
           type="submit"
-          style="text-secondaryColor text-xl border rounded-md py-3 px-6 hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor absolute right-[33rem] bottom-[20rem]"
+          style="text-secondaryColor text-xl border rounded-[10px] py-3 mx-4 my-7 w-[20%] hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor "
         >
           Register
         </Button>
-        <p className="absolute text-end text-white right-[21rem] bottom-[4rem]">
+        <p className="mx-4 text-start text-white ">
           Already have an account?{" "}
           <NavLink className="text-secondaryColor text-lg" to={LOGIN}>
             Login Here
