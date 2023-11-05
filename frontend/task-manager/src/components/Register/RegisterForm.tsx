@@ -36,6 +36,7 @@ const RegisterForm = () => {
   const onSubmit: SubmitHandler<TRegisterFormData> = (
     data: TRegisterFormData
   ) => {
+    console.log(data);
     fetch("localhost:8080/account/register", {
       method: "POST",
       body: JSON.stringify(data),
