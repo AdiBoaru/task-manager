@@ -1,6 +1,5 @@
 package com.togbo.taskmanager.model;
 
-import com.togbo.taskmanager.enums.Role;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -10,26 +9,42 @@ import java.util.UUID;
 @Table(name = "accounts")
 public class Account {
     @Id
-    private UUID id;
+    @Column(columnDefinition = "VARCHAR(36)")
+    private UUID uuid;
+
+    private Long id;
     private String password;
     @Column(name = "created_date")
     private LocalDate createdDate;
-    private Role role;
 
     public Account() {
     }
 
-    public Account(UUID id, LocalDate createdDate) {
-        this.id = id;
+    public Account(String password, LocalDate createdDate) {
+        this.password = password;
         this.createdDate = createdDate;
     }
 
-    public UUID getId() {
+    public Account(Long id, String password, LocalDate createdDate) {
+        this.id = id;
+        this.password = password;
+        this.createdDate = createdDate;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
 
@@ -49,18 +64,10 @@ public class Account {
         this.createdDate = createdDate;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     @Override
     public String toString() {
         return "Account{" +
-                "id=" + id +
+                "id=" + uuid +
                 ", password='" + password + '\'' +
                 ", createdDate=" + createdDate +
                 '}';

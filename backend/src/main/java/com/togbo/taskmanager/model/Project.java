@@ -11,7 +11,10 @@ import java.util.UUID;
 @Table(name = "projects")
 public class Project {
     @Id
-    private UUID id;
+    @Column(columnDefinition = "VARCHAR(36)")
+    private UUID uuid;
+
+    private Long id;
     private String title;
     private String description;
     @Column(name = "creation_date")
@@ -32,7 +35,8 @@ public class Project {
     public Project() {
     }
 
-    public Project(UUID id, String title, String description, LocalDate creationDate, LocalDate dueDate) {
+    public Project(UUID uuid, Long id, String title, String description, LocalDate creationDate, LocalDate dueDate) {
+        this.uuid = uuid;
         this.id = id;
         this.title = title;
         this.description = description;
@@ -40,12 +44,12 @@ public class Project {
         this.dueDate = dueDate;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getTitle() {
@@ -95,7 +99,7 @@ public class Project {
     @Override
     public String toString() {
         return "Project{" +
-                "uuid=" + id +
+                "uuid=" + uuid +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", creationDate=" + creationDate +
