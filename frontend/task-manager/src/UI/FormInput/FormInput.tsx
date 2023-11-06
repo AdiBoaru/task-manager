@@ -12,6 +12,8 @@ const FormInput = ({
   labelStyle,
   inputStyle,
   testId,
+  errorTestId,
+  inputTestId,
 }: TFormInput) => {
   const {
     register,
@@ -25,6 +27,7 @@ const FormInput = ({
       </label>
       <div>
         <input
+          data-testid={inputTestId}
           id={inputId}
           className={inputStyle}
           type={type}
@@ -35,7 +38,9 @@ const FormInput = ({
           errors={errors}
           name={name}
           render={({ message }) => (
-            <p className="text-red-600 pl-3">{message}</p>
+            <p data-testid={errorTestId} className="text-red-600 pl-3">
+              {message}
+            </p>
           )}
         />
       </div>

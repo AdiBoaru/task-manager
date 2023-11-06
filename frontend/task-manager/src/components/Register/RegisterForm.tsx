@@ -68,6 +68,8 @@ const RegisterForm = () => {
       >
         <FormInput
           testId="first-name"
+          inputTestId="first-name-input"
+          errorTestId="first-name-error"
           labelStyle="px-4 text-white text-lg"
           inputStyle="ml-3 mb-[10px] w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
           placeholder="Enter your first name"
@@ -78,6 +80,8 @@ const RegisterForm = () => {
         />
         <FormInput
           testId="last-name"
+          inputTestId="last-name-input"
+          errorTestId="last-name-error"
           labelStyle="p-4 text-white text-lg"
           inputStyle="ml-3 mb-[10px] w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
           placeholder="Enter your last name"
@@ -88,6 +92,8 @@ const RegisterForm = () => {
         />
         <FormInput
           testId="email"
+          inputTestId="email-input"
+          errorTestId="email-error"
           labelStyle="p-4 text-white text-lg"
           inputStyle="ml-3 mb-[10px] w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
           placeholder="Enter your email"
@@ -98,6 +104,8 @@ const RegisterForm = () => {
         />
         <FormInput
           testId="password"
+          inputTestId="password-input"
+          errorTestId="password-error"
           labelStyle="p-3 text-white text-lg"
           inputStyle="ml-3 mb-[10px] w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
           placeholder="Enter your password"
@@ -108,6 +116,8 @@ const RegisterForm = () => {
         />
         <FormInput
           testId="confirm-password"
+          inputTestId="confirm-password-input"
+          errorTestId="confirm-password-error"
           labelStyle="p-4 text-white text-lg"
           inputStyle="ml-3 mb-[10px] w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
           placeholder="Confirm your password"
@@ -162,9 +172,13 @@ const RegisterForm = () => {
         >
           Register
         </Button>
-        <p data-testid="login-redirect" className="mx-4 text-start text-white ">
+        <p className="mx-4 text-start text-white ">
           Already have an account?{" "}
-          <NavLink className="text-secondaryColor text-lg" to={LOGIN}>
+          <NavLink
+            data-testid="login-redirect"
+            className="text-secondaryColor text-lg"
+            to={LOGIN}
+          >
             Login Here
           </NavLink>
         </p>

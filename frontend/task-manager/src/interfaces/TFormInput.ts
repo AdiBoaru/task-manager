@@ -5,9 +5,11 @@ export type TFormInput = {
     name: string;
     placeholder:string;
     testId: string;
-    validation?:  RegisterOptions;
     labelText: string;
     type: string;
+    errorTestId?: string;
+    inputTestId?: string;
+    validation?:  RegisterOptions;
     labelStyle?: string;
     inputStyle?: string;
 }
