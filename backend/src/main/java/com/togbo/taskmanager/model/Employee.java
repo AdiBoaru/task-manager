@@ -12,7 +12,9 @@ import java.util.UUID;
 @Table(name = "employees")
 public class Employee {
     @Id
-    private UUID id;
+    @Column(columnDefinition = "VARCHAR(36)")
+    private UUID uuid;
+    private Long id;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
@@ -20,9 +22,10 @@ public class Employee {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
     @OneToOne
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_id",referencedColumnName = "id")
     private Account account;
 
     @ManyToMany(mappedBy = "employees")
@@ -36,21 +39,45 @@ public class Employee {
 
     public Employee() {
     }
+    public Employee(String firstName, String lastName, LocalDate birthDate, Role role, Account account) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.role = role;
+        this.account = account;
+    }
 
-    public Employee(UUID id, String firstName, String lastName, LocalDate birthDate, Account account) {
+    public Employee(Long id, String firstName, String lastName, LocalDate birthDate, Role role, Account account) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
+        this.role = role;
         this.account = account;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getFirstName() {
@@ -89,7 +116,7 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee{" +
-                "id=" + id +
+                "id=" + uuid +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", birthDate=" + birthDate +

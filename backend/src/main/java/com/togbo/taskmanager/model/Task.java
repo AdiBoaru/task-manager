@@ -14,7 +14,10 @@ import java.util.UUID;
 @Table(name = "tasks")
 public class Task {
     @Id
-    private UUID id;
+    @Column(columnDefinition = "VARCHAR(36)")
+    private UUID uuid;
+
+    private Long id;
     private String name;
     private String description;
     private File file;
@@ -22,7 +25,9 @@ public class Task {
     private LocalDate startDate;
     @Column(name = "due_date")
     private LocalDate dueDate;
+    @Enumerated(EnumType.STRING)
     private Status status;
+    @Enumerated(EnumType.STRING)
     private Priority priority;
     @ManyToMany(mappedBy = "tasks")
     private Set<Employee> employees = new HashSet<>();
@@ -33,23 +38,23 @@ public class Task {
     public Task() {
     }
 
-    public Task(UUID id, String name, String description, File file, LocalDate startDate, LocalDate endDate, Status status, Priority priority) {
+    public Task(Long id, String name, String description, File file, LocalDate startDate, LocalDate dueDate, Status status, Priority priority) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.file = file;
         this.startDate = startDate;
-        this.dueDate = endDate;
+        this.dueDate = dueDate;
         this.status = status;
         this.priority = priority;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getUuid() {
+        return uuid;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getName() {
@@ -127,7 +132,7 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
-                "id=" + id +
+                "id=" + uuid +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", file=" + file +
