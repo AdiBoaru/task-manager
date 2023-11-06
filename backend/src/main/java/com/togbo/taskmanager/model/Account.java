@@ -16,6 +16,8 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String email;
     private String password;
     @Column(name = "created_date")
     private LocalDate createdDate;
@@ -23,11 +25,12 @@ public class Account {
     public Account() {
     }
 
-    public Account(String password, LocalDate createdDate) {
+
+    public Account(String email, String password, LocalDate createdDate) {
+        this.email = email;
         this.password = password;
         this.createdDate = createdDate;
     }
-
 
     public Long getId() {
         return id;
@@ -46,6 +49,15 @@ public class Account {
     }
 
 */
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -66,6 +78,7 @@ public class Account {
     public String toString() {
         return "Account{" +
                 "id=" + id +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", createdDate=" + createdDate +
                 '}';
