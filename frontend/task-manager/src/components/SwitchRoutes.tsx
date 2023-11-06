@@ -4,7 +4,7 @@ import { Fragment } from "react";
 
 const SwitchRoutes = () => {
   return (
-    <Routes>
+    <Routes data-testid="switch-routes">
       {ROUTES.map(({ path, element }, index) => (
         <Fragment key={index}>
           <Route path={path} element={element} />

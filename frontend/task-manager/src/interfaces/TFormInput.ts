@@ -4,9 +4,12 @@ export type TFormInput = {
     inputId: string;
     name: string;
     placeholder:string;
-    validation?:  RegisterOptions;
+    testId: string;
     labelText: string;
     type: string;
+    errorTestId?: string;
+    inputTestId?: string;
+    validation?:  RegisterOptions;
     labelStyle?: string;
     inputStyle?: string;
 }
