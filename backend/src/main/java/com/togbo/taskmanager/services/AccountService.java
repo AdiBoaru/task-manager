@@ -14,7 +14,7 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public void addAccount(Account account){
+    public void saveAccount(Account account){
         accountRepository.save(account);
     }
 

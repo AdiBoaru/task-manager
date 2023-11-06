@@ -11,9 +11,13 @@ import java.util.UUID;
 @Entity
 @Table(name = "employees")
 public class Employee {
+    /* @Id
+     @GeneratedValue
+     @Column(columnDefinition = "VARCHAR(36)")
+     private UUID uuid;
+     */
     @Id
-    @Column(columnDefinition = "VARCHAR(36)")
-    private UUID uuid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "first_name")
     private String firstName;
@@ -25,7 +29,7 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private Role role;
     @OneToOne
-    @JoinColumn(name = "account_id",referencedColumnName = "id")
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
     @ManyToMany(mappedBy = "employees")
@@ -39,16 +43,8 @@ public class Employee {
 
     public Employee() {
     }
-    public Employee(String firstName, String lastName, LocalDate birthDate, Role role, Account account) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.role = role;
-        this.account = account;
-    }
 
-    public Employee(Long id, String firstName, String lastName, LocalDate birthDate, Role role, Account account) {
-        this.id = id;
+    public Employee(String firstName, String lastName, LocalDate birthDate, Role role, Account account) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -64,14 +60,14 @@ public class Employee {
         this.id = id;
     }
 
-    public UUID getUuid() {
+ /*   public UUID getUuid() {
         return uuid;
     }
 
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
-
+*/
     public Role getRole() {
         return role;
     }
@@ -116,7 +112,7 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee{" +
-                "id=" + uuid +
+                "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", birthDate=" + birthDate +
