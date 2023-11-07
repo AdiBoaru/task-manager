@@ -23,6 +23,8 @@ public class AuthController {
         this.employeeRepository = employeeRepository;
     }
 
+    //make use of a mapper
+
     @PostMapping("/employee")
     public void registerEmployee(@RequestBody AccountEmployeeDTO accountEmployeeDTO){
         Account account = new Account();
