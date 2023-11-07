@@ -10,6 +10,7 @@ const LandingPage = () => {
   return (
     <div className="flex flex-col h-screen w-screen bg-primaryColor overflow-hidden">
       <div className="h-1/6 flex justify-between px-[12rem] items-center">
+
         <Logo />
         <NavLink
           data-testid="landing-page-login-btn"

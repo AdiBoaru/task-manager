@@ -11,7 +11,7 @@ import Select, { CSSObjectWithLabel, SingleValue } from "react-select";
 import { ErrorMessage } from "@hookform/error-message";
 
 import { TRegisterFormData } from "../../interfaces/TRegisterFormData";
-import { schema } from "../../constants/formValidations";
+import { registerSchema } from "../../constants/formValidations";
 import { LOGIN } from "../../constants/routePaths";
 import FormInput from "../../UI/FormInput/FormInput";
 import Button from "../../UI/Button/Button";
@@ -25,7 +25,7 @@ type TRole = {
 const RegisterForm = () => {
   const methods = useForm<TRegisterFormData>({
     mode: "onChange",
-    resolver: yupResolver<TRegisterFormData>(schema),
+    resolver: yupResolver<TRegisterFormData>(registerSchema),
   });
   const {
     control,
@@ -60,6 +60,7 @@ const RegisterForm = () => {
       borderRadius: "10px",
     }),
   };
+
   return (
     <FormProvider {...methods}>
       <form
