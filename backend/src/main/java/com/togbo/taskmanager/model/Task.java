@@ -13,10 +13,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "tasks")
 public class Task {
-    @Id
-    @Column(columnDefinition = "VARCHAR(36)")
-    private UUID uuid;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
@@ -38,8 +37,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(Long id, String name, String description, File file, LocalDate startDate, LocalDate dueDate, Status status, Priority priority) {
-        this.id = id;
+    public Task(String name, String description, File file, LocalDate startDate, LocalDate dueDate, Status status, Priority priority) {
         this.name = name;
         this.description = description;
         this.file = file;
@@ -49,12 +47,8 @@ public class Task {
         this.priority = priority;
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -132,7 +126,7 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
-                "id=" + uuid +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", file=" + file +

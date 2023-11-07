@@ -8,11 +8,16 @@ import java.util.UUID;
 @Entity
 @Table(name = "accounts")
 public class Account {
+    /*
     @Id
     @Column(columnDefinition = "VARCHAR(36)")
     private UUID uuid;
-
+*/
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String email;
     private String password;
     @Column(name = "created_date")
     private LocalDate createdDate;
@@ -20,13 +25,9 @@ public class Account {
     public Account() {
     }
 
-    public Account(String password, LocalDate createdDate) {
-        this.password = password;
-        this.createdDate = createdDate;
-    }
 
-    public Account(Long id, String password, LocalDate createdDate) {
-        this.id = id;
+    public Account(String email, String password, LocalDate createdDate) {
+        this.email = email;
         this.password = password;
         this.createdDate = createdDate;
     }
@@ -39,7 +40,7 @@ public class Account {
         this.id = id;
     }
 
-    public UUID getUuid() {
+  /*  public UUID getUuid() {
         return uuid;
     }
 
@@ -47,6 +48,15 @@ public class Account {
         this.uuid = uuid;
     }
 
+*/
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getPassword() {
         return password;
@@ -67,7 +77,8 @@ public class Account {
     @Override
     public String toString() {
         return "Account{" +
-                "id=" + uuid +
+                "id=" + id +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", createdDate=" + createdDate +
                 '}';

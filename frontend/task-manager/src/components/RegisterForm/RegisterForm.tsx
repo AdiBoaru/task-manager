@@ -37,10 +37,7 @@ const RegisterForm = () => {
     data: TRegisterFormData
   ) => {
     console.log(data);
-    // TODO trimitem data onSubmit
-    // TODO show popup notification cu verifiy email
-
-    fetch("localhost:8080/account/register", {
+    fetch("http://localhost:8080/register/employee", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

@@ -10,10 +10,13 @@ import java.util.UUID;
 @Entity
 @Table(name = "projects")
 public class Project {
-    @Id
+  /*  @Id
     @Column(columnDefinition = "VARCHAR(36)")
     private UUID uuid;
 
+   */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String description;
@@ -35,21 +38,20 @@ public class Project {
     public Project() {
     }
 
-    public Project(UUID uuid, Long id, String title, String description, LocalDate creationDate, LocalDate dueDate) {
-        this.uuid = uuid;
-        this.id = id;
+
+    public Project(String title, String description, LocalDate creationDate, LocalDate dueDate) {
         this.title = title;
         this.description = description;
         this.creationDate = creationDate;
         this.dueDate = dueDate;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public Long getId() {
+        return id;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -99,7 +101,7 @@ public class Project {
     @Override
     public String toString() {
         return "Project{" +
-                "uuid=" + uuid +
+                "uuid=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", creationDate=" + creationDate +
