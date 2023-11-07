@@ -1,7 +1,8 @@
 import { Navigate } from "react-router-dom";
-import { DEFAULT, LANDING_PAGE, REGISTER } from "./routePaths";
+import { DEFAULT, LANDING_PAGE, LOGIN, REGISTER } from "./routePaths";
 import LandingPage from "../pages/LandingPage/LandingPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
+import LoginPage from "../pages/LoginPage/LoginPage";
 
 export const ROUTES = [
   {
@@ -21,5 +22,11 @@ export const ROUTES = [
     auth: false,
     roles: [],
     element: <RegisterPage />,
+  },
+  {
+    path: LOGIN,
+    auth: false,
+    roles: [],
+    element: <LoginPage />,
   },
 ];
