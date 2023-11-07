@@ -36,14 +36,14 @@ public class AccountController {
 
     @PostMapping("/save")
     public ResponseEntity<Account> saveAccount(@RequestBody Account account){
-        accountService.addAccount(account);
+        accountService.saveAccount(account);
 
         return new ResponseEntity<>(account, HttpStatus.CREATED);
     }
 
     @PostMapping("/register")
     public void registerAccount(@RequestBody Account account){
-        accountService.addAccount(account);
+        accountService.saveAccount(account);
     }
 
     @PutMapping("/{id}")
