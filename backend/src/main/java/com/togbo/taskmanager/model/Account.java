@@ -22,6 +22,11 @@ public class Account {
     @Column(name = "created_date")
     private LocalDate createdDate;
 
+    @Column(
+            name = "verification_code")
+    private UUID verificationCode;
+    @Column(name = "email_verified")
+    private boolean isEmailVerified;
     public Account() {
     }
 
@@ -49,6 +54,22 @@ public class Account {
     }
 
 */
+
+    public UUID getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(UUID verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public boolean isEmailVerified() {
+        return isEmailVerified;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        this.isEmailVerified = emailVerified;
+    }
 
     public String getEmail() {
         return email;

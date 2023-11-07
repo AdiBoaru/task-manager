@@ -37,7 +37,7 @@ const RegisterForm = () => {
     data: TRegisterFormData
   ) => {
     console.log(data);
-    fetch("http://localhost:8080/register/employee", {
+    fetch("http://localhost:8080/register/process_register", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

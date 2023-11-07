@@ -3,9 +3,11 @@ package com.togbo.taskmanager.dto;
 import com.togbo.taskmanager.enums.Role;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Project;
+import jakarta.persistence.Column;
 
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.UUID;
 
 public class AccountEmployeeDTO {
     private Long id;
@@ -16,6 +18,9 @@ public class AccountEmployeeDTO {
     private Role role;
     private String email;
     private String password;
+
+    private UUID verificationCode;
+    private boolean isEmailVerified;
 
     public AccountEmployeeDTO(Long id, String firstName, String lastName, LocalDate birthDate, LocalDate createdDate, Role role, String email, String password) {
         this.id = id;
@@ -28,10 +33,28 @@ public class AccountEmployeeDTO {
         this.password = password;
     }
 
+    public String getFullName(){
+        return firstName + " " + lastName;
+    }
+    public UUID getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(UUID verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public boolean isEmailVerified() {
+        return isEmailVerified;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        isEmailVerified = emailVerified;
+    }
+
     public LocalDate getCreatedDate() {
         return createdDate;
     }
-
     public void setCreatedDate(LocalDate createdDate) {
         this.createdDate = createdDate;
     }
