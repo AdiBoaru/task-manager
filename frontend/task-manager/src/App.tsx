@@ -1,11 +1,7 @@
 import SwitchRoutes from "./components/SwitchRoutes";
 
 function App() {
-  return (
-    <div>
-      <SwitchRoutes />
-    </div>
-  );
+  return <SwitchRoutes />;
 }
 
 export default App;

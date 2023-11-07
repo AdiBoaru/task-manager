@@ -2,6 +2,7 @@ import { useFormContext } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 
 import { TFormInput } from "../../interfaces/TFormInput";
+import classNames from "classnames";
 
 const FormInput = ({
   inputId,
@@ -14,6 +15,7 @@ const FormInput = ({
   testId,
   errorTestId,
   inputTestId,
+  style,
 }: TFormInput) => {
   const {
     register,
@@ -21,7 +23,10 @@ const FormInput = ({
   } = useFormContext();
 
   return (
-    <div data-testid={testId} className="h-[7rem] m-1">
+    <div
+      data-testid={testId}
+      className={classNames(`${style} w-fit h-[7rem] m-1 `)}
+    >
       <label className={labelStyle} htmlFor={inputId}>
         {labelText}
       </label>
