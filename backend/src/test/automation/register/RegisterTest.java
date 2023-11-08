@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 public class RegisterTest extends SetupWeb {
     @Test
     public void registerTest(){
-        //WebElement registerButton = webDriver.findElement(By.className())
+        WebElement registerButton = webDriver.findElement(By.cssSelector(".text-xl"));
+        registerButton.click();
     }
 }
