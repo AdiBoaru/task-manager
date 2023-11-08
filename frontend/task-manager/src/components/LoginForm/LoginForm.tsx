@@ -16,7 +16,6 @@ const LoginForm = () => {
     resolver: yupResolver<TLoginFormData>(loginSchema),
   });
   const { handleSubmit } = methods;
-  const onInvalid = (errors: any) => console.error(errors);
   const onSubmit: SubmitHandler<TLoginFormData> = (data: TLoginFormData) => {
     notification(
       "Please verify your email to confirm your registration.",
