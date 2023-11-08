@@ -7,15 +7,20 @@ import { TLoginFormData } from "../../interfaces/TLoginFormData";
 import { REGISTER } from "../../constants/routePaths";
 import FormInput from "../../UI/FormInput/FormInput";
 import Button from "../../UI/Button/Button";
+import useToastify from "../../hooks/useToastify";
 
 const LoginForm = () => {
+  const { notification } = useToastify();
   const methods = useForm<TLoginFormData>({
     mode: "onBlur",
     resolver: yupResolver<TLoginFormData>(loginSchema),
   });
   const { handleSubmit } = methods;
-  const onInvalid = (errors: any) => console.error(errors);
   const onSubmit: SubmitHandler<TLoginFormData> = (data: TLoginFormData) => {
+    notification(
+      "Please verify your email to confirm your registration.",
+      "success"
+    );
     console.log(data);
     fetch("localhost:8080/account/login", {
       method: "POST",
