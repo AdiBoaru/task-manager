@@ -46,9 +46,15 @@ public class AuthController {
         accountRepository.save(account);
         employeeRepository.save(employee);
     }
-
-
     */
+    @GetMapping("/login")
+    public Employee loginEmployee(@RequestBody AccountEmployeeDTO accountEmployeeDTO){
+        //find email
+        //find password
+
+        accountRepository.findByEmail(accountEmployeeDTO.getEmail());
+
+    }
     @PostMapping("/process_register")
     public String processRegister(@RequestBody AccountEmployeeDTO account, HttpServletRequest httpServletRequest)
             throws UnsupportedEncodingException, MessagingException {
