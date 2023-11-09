@@ -1,6 +1,8 @@
 package com.togbo.taskmanager.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -17,6 +19,8 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Email
+    @NotBlank
     private String email;
     private String password;
     @Column(name = "created_date")
@@ -34,7 +38,7 @@ public class Account {
     public Account(String email, String password, LocalDate createdDate) {
         this.email = email;
         this.password = password;
-        this.createdDate = createdDate;
+        this.createdDate = LocalDate.now();
     }
 
     public Long getId() {
