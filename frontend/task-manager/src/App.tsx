@@ -1,7 +1,16 @@
+import { ToastContainer } from "react-toastify";
+
 import SwitchRoutes from "./components/SwitchRoutes";
 
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
-  return <SwitchRoutes />;
+  return (
+    <div>
+      <ToastContainer />
+      <SwitchRoutes />
+    </div>
+  );
 }
 
 export default App;
