@@ -18,14 +18,14 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    public void deleteAccount(UUID id, Account account) {
+    public void deleteAccount(Long id, Account account) {
         Optional<Account> foundAccount = accountRepository.findById(id);
         if (foundAccount.isPresent()) {
             accountRepository.delete(account);
         }
     }
 
-    public void updateAccount(UUID id, Account account) {
+    public void updateAccount(Long id, Account account) {
         Optional<Account> foundAccount = accountRepository.findById(id);
         if (foundAccount.isPresent()) {
             accountRepository.save(account);
@@ -36,12 +36,12 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
-    public Account findById(UUID id){
+    public Account findById(Long id){
         Optional<Account> foundAccount = accountRepository.findById(id);
         return foundAccount.orElse(null);
     }
 
-    public void deleteAccountById(UUID id){
+    public void deleteAccountById(Long id){
         accountRepository.deleteById(id);
     }
 }

@@ -26,7 +26,7 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public Account findById(@PathVariable UUID id){
+    public Account findById(@PathVariable Long id){
 //        Optional<Account> foundAccount = Optional.ofNullable(accountService.findById(id));
 //        return foundAccount.map(account -> new ResponseEntity<>(account, HttpStatus.FOUND))
 //                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
@@ -47,14 +47,14 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Account> updateAccount(@PathVariable UUID id, @RequestBody Account account){
+    public ResponseEntity<Account> updateAccount(@PathVariable Long id, @RequestBody Account account){
         accountService.updateAccount(id, account);
 
         return new ResponseEntity<>(account, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Account> deleteAccount(@PathVariable UUID id){
+    public ResponseEntity<Account> deleteAccount(@PathVariable Long id){
         accountService.deleteAccountById(id);
 
         return new ResponseEntity<>(null, HttpStatus.OK);

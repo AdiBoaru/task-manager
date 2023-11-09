@@ -14,11 +14,11 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
-    public void addProject(Project project){
+    public void createProject(Project project){
         projectRepository.save(project);
     }
 
-    public void deleteProject(UUID id, Project project){
+    public void deleteProject(Long id, Project project){
         Optional<Project> foundProject = projectRepository.findById(id);
 
         if(foundProject.isPresent()){
@@ -26,7 +26,7 @@ public class ProjectService {
         }
     }
 
-    public void updateProject(UUID id, Project project){
+    public void updateProject(Long id, Project project){
         Optional<Project> foundProject = projectRepository.findById(id);
         if(foundProject.isPresent()){
             projectRepository.save(project);
@@ -37,13 +37,13 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    public Project findById(UUID id){
+    public Project findById(Long id){
         Optional<Project> foundProject = projectRepository.findById(id);
 
         return foundProject.orElse(null);
     }
 
-    public void deleteById(UUID id){
+    public void deleteById(Long id){
         projectRepository.deleteById(id);
     }
 }
