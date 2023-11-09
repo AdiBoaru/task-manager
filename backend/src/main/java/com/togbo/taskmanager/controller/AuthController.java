@@ -27,29 +27,7 @@ public class AuthController {
         this.employeeRepository = employeeRepository;
     }
 
-    //make use of a mapper
-   /* @PostMapping("/employee")
-    public void registerEmployee(@RequestBody AccountEmployeeDTO accountEmployeeDTO){
-        Account account = new Account();
-        account.setEmail(accountEmployeeDTO.getEmail());
-        account.setPassword(accountEmployeeDTO.getPassword());
-        account.setCreatedDate(accountEmployeeDTO.getCreatedDate());
-
-        Employee employee = new Employee();
-        employee.setId(accountEmployeeDTO.getId());
-        employee.setFirstName(accountEmployeeDTO.getFirstName());
-        employee.setLastName(accountEmployeeDTO.getLastName());
-        employee.setBirthDate(accountEmployeeDTO.getBirthDate());
-        employee.setRole(accountEmployeeDTO.getRole());
-        employee.setAccount(account);
-
-        accountRepository.save(account);
-        employeeRepository.save(employee);
-    }
-
-
-    */
-    @PostMapping("/process_register")
+    @PostMapping("/register")
     public String processRegister(@RequestBody AccountEmployeeDTO account, HttpServletRequest httpServletRequest)
             throws UnsupportedEncodingException, MessagingException {
         emailService.register(account, getSiteURL(httpServletRequest));
