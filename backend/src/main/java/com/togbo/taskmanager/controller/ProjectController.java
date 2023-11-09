@@ -1,5 +1,6 @@
 package com.togbo.taskmanager.controller;
 
+import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Project;
 import com.togbo.taskmanager.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -22,37 +22,57 @@ public class ProjectController {
     }
 
     @GetMapping
-    public List<Project> getAll(){
-        return projectService.findAll();
+    public ResponseEntity<List<Project>> findAll(){
+        List<Project> projects = projectService.findAll();
+
+        if(projects.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Project findById(@PathVariable UUID id){
-//        Optional<Project> foundProject = Optional.ofNullable(projectService.findById(id));
-//
-//        return foundProject.map(project -> new ResponseEntity<>(project, HttpStatus.FOUND))
-//                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
-        return projectService.findById(id);
+    public ResponseEntity<Project> findById(@PathVariable Long id) throws ResourceNotFoundException {
+        Project project = projectService.findById(id);
+        if(project == null){
+            throw new ResourceNotFoundException("Project not found by this id " + id);
+        }
+        return new ResponseEntity<>(projectService.findById(id), HttpStatus.FOUND);
     }
 
     @PostMapping
-    public ResponseEntity<Project> saveProject(@RequestBody Project project){
-        projectService.addProject(project);
+    public ResponseEntity<Project> createProject(@RequestBody Project project) throws Exception {
+        for(Project projectF : projectService.findAll()){
+            if (projectF.getTitle().equals(project.getTitle())){
+                throw new ResourceNotFoundException("Project with this title is already created " + project.getTitle());
+            }
+        }
+        projectService.createProject(project);
 
         return new ResponseEntity<>(project, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Project> updateProject(@PathVariable UUID id, @RequestBody Project project){
+    public ResponseEntity<Project> updateProject(@PathVariable Long id, @RequestBody Project project) throws ResourceNotFoundException {
+        for(Project projectExist : projectService.findAll()){
+            if(projectExist.getId() != id){
+                throw new ResourceNotFoundException("Project with this ID does`t exists " +id);
+            }
+        }
         projectService.updateProject(id, project);
 
         return new ResponseEntity<>(project, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Project> deleteProject(@PathVariable UUID id){
+    public ResponseEntity<Project> deleteProject(@PathVariable Long id) throws ResourceNotFoundException {
+        for(Project projectExist : projectService.findAll()){
+            if(projectExist.getId() != id){
+                throw new ResourceNotFoundException("Project with this ID does`t exists " +id);
+            }
+        }
         projectService.deleteById(id);
 
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
