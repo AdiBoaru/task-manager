@@ -1,5 +1,6 @@
 package com.togbo.taskmanager.services;
 
+import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,9 @@ public class EmployeeService {
     public Employee findById(UUID id){
         Optional<Employee> foundEmployee = employeeRepository.findById(id);
         return foundEmployee.orElse(null);
+    }
+
+    public Employee findEmployee(Account account){
+        return employeeRepository.findEmployeeByAccount(account.getId());
     }
 }

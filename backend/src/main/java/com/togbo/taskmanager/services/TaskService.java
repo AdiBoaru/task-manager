@@ -1,7 +1,10 @@
 package com.togbo.taskmanager.services;
 
+import com.togbo.taskmanager.model.Employee;
+import com.togbo.taskmanager.model.Project;
 import com.togbo.taskmanager.model.Task;
 import com.togbo.taskmanager.repository.TaskRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +13,7 @@ import java.util.UUID;
 
 @Service
 public class TaskService {
+    @Autowired
     private TaskRepository taskRepository;
 
     public void addTask(Task task){
@@ -39,5 +43,13 @@ public class TaskService {
 
     public void deleteById(UUID id){
         taskRepository.deleteById(id);
+    }
+
+    public List<Task> findTasksByProject(Project project){
+        return taskRepository.findTasksByProject(project.getId());
+    }
+
+    public List<Task> findTasksByEmployee(Employee employee){
+        return taskRepository.findTasksByEmployee(employee.getId());
     }
 }

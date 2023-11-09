@@ -53,6 +53,7 @@ public class AuthController {
         //find password
 
         accountRepository.findByEmail(accountEmployeeDTO.getEmail());
+        return null;
 
     }
     @PostMapping("/process_register")

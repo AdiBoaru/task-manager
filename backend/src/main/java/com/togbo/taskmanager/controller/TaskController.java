@@ -1,5 +1,6 @@
 package com.togbo.taskmanager.controller;
 
+import com.togbo.taskmanager.model.Project;
 import com.togbo.taskmanager.model.Task;
 import com.togbo.taskmanager.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class TaskController {
     @GetMapping("/{id}")
     public Task findTaskById(@PathVariable UUID id){
         return taskService.findById(id);
+    }
+
+    @GetMapping("/tasksByProjects")
+    public List<Task> findTasksByProjects(@RequestBody Project project){
+        return taskService.findTasksByProject(project);
     }
 
     @PostMapping("/save")
