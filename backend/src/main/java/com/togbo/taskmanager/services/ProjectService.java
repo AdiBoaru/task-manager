@@ -1,7 +1,9 @@
 package com.togbo.taskmanager.services;
 
+import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.model.Project;
+import com.togbo.taskmanager.repository.EmployeeRepository;
 import com.togbo.taskmanager.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import java.util.UUID;
 public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     public void createProject(Project project){
         projectRepository.save(project);
@@ -50,5 +54,9 @@ public class ProjectService {
 
     public List<Project> findByEmployee(Employee employee){
         return projectRepository.findByEmployee(employee.getId());
+    }
+
+    public Employee findEmployee(Account account){
+        return employeeRepository.findEmployeeByAccount(account.getId());
     }
 }

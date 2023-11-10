@@ -1,5 +1,7 @@
 package com.togbo.taskmanager.controller;
 
+import com.togbo.taskmanager.model.Account;
+import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.model.Project;
 import com.togbo.taskmanager.model.Task;
 import com.togbo.taskmanager.services.TaskService;
@@ -34,6 +36,13 @@ public class TaskController {
     @GetMapping("/tasksByProjects")
     public List<Task> findTasksByProjects(@RequestBody Project project){
         return taskService.findTasksByProject(project);
+    }
+
+    @GetMapping("/tasksByEmployee")
+    public List<Task> findTasksByEmployee(@RequestBody Account account){
+        Employee employee = taskService.findEmployee(account);
+
+        return taskService.findTasksByEmployee(employee);
     }
 
     @PostMapping("/save")
