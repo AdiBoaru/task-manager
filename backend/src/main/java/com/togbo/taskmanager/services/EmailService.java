@@ -39,7 +39,7 @@ public class EmailService {
         String email = accountEmployeeDTO.getEmail();
 
         System.out.println(email);
-        if (accountRepository.f(email)){
+        if (accountService.isAccountPresent(email)){
             Account account = new Account();
             account.setEmail(accountEmployeeDTO.getEmail());
             account.setPassword(accountEmployeeDTO.getPassword());
