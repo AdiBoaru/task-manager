@@ -170,7 +170,7 @@ const RegisterForm = () => {
         <Button
           testId="register-button"
           type="submit"
-          style="text-secondaryColor text-xl border rounded-[10px] py-3 mx-4 my-7 w-[20%] hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor "
+          style="text-secondaryColor text-xl border border-secondaryColor rounded-[10px] py-3 mx-4 my-7 w-[20%] hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor "
         >
           Register
         </Button>

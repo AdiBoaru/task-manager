@@ -19,7 +19,8 @@ export default {
       white: colors.white,
       black: colors.black,
       green: colors.green,
-      red: colors.red
+      red: colors.red,
+      gray: colors.gray
     },
     screens: {
       'mobile': {'max': '576px'},
