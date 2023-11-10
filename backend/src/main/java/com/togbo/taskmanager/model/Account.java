@@ -30,15 +30,17 @@ public class Account {
             name = "verification_code")
     private UUID verificationCode;
     @Column(name = "email_verified")
-    private boolean isEmailVerified;
+    private Boolean isEmailVerified;
     public Account() {
     }
 
 
-    public Account(String email, String password, LocalDate createdDate) {
+    public Account(String email, String password, UUID verificationCode) {
         this.email = email;
         this.password = password;
         this.createdDate = LocalDate.now();
+        this.verificationCode = verificationCode;
+        this.isEmailVerified = false;
     }
 
     public Long getId() {

@@ -27,7 +27,6 @@ public class Project {
     @NotNull
     @Size(min = 2, message = "Description should have at least 2 characters")
     private String description;
-    @NotNull
     @Column(name = "creation_date")
     private LocalDate creationDate;
     @Column(name = "due_date")
@@ -43,14 +42,15 @@ public class Project {
     @OneToMany(mappedBy = "project")
     private Set<Task> tasks = new HashSet<>();
 
+
     public Project() {
+    this.creationDate = LocalDate.now();
     }
 
-
-    public Project(String title, String description, LocalDate creationDate, LocalDate dueDate) {
+    public Project(String title, String description, LocalDate dueDate) {
         this.title = title;
         this.description = description;
-        this.creationDate = creationDate;
+        this.creationDate = LocalDate.now();
         this.dueDate = dueDate;
     }
 

@@ -1,6 +1,7 @@
 package com.togbo.taskmanager.services;
 
 import com.togbo.taskmanager.dto.AccountEmployeeDTO;
+import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
@@ -20,6 +21,8 @@ import java.util.UUID;
 public class EmailService {
     private AccountRepository accountRepository;
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private AccountService accountService;
     private JavaMailSender javaMailSender;
     private static final String companyName = "Task Flow";
 
@@ -29,31 +32,33 @@ public class EmailService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void register(AccountEmployeeDTO accountEmployeeDTO, String url) throws MessagingException, UnsupportedEncodingException {
+    public void register(AccountEmployeeDTO accountEmployeeDTO, String url) throws MessagingException, UnsupportedEncodingException, ResourceNotFoundException {
 
         //accountEmployeeDTO.setVerificationCode(UUID.randomUUID());
         //countEmployeeDTO.setEmailVerified(false);
+        String email = accountEmployeeDTO.getEmail();
 
-        Account account = new Account();
-        account.setEmail(accountEmployeeDTO.getEmail());
-        account.setPassword(accountEmployeeDTO.getPassword());
-        account.setCreatedDate(accountEmployeeDTO.getCreatedDate());
-        account.setEmailVerified(false);
-        account.setVerificationCode(UUID.randomUUID());
-
-        Employee employee = new Employee();
-        employee.setId(accountEmployeeDTO.getId());
-        employee.setFirstName(accountEmployeeDTO.getFirstName());
-        employee.setLastName(accountEmployeeDTO.getLastName());
-        employee.setBirthDate(accountEmployeeDTO.getBirthDate());
-        employee.setRole(accountEmployeeDTO.getRole());
-        employee.setAccount(account);
-
-        accountRepository.save(account);
-        employeeRepository.save(employee);
+        System.out.println(email);
+        if (accountRepository.f(email)){
+            Account account = new Account();
+            account.setEmail(accountEmployeeDTO.getEmail());
+            account.setPassword(accountEmployeeDTO.getPassword());
+            account.setEmailVerified(false);
+            account.setVerificationCode(UUID.randomUUID());
 
 
-        sendVerificationEmail(accountEmployeeDTO, url);
+            Employee employee = new Employee();
+            employee.setId(accountEmployeeDTO.getId());
+            employee.setFirstName(accountEmployeeDTO.getFirstName());
+            employee.setLastName(accountEmployeeDTO.getLastName());
+            employee.setBirthDate(accountEmployeeDTO.getBirthDate());
+            employee.setRole(accountEmployeeDTO.getRole());
+            employee.setAccount(account);
+
+            accountRepository.save(account);
+            employeeRepository.save(employee);
+            sendVerificationEmail(accountEmployeeDTO, url);
+        }
     }
 
     private void sendVerificationEmail(AccountEmployeeDTO accountEmployeeDTO, String httpServletRequest) throws MessagingException, UnsupportedEncodingException {
