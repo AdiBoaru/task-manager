@@ -1,12 +1,8 @@
 package com.togbo.taskmanager.dto;
 
 import com.togbo.taskmanager.enums.Role;
-import com.togbo.taskmanager.model.Account;
-import com.togbo.taskmanager.model.Project;
-import jakarta.persistence.Column;
 
 import java.time.LocalDate;
-import java.util.Set;
 import java.util.UUID;
 
 public class AccountEmployeeDTO {

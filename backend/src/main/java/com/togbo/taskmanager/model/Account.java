@@ -1,5 +1,6 @@
 package com.togbo.taskmanager.model;
 
+import com.togbo.taskmanager.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -31,6 +32,8 @@ public class Account {
     private UUID verificationCode;
     @Column(name = "email_verified")
     private boolean isEmailVerified;
+
+
     public Account() {
     }
 

@@ -44,11 +44,20 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, LocalDate birthDate, Role role, Account account) {
+    public Employee(String firstName, String lastName, LocalDate birthDate, Role role, Account account, Set<Project> projects, Set<Task> tasks) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.role = role;
+        this.account = account;
+        this.projects = projects;
+        this.tasks = tasks;
+    }
+
+    public Employee(String firstName, String lastName, LocalDate birthDate, Account account) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
         this.account = account;
     }
 
@@ -68,6 +77,7 @@ public class Employee {
         this.uuid = uuid;
     }
 */
+
     public Role getRole() {
         return role;
     }
