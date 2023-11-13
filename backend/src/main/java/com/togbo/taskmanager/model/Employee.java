@@ -26,8 +26,7 @@ public class Employee {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
@@ -44,11 +43,10 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, LocalDate birthDate, Role role, Account account, Set<Project> projects, Set<Task> tasks) {
+    public Employee(String firstName, String lastName, LocalDate birthDate,Account account, Set<Project> projects, Set<Task> tasks) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
-        this.role = role;
         this.account = account;
         this.projects = projects;
         this.tasks = tasks;
@@ -77,14 +75,6 @@ public class Employee {
         this.uuid = uuid;
     }
 */
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     public String getFirstName() {
         return firstName;

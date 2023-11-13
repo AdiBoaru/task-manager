@@ -30,11 +30,13 @@ public class SecurityConfig {
     }
 
 
-    @Bean
+   /* @Bean
     public UserDetailsService userDetailsService(){
         UserDetailsService userDetailsService = new InMemoryUserDetailsManager();
 
         UserDetails userDetails = User.withUsername("user")
-                .password("user")
+                .password("user");
     }
+
+    */
 }

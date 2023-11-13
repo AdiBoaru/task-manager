@@ -1,6 +1,7 @@
 package com.togbo.taskmanager.services;
 
 import com.togbo.taskmanager.dto.AccountEmployeeDTO;
+import com.togbo.taskmanager.enums.Role;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,21 +40,21 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw  new UsernameNotFoundException("User dos`t exits");
         }
         //i have to convert from DTO TO OBJECTS THAT I NEED
-        return User(
+        return new User(
                 account.getEmail(),
                 account.getPassword(),
                 account.isEnabled(),
                 true,
                 true,
                 true,
-                getAuthorities(List.of(user.getRole()))
+                getAuthorities(List.of(account.getRole()))
         );
     }
 
-    private Collection<? extends GrantedAuthority> getAuthorities(List<String> roles) {
+    private Collection<? extends GrantedAuthority> getAuthorities(List<Role> roles) {
         List<GrantedAuthority>  authorities = new ArrayList<>();
-        for(String role: roles) {
-            authorities.add(new SimpleGrantedAuthority(role));
+        for(Role role: roles) {
+            authorities.add(new SimpleGrantedAuthority(role.toString()));
         }
         return authorities;
     }
