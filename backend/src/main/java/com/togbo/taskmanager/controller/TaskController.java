@@ -25,6 +25,11 @@ public class TaskController {
         return taskService.findAll();
     }
 
+    @GetMapping("/assign")
+    public List<Task> findTaskByPriority(){
+        return taskService.findTasksByPriority();
+    }
+
     @GetMapping("/{id}")
     public Task findTaskById(@PathVariable UUID id){
         return taskService.findById(id);

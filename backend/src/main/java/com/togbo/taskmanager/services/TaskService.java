@@ -2,6 +2,7 @@ package com.togbo.taskmanager.services;
 
 import com.togbo.taskmanager.model.Task;
 import com.togbo.taskmanager.repository.TaskRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.UUID;
 
 @Service
 public class TaskService {
+    @Autowired
     private TaskRepository taskRepository;
 
     public void addTask(Task task){
@@ -39,5 +41,25 @@ public class TaskService {
 
     public void deleteById(UUID id){
         taskRepository.deleteById(id);
+    }
+
+    public List<Task> findTasksByPriority(){
+        List<Task> priorityTasks = taskRepository.findTaskByPriorityCritical();
+        if(!priorityTasks.isEmpty()){
+            return priorityTasks;
+        }
+        priorityTasks = taskRepository.findTaskByPriorityHigh();
+        if(!priorityTasks.isEmpty()){
+            return priorityTasks;
+        }
+        priorityTasks = taskRepository.findTaskByPriorityMedium();
+        if(!priorityTasks.isEmpty()){
+            return priorityTasks;
+        }
+        priorityTasks = taskRepository.findTaskByPriorityLow();
+        if(!priorityTasks.isEmpty()){
+            return priorityTasks;
+        }
+        return null;
     }
 }
