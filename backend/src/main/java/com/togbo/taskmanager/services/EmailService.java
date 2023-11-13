@@ -74,7 +74,7 @@ public class EmailService {
         helper.setSubject(subject);
 
         content = content.replace("[[name]]", accountEmployeeDTO.getFullName());
-        String verifyURL = httpServletRequest + "/verify?code=" + accountEmployeeDTO.getVerificationCode();
+        String verifyURL = "http://localhost:5173/login";//httpServletRequest + "/verify?code=" + accountEmployeeDTO.getVerificationCode();
 
         content = content.replace("[[URL]]", verifyURL);
 
