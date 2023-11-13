@@ -1,8 +1,15 @@
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { HiOutlineViewGridAdd } from "react-icons/hi";
 import Button from "../../UI/Button/Button";
+import useModal from "../../hooks/useModal";
+import NewProjectForm from "../../components/NewProjectForm/NewProjectForm";
+import NewTeamForm from "../../components/NewTeamForm/NewTeamForm";
+import Modal from "../../UI/Modal/Modal";
 
 const HomePage = () => {
+  const { isOpen, modalContent, openModalHandler, closeModalHandler } =
+    useModal();
+
   return (
     <div className="relative bg-primaryColor h-[calc(100vh-200px)]">
       <div className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 flex justify-around w-[70%]">
@@ -12,7 +19,9 @@ const HomePage = () => {
           }
           type="button"
           testId="homePage-addProject-btn"
-          onClick={() => console.log("project")}
+          onClick={() =>
+            openModalHandler(<NewProjectForm btnStyle={"w-[25rem]"} />)
+          }
         >
           <span className="text-[40px]">
             <HiOutlineViewGridAdd />
@@ -25,7 +34,7 @@ const HomePage = () => {
           }
           type="button"
           testId="homePage-createTeam-btn"
-          onClick={() => console.log("team")}
+          onClick={() => openModalHandler(<NewTeamForm />)}
         >
           <span className="text-[40px]">
             <AiOutlineUsergroupAdd />
@@ -33,6 +42,11 @@ const HomePage = () => {
           Create a team
         </Button>
       </div>
+      {isOpen && (
+        <Modal handleClose={closeModalHandler} isOpen={isOpen}>
+          {modalContent}
+        </Modal>
+      )}
     </div>
   );
 };
