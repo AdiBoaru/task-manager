@@ -6,6 +6,7 @@ import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -29,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private AccountRepository accountRepository;
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder customUserPasswordEncoder() {
         return new BCryptPasswordEncoder(11);
     }
 

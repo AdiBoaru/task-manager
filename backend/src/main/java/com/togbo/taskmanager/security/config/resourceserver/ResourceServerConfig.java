@@ -9,7 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class ResourceServerConfig {
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityResourceServerFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                 .mvcMatchers("/api/**")

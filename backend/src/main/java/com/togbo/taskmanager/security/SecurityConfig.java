@@ -13,10 +13,10 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import javax.persistence.criteria.CriteriaBuilder;
 
-@Configuration
-@EnableWebSecurity //to tell spring this is where we keep the security configuration
+//@Configuration
+//@EnableWebSecurity //to tell spring this is where we keep the security configuration
 public class SecurityConfig {
-
+/*
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
          http.csrf().disable()
@@ -29,6 +29,8 @@ public class SecurityConfig {
          return http.build();
     }
 
+
+ */
 
    /* @Bean
     public UserDetailsService userDetailsService(){
