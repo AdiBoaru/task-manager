@@ -1,7 +1,6 @@
 package com.togbo.taskmanager.services;
 
 import com.togbo.taskmanager.dto.AccountEmployeeDTO;
-import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
@@ -19,12 +18,10 @@ import java.util.UUID;
 
 @Service
 public class EmailService {
-    private AccountRepository accountRepository;
-    private EmployeeRepository employeeRepository;
-    @Autowired
-    private AccountService accountService;
-    private JavaMailSender javaMailSender;
-    private static final String companyName = "Task Flow";
+    private final AccountRepository accountRepository;
+    private final EmployeeRepository employeeRepository;
+    private final JavaMailSender javaMailSender;
+    private static final String COMPANY_NAME = "Task Flow";
 
     public EmailService(AccountRepository accountRepository, EmployeeRepository employeeRepository, JavaMailSender javaMailSender) {
         this.accountRepository = accountRepository;
@@ -32,33 +29,31 @@ public class EmailService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void register(AccountEmployeeDTO accountEmployeeDTO, String url) throws MessagingException, UnsupportedEncodingException, ResourceNotFoundException {
+    public void register(AccountEmployeeDTO accountEmployeeDTO, String url) throws MessagingException, UnsupportedEncodingException {
 
         //accountEmployeeDTO.setVerificationCode(UUID.randomUUID());
         //countEmployeeDTO.setEmailVerified(false);
-        String email = accountEmployeeDTO.getEmail();
 
-        System.out.println(email);
-        if (accountService.isAccountPresent(email)){
-            Account account = new Account();
-            account.setEmail(accountEmployeeDTO.getEmail());
-            account.setPassword(accountEmployeeDTO.getPassword());
-            account.setEmailVerified(false);
-            account.setVerificationCode(UUID.randomUUID());
+        Account account = new Account();
+        account.setEmail(accountEmployeeDTO.getEmail());
+        account.setPassword(accountEmployeeDTO.getPassword());
+        account.setCreatedDate(accountEmployeeDTO.getCreatedDate());
+        account.setEmailVerified(false);
+        account.setVerificationCode(UUID.randomUUID());
+
+        Employee employee = new Employee();
+        employee.setId(accountEmployeeDTO.getId());
+        employee.setFirstName(accountEmployeeDTO.getFirstName());
+        employee.setLastName(accountEmployeeDTO.getLastName());
+        employee.setBirthDate(accountEmployeeDTO.getBirthDate());
+        employee.setRole(accountEmployeeDTO.getRole());
+        employee.setAccount(account);
+
+        accountRepository.save(account);
+        employeeRepository.save(employee);
 
 
-            Employee employee = new Employee();
-            employee.setId(accountEmployeeDTO.getId());
-            employee.setFirstName(accountEmployeeDTO.getFirstName());
-            employee.setLastName(accountEmployeeDTO.getLastName());
-            employee.setBirthDate(accountEmployeeDTO.getBirthDate());
-            employee.setRole(accountEmployeeDTO.getRole());
-            employee.setAccount(account);
-
-            accountRepository.save(account);
-            employeeRepository.save(employee);
-            sendVerificationEmail(accountEmployeeDTO, url);
-        }
+        sendVerificationEmail(accountEmployeeDTO, url);
     }
 
     private void sendVerificationEmail(AccountEmployeeDTO accountEmployeeDTO, String httpServletRequest) throws MessagingException, UnsupportedEncodingException {
@@ -69,17 +64,17 @@ public class EmailService {
                 + "Please click the link below to verify your registration:<br>"
                 + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
                 + "Thank you,<br>"
-                + companyName;
+                + COMPANY_NAME;
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom(fromAddress, companyName);
+        helper.setFrom(fromAddress, COMPANY_NAME);
         helper.setTo(toAddress);
         helper.setSubject(subject);
 
         content = content.replace("[[name]]", accountEmployeeDTO.getFullName());
-        String verifyURL = httpServletRequest + "/verify?code=" + accountEmployeeDTO.getVerificationCode();
+        String verifyURL = "http://localhost:5173/login";//httpServletRequest + "/verify?code=" + accountEmployeeDTO.getVerificationCode();
 
         content = content.replace("[[URL]]", verifyURL);
 
@@ -87,4 +82,7 @@ public class EmailService {
 
         javaMailSender.send(message);
     }
+
+    //verify what kind of sender host to use
+
 }

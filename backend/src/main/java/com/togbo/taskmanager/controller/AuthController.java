@@ -48,13 +48,17 @@ public class AuthController {
         employeeRepository.save(employee);
     }
     */
-    @GetMapping("/login")
-    public Employee loginEmployee(@RequestBody AccountEmployeeDTO accountEmployeeDTO){
-        //find email
-        //find password
-
-        accountRepository.findByEmail(accountEmployeeDTO.getEmail());
-            return null;
+    @PostMapping("/login")
+    public Employee loginEmployee(@RequestBody AccountEmployeeDTO accountEmployeeDTO) throws ResourceNotFoundException {
+        Account account = accountRepository.findByEmail(accountEmployeeDTO.getEmail());
+        Employee employee = null;
+        if(account != null){
+            if(account.getPassword().equals(accountEmployeeDTO.getPassword())){
+                employee = employeeRepository.findByAccount(account);
+            }else
+                throw new ResourceNotFoundException("bad request");
+        }
+        return employee;
     }
     @PostMapping("/account")
     public String processRegister(@RequestBody AccountEmployeeDTO accountEmployeeDTO, HttpServletRequest httpServletRequest)

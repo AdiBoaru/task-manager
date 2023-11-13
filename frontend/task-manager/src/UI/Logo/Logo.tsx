@@ -3,11 +3,11 @@ import { NavLink } from "react-router-dom";
 import { DEFAULT } from "../../constants/routePaths";
 import classNames from "classnames";
 
-const Logo = ({ mt }: { mt?: string }) => {
+const Logo = ({ mt, style }: { mt?: string; style?: string }) => {
   return (
     <div
       className={classNames(
-        `flex justify-between w-[20rem] items-center ${mt}`
+        `flex justify-between w-[20rem] items-center ${mt} ${style}`
       )}
     >
       <NavLink
