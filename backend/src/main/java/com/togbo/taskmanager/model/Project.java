@@ -32,7 +32,7 @@ public class Project {
     private LocalDate creationDate;
 
     @Column(name = "team_size")
-    private Integer teamSize;
+    private String teamSize;
     @Column(name = "due_date")
     private LocalDate dueDate;
     @ManyToMany
@@ -47,10 +47,11 @@ public class Project {
     private Set<Task> tasks = new HashSet<>();
 
     public Project() {
+        this.creationDate = LocalDate.now();
     }
 
 
-    public Project(String title, String description, Integer teamSize,LocalDate dueDate) {
+    public Project(String title, String description, String teamSize,LocalDate dueDate) {
         this.title = title;
         this.description = description;
         this.creationDate = LocalDate.now();
@@ -83,11 +84,11 @@ public class Project {
         this.description = description;
     }
 
-    public Integer getTeamSize() {
+    public String getTeamSize() {
         return teamSize;
     }
 
-    public void setTeamSize(Integer teamSize) {
+    public void setTeamSize(String teamSize) {
         this.teamSize = teamSize;
     }
 

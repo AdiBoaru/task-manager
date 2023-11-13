@@ -1,5 +1,6 @@
 package com.togbo.taskmanager.controller;
 
+import com.togbo.taskmanager.dto.ProjectDTO;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Project;
@@ -10,9 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173/home")
 @RequestMapping("/project")
 public class ProjectController {
     private ProjectService projectService;
@@ -46,16 +49,27 @@ public class ProjectController {
         return new ResponseEntity<>(projectService.findById(id), HttpStatus.FOUND);
     }
 
-    @PostMapping
-    public ResponseEntity<Project> createProject(@RequestBody Project project) throws Exception {
-        for(Project projectF : projectService.findAll()){
-            if (projectF.getTitle().equals(project.getTitle())){
-                throw new ResourceNotFoundException("Project with this title is already created " + project.getTitle());
-            }
-        }
-        projectService.createProject(project);
+    @PostMapping("/create")
+    public void createProject(@RequestBody ProjectDTO projectDTO) throws Exception {
+        Optional<Project> projectOptional = projectService.findByTitle(projectDTO.getTitle());
 
-        return new ResponseEntity<>(project, HttpStatus.CREATED);
+        if(projectOptional.isPresent()){
+
+            System.out.println("here");
+            throw new ResourceNotFoundException("Project with this title is already created " + projectDTO.getTitle());
+        }
+
+        Project project = new Project();
+        project.setTitle(projectDTO.getTitle());
+        project.setDueDate(projectDTO.getDueDate());
+        project.setDescription(projectDTO.getDescription());
+        project.setTeamSize(projectDTO.getTeamSize());
+        System.out.println(project);
+
+        projectService.createProject(project);
+        System.out.println("2" + project);
+
+        //return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

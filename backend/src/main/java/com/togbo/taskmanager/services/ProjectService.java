@@ -55,7 +55,9 @@ public class ProjectService {
     public List<Project> findByEmployee(Employee employee){
         return projectRepository.findByEmployee(employee.getId());
     }
-
+    public Optional<Project> findByTitle(String title){
+        return projectRepository.findByTitle(title);
+    }
     public Employee findEmployee(Account account){
         return employeeRepository.findEmployeeByAccount(account.getId());
     }
