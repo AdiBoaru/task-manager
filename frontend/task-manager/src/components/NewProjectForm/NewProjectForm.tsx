@@ -16,12 +16,12 @@ import {
 } from "../../interfaces/TCreateProjectData";
 import Button from "../../UI/Button/Button";
 import FormInput from "../../UI/FormInput/FormInput";
+
 type TStyle = {
   btnStyle: string;
 };
-const NewProjectForm = ({ btnStyle }: TStyle) => {
-  console.log(btnStyle);
 
+const NewProjectForm = ({ btnStyle }: TStyle) => {
   const methods = useForm<TCreateProjectData>({
     mode: "onChange",
     resolver: yupResolver<TCreateProjectData>(newProjectSchema),
@@ -66,7 +66,7 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
     <FormProvider {...methods}>
       <form
         data-testid="create-project-form"
-        className="flex flex-col items-center z-10"
+        className="absolute flex flex-col bg-primaryColor items-center justify-start z-10 pt-20 rounded-[20px] border border-secondaryColor h-[60%] w-[40%]"
         onSubmit={handleSubmit(onSubmit, onInvalid)}
       >
         <FormInput

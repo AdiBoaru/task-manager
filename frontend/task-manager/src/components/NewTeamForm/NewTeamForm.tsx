@@ -51,9 +51,9 @@ const NewTeamForm = () => {
       ...styles,
       width: "25rem",
       padding: "6px",
-      marginBottom: ".7rem",
-      marginLeft: "1.1rem",
+      margin: "4px",
       borderRadius: "10px",
+      zIndex: 9999,
     }),
   };
 
@@ -61,7 +61,7 @@ const NewTeamForm = () => {
     <FormProvider {...methods}>
       <form
         data-testid="create-project-form"
-        className="flex flex-col items-center flex-wrap h-full relative"
+        className="flex flex-col bg-primaryColor items-center justify-start z-10 pt-20 rounded-[20px] border border-secondaryColor h-[40%] w-[40%]"
         onSubmit={handleSubmit(onSubmit, onInvalid)}
       >
         <FormInput
@@ -69,7 +69,7 @@ const NewTeamForm = () => {
           inputTestId="team-name-input"
           errorTestId="team-name-error"
           labelStyle="px-4 text-white text-lg"
-          inputStyle="ml-3 mb-[10px] w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
+          inputStyle="mb-[10px] w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
           placeholder="Enter your team name"
           type="text"
           labelText="Team name"
@@ -77,7 +77,9 @@ const NewTeamForm = () => {
           name="teamName"
         />
         <div>
-          <label className="ml-6 text-white text-lg">Role</label>
+          <label className="ml-3 text-white text-lg">
+            Select your team members
+          </label>
           <Controller
             data-testid="controller"
             name="employeesPick"
@@ -86,6 +88,8 @@ const NewTeamForm = () => {
             render={() => (
               <Select
                 id="employees"
+                menuPosition="fixed"
+                menuPortalTarget={document.body}
                 data-testid="employees-select"
                 onChange={handleEmployeesPick}
                 options={[
@@ -110,7 +114,7 @@ const NewTeamForm = () => {
         <Button
           testId="create-button"
           type="submit"
-          style="text-secondaryColor text-xl border border-secondaryColor rounded-[10px] py-3 mx-4 my-7 w-[20%] hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor "
+          style="text-secondaryColor text-xl border border-secondaryColor rounded-[10px] py-3 my-7 w-[25rem] hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor "
         >
           Create
         </Button>
