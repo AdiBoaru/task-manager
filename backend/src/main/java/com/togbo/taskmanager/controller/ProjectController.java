@@ -1,6 +1,7 @@
 package com.togbo.taskmanager.controller;
 
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
+import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Project;
 import com.togbo.taskmanager.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,11 @@ public class ProjectController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(projects, HttpStatus.OK);
+    }
+
+    @GetMapping("/findProjectsByEmployee")
+    public List<Project> findProjectByEmployee(@RequestBody Account account){
+        return projectService.findByEmployee(projectService.findEmployee(account));
     }
 
     @GetMapping("/{id}")
