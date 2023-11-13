@@ -36,7 +36,7 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
     data: TCreateProjectData
   ) => {
     console.log(data);
-    fetch("http://localhost:8080/create_project", {
+    fetch("http://localhost:8080/project", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
