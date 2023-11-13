@@ -2,7 +2,7 @@ package com.togbo.taskmanager.model;
 
 import com.togbo.taskmanager.enums.Priority;
 import com.togbo.taskmanager.enums.Status;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.io.File;
 import java.time.LocalDate;

@@ -5,12 +5,11 @@ import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
 import com.togbo.taskmanager.repository.EmployeeRepository;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
@@ -64,7 +63,7 @@ public class EmailService {
                 + "Thank you,<br>"
                 + companyName;
 
-        MimeMessage message = javaMailSender.createMimeMessage();
+        javax.mail.internet.MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
         helper.setFrom(fromAddress, companyName);

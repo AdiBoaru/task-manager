@@ -1,13 +1,13 @@
 package com.togbo.taskmanager.controller;
 
 import com.togbo.taskmanager.dto.AccountEmployeeDTO;
-import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
 import com.togbo.taskmanager.repository.EmployeeRepository;
 import com.togbo.taskmanager.services.EmailService;
-import jakarta.mail.MessagingException;
-import jakarta.servlet.http.HttpServletRequest;
+
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

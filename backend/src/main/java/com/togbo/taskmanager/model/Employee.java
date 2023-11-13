@@ -1,12 +1,10 @@
 package com.togbo.taskmanager.model;
 
-import com.togbo.taskmanager.enums.Role;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "employees")

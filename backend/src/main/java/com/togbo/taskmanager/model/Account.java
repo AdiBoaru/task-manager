@@ -2,9 +2,9 @@ package com.togbo.taskmanager.model;
 
 import com.togbo.taskmanager.enums.Role;
 
+
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
