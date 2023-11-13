@@ -15,8 +15,22 @@ export const registerSchema = yup
 export const loginSchema = yup
 .object()
 .shape({
-   
     email: yup.string().email("Email or password is incorrect").required('Email is required.'),
     password: yup.string().min(6, "Email or password is incorrect").required('Password is required.'),
-   
+})
+
+export const newProjectSchema = yup
+.object()
+.shape({
+    projectName: yup.string().min(2, "Name should be at least 2 characters").required('Project name is required.'),
+    description: yup.string().min(6, "Description should be at least 6 characters").required('Description is required'),
+    employeesCount: yup.string().required('Employees is required.'),
+    releaseDate: yup.string().required('Please choose your completion date.'),
+})
+
+export const newTeamSchema = yup
+.object()
+.shape({
+    teamName: yup.string().min(2, "Name should be at least 2 characters").required('Team name is required.'),
+    employeesPick: yup.array().required('Employees is required.'),
 })
