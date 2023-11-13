@@ -5,7 +5,7 @@ import {
   Controller,
   useController,
 } from "react-hook-form";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Select, { CSSObjectWithLabel, SingleValue } from "react-select";
 import { ErrorMessage } from "@hookform/error-message";
@@ -15,6 +15,7 @@ import { registerSchema } from "../../constants/formValidations";
 import { LOGIN } from "../../constants/routePaths";
 import FormInput from "../../UI/FormInput/FormInput";
 import Button from "../../UI/Button/Button";
+import useToastify from "../../hooks/useToastify";
 
 type TRole = {
   label: string;
@@ -23,6 +24,8 @@ type TRole = {
 };
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
+  const { notification } = useToastify();
   const methods = useForm<TRegisterFormData>({
     mode: "onChange",
     resolver: yupResolver<TRegisterFormData>(registerSchema),
@@ -32,11 +35,8 @@ const RegisterForm = () => {
     handleSubmit,
     formState: { errors },
   } = methods;
-  const onInvalid = (errors: any) => console.error(errors);
-  const onSubmit: SubmitHandler<TRegisterFormData> = (
-    data: TRegisterFormData
-  ) => {
-    console.log(data);
+
+  const handleRequest = async (data: TRegisterFormData) => {
     fetch("http://localhost:8080/register/process_register", {
       method: "POST",
       body: JSON.stringify(data),
@@ -44,6 +44,22 @@ const RegisterForm = () => {
         "Content-Type": "application/json",
       },
     });
+  };
+  const onInvalid = (errors: any) => console.error(errors);
+  const onSubmit: SubmitHandler<TRegisterFormData> = async (
+    data: TRegisterFormData
+  ) => {
+    console.log(data);
+    try {
+      await handleRequest(data);
+    } catch (error: any) {
+      console.error(error.response.data.message);
+    }
+    notification(
+      "Please verify your email to confirm your registration.",
+      "success"
+    );
+    navigate(LOGIN);
   };
   const { field: roleField } = useController({ name: "role", control });
   const handleRoleChange = (option: SingleValue<TRole>) => {
