@@ -36,7 +36,7 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
     data: TCreateProjectData
   ) => {
     console.log(data);
-    fetch("http://localhost:8080/create_project", {
+    fetch("http://localhost:8080/project", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -66,7 +66,7 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
     <FormProvider {...methods}>
       <form
         data-testid="create-project-form"
-        className="absolute flex flex-col bg-primaryColor items-center justify-start z-10 pt-20 rounded-[20px] border border-secondaryColor h-[60%] w-[40%]"
+        className="absolute flex flex-col bg-primaryColor items-center justify-start z-10 pt-20 rounded-[20px] border border-secondaryColor h-[60%] w-[40%] laptop:pt-0 laptop:h-[70%]"
         onSubmit={handleSubmit(onSubmit, onInvalid)}
       >
         <FormInput

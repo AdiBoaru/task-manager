@@ -61,7 +61,7 @@ const NewTeamForm = () => {
     <FormProvider {...methods}>
       <form
         data-testid="create-project-form"
-        className="flex flex-col bg-primaryColor items-center justify-start z-10 pt-20 rounded-[20px] border border-secondaryColor h-[40%] w-[40%]"
+        className="flex flex-col bg-primaryColor items-center justify-start z-10 pt-20 rounded-[20px] border border-secondaryColor h-[40%] w-[40%] laptop:h-[55%]"
         onSubmit={handleSubmit(onSubmit, onInvalid)}
       >
         <FormInput
