@@ -18,9 +18,9 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:5173/home")
 @RequestMapping("/project")
 public class ProjectController {
-    private ProjectService projectService;
+    private final ProjectService projectService;
 
-    @Autowired
+
     public ProjectController (ProjectService projectService){
         this.projectService = projectService;
     }
@@ -50,7 +50,7 @@ public class ProjectController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Project> createProject(@RequestBody ProjectDto projectDto) throws ResourceNotFoundException {
+    public ResponseEntity<Project> createProject(@RequestBody ProjectDto projectDto) {
         Optional<Project> projectOptional = projectService.findByTitle(projectDto.getTitle());
 
         if(projectOptional.isPresent()){
@@ -64,26 +64,29 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Project> updateProject(@PathVariable Long id, @RequestBody Project project) throws ResourceNotFoundException {
-        for(Project projectExist : projectService.findAll()){
-            if(projectExist.getId() != id){
-                throw new ResourceNotFoundException("Project with this ID does`t exists " +id);
-            }
+    public ResponseEntity<Project> updateProject(@PathVariable Long id, @RequestBody ProjectDto projectDto) throws ResourceNotFoundException {
+        Project project = projectService.findById(id);
+        if(project == null){
+            //de verificat
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        ProjectMapper.mapToUpdateProject(projectDto, project);
+
         projectService.updateProject(id, project);
 
-        return new ResponseEntity<>(project, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Project> deleteProject(@PathVariable Long id) throws ResourceNotFoundException {
-        for(Project projectExist : projectService.findAll()){
-            if(projectExist.getId() != id){
-                throw new ResourceNotFoundException("Project with this ID does`t exists " +id);
-            }
+    public ResponseEntity<String> deleteProject(@PathVariable Long id) {
+        Project project = projectService.findById(id);
+
+        if(project == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
         projectService.deleteById(id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Project deleted successfully",HttpStatus.OK);
     }
 }

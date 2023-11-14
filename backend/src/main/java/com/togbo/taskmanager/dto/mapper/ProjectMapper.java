@@ -13,4 +13,11 @@ public class ProjectMapper {
                 projectDto.getDueDate()
         );
     }
+    public static void mapToUpdateProject(ProjectDto projectDto, Project project){
+        project.setTitle(projectDto.getTitle());
+        project.setDescription(projectDto.getDescription());
+        project.setTeamSize(projectDto.getTeamSize());
+        project.setDueDate(projectDto.getDueDate());
+
+    }
 }
