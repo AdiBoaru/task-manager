@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "employees")
@@ -40,6 +39,10 @@ public class Employee {
             joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
     private Set<Task> tasks = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
 
     public Employee() {
     }
