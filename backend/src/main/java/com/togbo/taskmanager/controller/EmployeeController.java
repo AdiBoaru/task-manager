@@ -26,7 +26,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Employee findById(@PathVariable UUID id){
+    public Employee findById(@PathVariable Long id){
 //        Optional<Employee> employee = Optional.ofNullable(employeeService.findById(id));
 //
 //        return employee.map(value -> new ResponseEntity<>(value, HttpStatus.FOUND))
@@ -42,14 +42,14 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable UUID id, @RequestBody Employee employee){
+    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employee){
         employeeService.updateEmployee(id, employee);
 
         return new ResponseEntity<>(employee, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Employee> deleteEmployee(@PathVariable UUID id){
+    public ResponseEntity<Employee> deleteEmployee(@PathVariable Long id){
         employeeService.deleteEmployeeById(id);
 
         return new ResponseEntity<>(null, HttpStatus.OK);

@@ -18,6 +18,9 @@ public class Team {
     private Set<Employee> employeesTeam = new HashSet<>();
 
 
+    public Team() {
+    }
+
     public Team(String name, Set<Employee> employeesTeam) {
         this.name = name;
         this.employeesTeam = employeesTeam;

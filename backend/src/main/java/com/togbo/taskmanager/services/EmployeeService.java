@@ -2,6 +2,7 @@ package com.togbo.taskmanager.services;
 
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
+import com.togbo.taskmanager.model.Team;
 import com.togbo.taskmanager.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,15 +20,15 @@ public class EmployeeService {
         employeeRepository.save(employee);
     }
 
-    public void deleteEmployee(UUID id, Employee employee){
+    public void deleteEmployee(Long id, Employee employee){
         employeeRepository.deleteById(id);
     }
 
-    public void deleteEmployeeById(UUID id){
+    public void deleteEmployeeById(Long id){
         employeeRepository.deleteById(id);
     }
 
-    public void updateEmployee(UUID id, Employee employee){
+    public void updateEmployee(Long id, Employee employee){
         Optional<Employee> foundEmployee = employeeRepository.findById(id);
         if(foundEmployee.isPresent()){
             employeeRepository.save(employee);
@@ -38,12 +39,19 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public Employee findById(UUID id){
+    public Employee findById(Long id){
         Optional<Employee> foundEmployee = employeeRepository.findById(id);
         return foundEmployee.orElse(null);
     }
 
     public Employee findEmployee(Account account){
         return employeeRepository.findEmployeeByAccount(account.getId());
+    }
+
+    public void updateEmployeeTeamId(Long employeeId, Team team) {
+        Optional<Employee> employee  = employeeRepository.findById(employeeId);
+        if(employee.isPresent()){
+            employee.get().setTeam(team);
+        }
     }
 }

@@ -71,6 +71,15 @@ public class Employee {
         this.uuid = uuid;
     }
 */
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
     public Role getRole() {
         return role;
     }
