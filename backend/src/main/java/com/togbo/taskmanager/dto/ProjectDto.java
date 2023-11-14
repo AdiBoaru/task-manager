@@ -2,12 +2,11 @@ package com.togbo.taskmanager.dto;
 
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.model.Task;
-import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.time.LocalDate;
 import java.util.Set;
 
-public class ProjectDTO {
+public class ProjectDto {
     private String title;
     private String description;
     private LocalDate dueDate;
@@ -15,7 +14,7 @@ public class ProjectDTO {
     private Set<Employee> employees;
     private Set<Task> tasks;
 
-    public ProjectDTO(String title, String description, LocalDate dueDate, String teamSize, Set<Employee> employees, Set<Task> tasks) {
+    public ProjectDto(String title, String description, LocalDate dueDate, String teamSize, Set<Employee> employees, Set<Task> tasks) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;

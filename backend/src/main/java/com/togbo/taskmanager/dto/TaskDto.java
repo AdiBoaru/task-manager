@@ -9,7 +9,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.Set;
 
-public class TaskDTO {
+public class TaskDto {
     private Long id;
     private String name;
     private String description;

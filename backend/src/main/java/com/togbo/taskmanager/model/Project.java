@@ -56,7 +56,6 @@ public class Project {
         this.description = description;
         this.creationDate = LocalDate.now();
         this.teamSize = teamSize;
-        this.creationDate = LocalDate.now();
         this.dueDate = dueDate;
     }
 

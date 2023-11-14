@@ -1,6 +1,6 @@
 package com.togbo.taskmanager.controller;
 
-import com.togbo.taskmanager.dto.AccountEmployeeDTO;
+import com.togbo.taskmanager.dto.AccountEmployeeDto;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
@@ -49,7 +49,7 @@ public class AuthController {
     }
     */
     @PostMapping("/login")
-    public Employee loginEmployee(@RequestBody AccountEmployeeDTO accountEmployeeDTO) throws ResourceNotFoundException {
+    public Employee loginEmployee(@RequestBody AccountEmployeeDto accountEmployeeDTO) throws ResourceNotFoundException {
         Account account = accountRepository.findByEmail(accountEmployeeDTO.getEmail());
         Employee employee = null;
         if(account != null){
@@ -61,7 +61,7 @@ public class AuthController {
         return employee;
     }
     @PostMapping("/account")
-    public String processRegister(@RequestBody AccountEmployeeDTO accountEmployeeDTO, HttpServletRequest httpServletRequest)
+    public String processRegister(@RequestBody AccountEmployeeDto accountEmployeeDTO, HttpServletRequest httpServletRequest)
             throws UnsupportedEncodingException, MessagingException, ResourceNotFoundException {
         emailService.register(accountEmployeeDTO, getSiteURL(httpServletRequest));
         return "register_success";

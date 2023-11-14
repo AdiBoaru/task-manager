@@ -1,6 +1,7 @@
 package com.togbo.taskmanager.controller;
 
-import com.togbo.taskmanager.dto.ProjectDTO;
+import com.togbo.taskmanager.dto.ProjectDto;
+import com.togbo.taskmanager.dto.mapper.ProjectMapper;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Project;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173/home")
@@ -50,26 +50,17 @@ public class ProjectController {
     }
 
     @PostMapping("/create")
-    public void createProject(@RequestBody ProjectDTO projectDTO) throws Exception {
-        Optional<Project> projectOptional = projectService.findByTitle(projectDTO.getTitle());
+    public ResponseEntity<Project> createProject(@RequestBody ProjectDto projectDto) throws ResourceNotFoundException {
+        Optional<Project> projectOptional = projectService.findByTitle(projectDto.getTitle());
 
         if(projectOptional.isPresent()){
-
-            System.out.println("here");
-            throw new ResourceNotFoundException("Project with this title is already created " + projectDTO.getTitle());
+            //handle bad request if a project with same name already exits
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        Project project = new Project();
-        project.setTitle(projectDTO.getTitle());
-        project.setDueDate(projectDTO.getDueDate());
-        project.setDescription(projectDTO.getDescription());
-        project.setTeamSize(projectDTO.getTeamSize());
-        System.out.println(project);
-
+        Project project = ProjectMapper.mapToProject(projectDto);
         projectService.createProject(project);
-        System.out.println("2" + project);
 
-        //return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(project, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

@@ -1,20 +1,13 @@
 package com.togbo.taskmanager.services;
 
-import com.togbo.taskmanager.dto.AccountEmployeeDTO;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.repository.AccountRepository;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class AccountService {

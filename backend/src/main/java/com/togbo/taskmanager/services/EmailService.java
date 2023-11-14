@@ -1,14 +1,12 @@
 package com.togbo.taskmanager.services;
 
-import com.togbo.taskmanager.dto.AccountEmployeeDTO;
+import com.togbo.taskmanager.dto.AccountEmployeeDto;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
 import com.togbo.taskmanager.repository.EmployeeRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -29,7 +27,7 @@ public class EmailService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void register(AccountEmployeeDTO accountEmployeeDTO, String url) throws MessagingException, UnsupportedEncodingException {
+    public void register(AccountEmployeeDto accountEmployeeDTO, String url) throws MessagingException, UnsupportedEncodingException {
 
         //accountEmployeeDTO.setVerificationCode(UUID.randomUUID());
         //countEmployeeDTO.setEmailVerified(false);
@@ -56,7 +54,7 @@ public class EmailService {
         sendVerificationEmail(accountEmployeeDTO, url);
     }
 
-    private void sendVerificationEmail(AccountEmployeeDTO accountEmployeeDTO, String httpServletRequest) throws MessagingException, UnsupportedEncodingException {
+    private void sendVerificationEmail(AccountEmployeeDto accountEmployeeDTO, String httpServletRequest) throws MessagingException, UnsupportedEncodingException {
         String toAddress = accountEmployeeDTO.getEmail();
         String fromAddress = "adi.boaru@yahoo.com";
         String subject = "Please verify your registration";
