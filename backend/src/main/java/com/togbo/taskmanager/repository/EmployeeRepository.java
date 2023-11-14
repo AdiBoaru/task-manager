@@ -10,8 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query(value = "SELECT e.* FROM employees e where e.account_id = :accountId", nativeQuery = true)
     Employee findEmployeeByAccount(@Param("accountId")Long accountId);
     Employee findByAccount(Account account);
+
 }
