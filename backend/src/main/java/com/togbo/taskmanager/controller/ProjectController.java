@@ -6,7 +6,6 @@ import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Project;
 import com.togbo.taskmanager.services.ProjectService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
