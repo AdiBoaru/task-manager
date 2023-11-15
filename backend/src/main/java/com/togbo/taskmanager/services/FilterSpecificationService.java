@@ -26,7 +26,7 @@ public class FilterSpecificationService<T> {
         };
     }
     //and
-    public Specification<T> getSearchSpecification(List<SearchRequestDto> searchRequestDtos) {
+    public Specification<T> getSearchSpecificationAnd(List<SearchRequestDto> searchRequestDtos) {
         return (root, query, criteriaBuilder) -> {
 
             List<Predicate> predicates = new ArrayList<>();
@@ -38,4 +38,19 @@ public class FilterSpecificationService<T> {
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }
+
+    //or
+    public Specification<T> getSearchSpecificationOr(List<SearchRequestDto> searchRequestDtos) {
+        return (root, query, criteriaBuilder) -> {
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            for (SearchRequestDto requestDto : searchRequestDtos) {
+                Predicate equal = criteriaBuilder.equal(root.get(requestDto.getColumn()), requestDto.getValue());
+                predicates.add(equal);
+            }
+            return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
+        };
+    }
+
 }
