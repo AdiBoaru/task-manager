@@ -27,7 +27,7 @@ public class ProjectController {
     @GetMapping
     public ResponseEntity<List<Project>> findAll(){
         List<Project> projects = projectService.findAll();
-
+        //sout
         if(projects.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
