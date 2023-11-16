@@ -1,6 +1,7 @@
 package com.togbo.taskmanager.services;
 
 import com.togbo.taskmanager.dto.SearchRequestDto;
+import com.togbo.taskmanager.enums.SearchOperator;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -25,6 +26,7 @@ public class FilterSpecificationService<T> {
             }
         };
     }
+
     //and
     public Specification<T> getSearchSpecificationAnd(List<SearchRequestDto> searchRequestDtos) {
         return (root, query, criteriaBuilder) -> {
@@ -53,4 +55,25 @@ public class FilterSpecificationService<T> {
         };
     }
 
+    //create a generic specification for and or like less than greater than
+    /*public Specification<T> getDynamicSpecification(List<SearchRequestDto> searchRequestDtos, SearchOperator searchOperator) {
+        return (root, query, criteriaBuilder) -> {
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            for (SearchRequestDto requestDto : searchRequestDtos) {
+                Predicate equal = criteriaBuilder.equal(root.get(requestDto.getColumn()), requestDto.getValue());
+
+            switch (searchOperator) {
+                case AND:
+                    return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+                case OR:
+                    return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
+
+            }
+        };
+            return criteriaBuilder.greaterThan()
+    }
+
+     */
 }
