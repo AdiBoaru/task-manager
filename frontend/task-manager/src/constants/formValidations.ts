@@ -25,7 +25,7 @@ export const newProjectSchema = yup
     projectName: yup.string().min(2, "Name should be at least 2 characters").required('Project name is required.'),
     description: yup.string().min(6, "Description should be at least 6 characters").required('Description is required'),
     employeesCount: yup.string().required('Employees is required.'),
-    releaseDate: yup.string().required('Please choose your completion date.'),
+    releaseDate: yup.date().required('Please choose your completion date.'),
 })
 
 export const newTeamSchema = yup

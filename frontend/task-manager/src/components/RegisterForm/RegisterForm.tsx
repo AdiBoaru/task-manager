@@ -17,6 +17,12 @@ import FormInput from "../../UI/FormInput/FormInput";
 import Button from "../../UI/Button/Button";
 import useToastify from "../../hooks/useToastify";
 
+const ROLES = [
+  { label: "DEVELOPER", id: "DEVELOPER" },
+  { label: "PROJECT_MANAGER", id: "PROJECT_MANAGER" },
+  { label: "TEAM_LEAD", id: "TEAM_LEAD" },
+  { label: "TESTER", id: "TESTER" },
+];
 type TRole = {
   label: string;
   value?: string;
@@ -156,10 +162,7 @@ const RegisterForm = () => {
                 id="role"
                 data-testid="role-select"
                 onChange={handleRoleChange}
-                options={[
-                  { label: "test", id: "test" },
-                  { label: "test2", id: "test2" },
-                ]}
+                options={ROLES}
                 placeholder="Choose your role"
                 styles={colorStyles}
               />

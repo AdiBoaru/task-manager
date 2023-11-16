@@ -8,5 +8,5 @@ export type TCreateProjectData = {
     projectName: string,
     description: string,
     employeesCount?: string,
-    releaseDate?: string,
+    releaseDate?: string | Date,
 }

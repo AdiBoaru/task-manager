@@ -6,18 +6,15 @@ const TableHeader = () => {
   const { handleSortClick, sort } = useTable();
 
   return (
-    <thead>
+    <thead className="sticky top-0 bg-secondaryColor">
       <tr>
-        {headerData.map(({ id, header, hasFilter, key }) => (
-          <th key={id}>
-            <span>{header}</span>
-            {hasFilter && (
-              <ArrowsFilter
-                filterOption={sort.direction}
-                onClick={() => handleSortClick({ header, key })}
-              />
-            )}
-          </th>
+        {headerData.map(({ id, header }) => (
+          <ArrowsFilter
+            colTitle={header}
+            sortTable={handleSortClick}
+            sort={sort}
+            key={id}
+          />
         ))}
       </tr>
     </thead>
