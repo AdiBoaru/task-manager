@@ -7,7 +7,7 @@ import com.togbo.taskmanager.model.Project;
 import java.time.LocalDate;
 import java.util.Set;
 
-public class EmployeeDTO {
+public class EmployeeDto {
     private Long id;
     private String firstName;
     private String lastName;

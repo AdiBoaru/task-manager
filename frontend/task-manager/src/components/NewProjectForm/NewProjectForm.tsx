@@ -31,24 +31,37 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
     handleSubmit,
     formState: { errors },
   } = methods;
+
+  const handleRequest = async (data: TCreateProjectData) => { 
+    try {
+      const response = await fetch("http://localhost:8080/project/create", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   const onInvalid = (errors: any) => console.error(errors);
-  const onSubmit: SubmitHandler<TCreateProjectData> = (
+  const onSubmit: SubmitHandler<TCreateProjectData> =  (
     data: TCreateProjectData
   ) => {
     const newdata = { ...data };
     console.log(typeof data.releaseDate);
 
     console.log(data);
-    fetch("http://localhost:8080/project", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  };
+    handleRequest(data);
+    
+  }
   const { field: employeesField } = useController({
-    name: "employeesCount",
+    name: "teamSize",
     control,
   });
   const handleEmployeesChange = (option: SingleValue<TEmployeesCount>) => {
@@ -82,7 +95,7 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
           type="text"
           labelText="Project name"
           inputId="projectName"
-          name="projectName"
+          name="title"
         />
         <FormInput
           testId="project-description"
@@ -100,7 +113,7 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
           <label className="ml-3 text-white text-lg">Role</label>
           <Controller
             data-testid="controller"
-            name="employeesCount"
+            name="teamSize"
             control={control}
             rules={{ required: "Employees is required" }}
             render={() => (
@@ -120,7 +133,7 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
           />
           <ErrorMessage
             errors={errors}
-            name={"employeesCount"}
+            name={"teamSize"}
             render={({ message }) => (
               <p className="text-red-600 pl-5 ">{message}</p>
             )}
@@ -133,7 +146,7 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
           labelText="Completion Date"
           placeholder="Enter your completion date"
           type="date"
-          name="releaseDate"
+          name="dueDate"
           inputId="releaseDate"
         />
 
