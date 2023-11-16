@@ -53,6 +53,9 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
   const onSubmit: SubmitHandler<TCreateProjectData> =  (
     data: TCreateProjectData
   ) => {
+    const newdata = { ...data };
+    console.log(typeof data.releaseDate);
+
     console.log(data);
     handleRequest(data);
     
