@@ -6,10 +6,14 @@ import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Project;
 import com.togbo.taskmanager.services.ProjectService;
+import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,29 +24,28 @@ public class ProjectController {
     private final ProjectService projectService;
 
 
-    public ProjectController (ProjectService projectService){
+    public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Project>> findAll(){
+    public ResponseEntity<List<Project>> findAll() {
         List<Project> projects = projectService.findAll();
-        //sout
-        if(projects.isEmpty()){
+        if (projects.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
     @GetMapping("/findProjectsByEmployee")
-    public List<Project> findProjectByEmployee(@RequestBody Account account){
+    public List<Project> findProjectByEmployee(@RequestBody Account account) {
         return projectService.findByEmployee(projectService.findEmployee(account));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Project> findById(@PathVariable Long id) throws ResourceNotFoundException {
         Project project = projectService.findById(id);
-        if(project == null){
+        if (project == null) {
             throw new ResourceNotFoundException("Project not found by this id " + id);
         }
         return new ResponseEntity<>(projectService.findById(id), HttpStatus.FOUND);
@@ -52,8 +55,7 @@ public class ProjectController {
     public ResponseEntity<Project> createProject(@RequestBody ProjectDto projectDto) {
         Optional<Project> projectOptional = projectService.findByTitle(projectDto.getTitle());
 
-        if(projectOptional.isPresent()){
-            //handle bad request if a project with same name already exits
+        if (projectOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Project project = ProjectMapper.mapToProject(projectDto);
@@ -65,8 +67,7 @@ public class ProjectController {
     @PutMapping("/{id}")
     public ResponseEntity<Project> updateProject(@PathVariable Long id, @RequestBody ProjectDto projectDto) throws ResourceNotFoundException {
         Project project = projectService.findById(id);
-        if(project == null){
-            //de verificat
+        if (project == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         ProjectMapper.mapToUpdateProject(projectDto, project);
@@ -80,12 +81,19 @@ public class ProjectController {
     public ResponseEntity<String> deleteProject(@PathVariable Long id) {
         Project project = projectService.findById(id);
 
-        if(project == null){
+        if (project == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         projectService.deleteById(id);
 
-        return new ResponseEntity<>("Project deleted successfully",HttpStatus.OK);
+        return new ResponseEntity<>("Project deleted successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/sort")
+    public List<Project> sortProject(@RequestParam String key, @RequestParam(defaultValue = "ASC") String direction){
+        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+        Sort sort = Sort.by(sortDirection, key);
+        return projectService.findAllSorted(sort);
     }
 }
