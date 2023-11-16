@@ -28,10 +28,10 @@ public class TaskController {
         return taskService.findAll();
     }
 
-    @GetMapping("/assign")
-    public List<Task> findTaskByPriority(){
-        return taskService.findTasksByPriority();
-    }
+//    @PostMapping("/assign")
+//    public List<Task> findTaskByPriority(@RequestBody Task task){
+//
+//    }
 
     @GetMapping("/{id}")
     public Task findTaskById(@PathVariable UUID id){
