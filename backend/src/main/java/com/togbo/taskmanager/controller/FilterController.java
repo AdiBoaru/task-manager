@@ -64,12 +64,12 @@ public class FilterController {
     }
 
 
-    @PostMapping("/specification/list")
+    @PostMapping("/specification/list/and")
     public List<Task> findAndTask(@RequestBody RequestDto requestDto) {
         Specification<Task> specification = filterSpecificationService.getSearchSpecificationAnd(requestDto.getListSearchRequestDto());
         return taskRepository.findAll(specification);
     }
-    @PostMapping("/specification/list")
+    @PostMapping("/specification/list/or")
     public List<Task> findOrTask(@RequestBody RequestDto requestDto) {
         Specification<Task> specification = filterSpecificationService.getSearchSpecificationOr(requestDto.getListSearchRequestDto());
         return taskRepository.findAll(specification);
