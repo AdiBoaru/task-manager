@@ -36,7 +36,7 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
   const onSubmit: SubmitHandler<TCreateProjectData> = (
     data: TCreateProjectData
   ) => {
-    fetch("http://localhost:8080/project", {
+    fetch("http://localhost:8080/project/create", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

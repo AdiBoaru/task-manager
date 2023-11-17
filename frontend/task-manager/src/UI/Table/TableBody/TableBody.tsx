@@ -1,4 +1,5 @@
 const TableBody = ({ entries, columns }: any) => {
+  console.log("Entries:", entries);
   return (
     <tbody className="bg-gray-50 h-[200px] ">
       {entries.map((entry: any) => (
@@ -7,7 +8,7 @@ const TableBody = ({ entries, columns }: any) => {
             <td className="p-5 border-b-2" key={key}>
               {key === "edit" ? (
                 <div>
-                  {entry[key].map((editItem: any, index: number) => (
+                  {entry[key] && entry[key].map((editItem: any, index: number) => (
                     <div key={index} className="flex space-x-2">
                       {editItem.trashIcon}
                       {editItem.editIcon}

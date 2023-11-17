@@ -10,11 +10,10 @@ const ProjectsPage = () => {
       .then((projects) => setProjects(projects));
   }, []);
 
-  console.log(projects);
 
   return (
     <div className="flex items-center justify-center h-[calc(100vh-200px)] w-full bg-primaryColor text-primaryColor">
-      <Table />
+      <Table data={projects}/>
     </div>
   );
 };
