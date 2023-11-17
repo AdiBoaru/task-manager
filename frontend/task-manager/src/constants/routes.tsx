@@ -6,12 +6,14 @@ import {
   LOGIN,
   PROJECTS,
   REGISTER,
+  TEAMS,
 } from "./routePaths";
 import LandingPage from "../pages/LandingPage/LandingPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import ProjectsPage from "../pages/ProjectsPage/ProjectsPage";
 import HomePage from "../pages/HomePage/HomePage";
+import TeamsPage from "../pages/TeamsPage/TeamsPage";
 
 export const ROUTES = [
   {
@@ -49,5 +51,11 @@ export const ROUTES = [
     auth: true,
     roles: [],
     element: <HomePage />,
+  },
+  {
+    path: TEAMS,
+    auth: true,
+    roles: [],
+    element: <TeamsPage />,
   },
 ];

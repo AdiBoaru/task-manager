@@ -3,6 +3,7 @@ package com.togbo.taskmanager.controller;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,12 @@ public class EmployeeController {
         return employeeService.findById(id);
     }
 
+    @GetMapping("/sort")
+    public List<Employee> findAllSorted(@RequestParam String value, @RequestParam(defaultValue = "ASC") String direction){
+        Sort.Direction sortedDirection = Sort.Direction.fromString(direction);
+        Sort sort = Sort.by(sortedDirection, value);
+        return employeeService.findAllSorted(sort);
+    }
     @PostMapping("/save")
     public ResponseEntity<Employee> saveEmployee(@RequestBody Employee employee){
         employeeService.addEmployee(employee);
@@ -54,5 +61,6 @@ public class EmployeeController {
 
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
+
 
 }

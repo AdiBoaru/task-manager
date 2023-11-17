@@ -2,20 +2,27 @@ import { RiArrowUpSFill, RiArrowDownSFill } from "react-icons/ri";
 import { ASC, DESC } from "../../../constants/sort-constants";
 
 type TArrowsFilter = {
-  filterOption: string;
-  onClick: () => void;
+  colTitle: string;
+  sortTable: (newSorting: { colTitle: string; direction: string }) => void;
+  sort?: { colTitle: string; direction: string };
 };
 
-const ArrowsFilter = ({ filterOption, onClick }: TArrowsFilter) => {
+const ArrowsFilter = ({ colTitle, sort, sortTable }: TArrowsFilter) => {
+  const isAscending = sort?.colTitle === colTitle && sort.direction === ASC;
+  const isDescending = sort?.colTitle === colTitle && sort.direction === DESC;
+  const futureOrder = isDescending ? ASC : DESC;
+
   return (
-    <div className="" onKeyDown={undefined} onClick={onClick}>
-      <RiArrowUpSFill
-        className={`${filterOption === ASC && "bg-secondaryColor"}`}
-      />
-      <RiArrowDownSFill
-        className={`${filterOption === DESC && "bg-secondaryColor"}`}
-      />
-    </div>
+    <th
+      className="p-5"
+      onClick={() => sortTable({ colTitle, direction: futureOrder })}
+    >
+      <div className="flex items-center w-full">
+        {colTitle}
+        {isAscending && <RiArrowUpSFill />}
+        {isDescending && <RiArrowDownSFill />}
+      </div>
+    </th>
   );
 };
 

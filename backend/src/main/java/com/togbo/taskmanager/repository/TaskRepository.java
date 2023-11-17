@@ -24,4 +24,5 @@ public interface TaskRepository extends JpaRepository<Task, UUID>, JpaSpecificat
 
     List<Task> findTaskByStatus(Status status);
 
+
 }

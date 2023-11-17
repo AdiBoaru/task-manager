@@ -5,6 +5,7 @@ import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.model.Team;
 import com.togbo.taskmanager.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,5 +54,9 @@ public class EmployeeService {
         if(employee.isPresent()){
             employee.get().setTeam(team);
         }
+    }
+
+    public List<Employee> findAllSorted(Sort sort){
+        return employeeRepository.findAll(sort);
     }
 }

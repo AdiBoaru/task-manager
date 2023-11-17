@@ -7,6 +7,7 @@ import com.togbo.taskmanager.model.Task;
 import com.togbo.taskmanager.repository.EmployeeRepository;
 import com.togbo.taskmanager.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,5 +60,9 @@ public class TaskService {
 
     public Employee findEmployee(Account account){
         return employeeRepository.findEmployeeByAccount(account.getId());
+    }
+
+    public List<Task> findAllSorted(Sort sort){
+        return taskRepository.findAll(sort);
     }
 }
