@@ -32,34 +32,19 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
     formState: { errors },
   } = methods;
 
-  const handleRequest = async (data: TCreateProjectData) => { 
-    try {
-      const response = await fetch("http://localhost:8080/project/create", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-  
-      const result = await response.json();
-      console.log(result);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
   const onInvalid = (errors: any) => console.error(errors);
-  const onSubmit: SubmitHandler<TCreateProjectData> =  (
+  const onSubmit: SubmitHandler<TCreateProjectData> = (
     data: TCreateProjectData
   ) => {
-    const newdata = { ...data };
-    console.log(typeof data.releaseDate);
+    fetch("http://localhost:8080/project", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
 
-    console.log(data);
-    handleRequest(data);
-    
-  }
   const { field: employeesField } = useController({
     name: "teamSize",
     control,
