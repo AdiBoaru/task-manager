@@ -1,11 +1,13 @@
 package com.togbo.taskmanager.controller;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.togbo.taskmanager.dto.TeamEmployeeDto;
 import com.togbo.taskmanager.dto.mapper.TeamEmployeeMapper;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.model.Team;
 import com.togbo.taskmanager.services.EmployeeService;
 import com.togbo.taskmanager.services.TeamService;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +37,12 @@ public class TeamController {
 
         return new ResponseEntity<>(teams, HttpStatus.OK);
     }
+    @GetMapping("/sort")
+    public List<Team> findAllSorted(@RequestParam String value, @RequestParam(defaultValue = "ASC") String direction){
+        Sort.Direction sortedDirection = Sort.Direction.fromString(direction);
+        Sort sort = Sort.by(sortedDirection, value);
+        return teamService.findAllSorted(sort);
+    }
     @PostMapping
     public ResponseEntity<Team> createTeam(@RequestBody TeamEmployeeDto teamEmployeeDto){
         Team team = teamService.findByName(teamEmployeeDto.getName());
@@ -55,4 +63,7 @@ public class TeamController {
 
         return new ResponseEntity<>(team, HttpStatus.CREATED);
     }
+
+
+
 }

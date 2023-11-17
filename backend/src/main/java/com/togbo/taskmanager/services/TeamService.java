@@ -3,6 +3,7 @@ package com.togbo.taskmanager.services;
 import com.togbo.taskmanager.model.Project;
 import com.togbo.taskmanager.model.Team;
 import com.togbo.taskmanager.repository.TeamRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,10 @@ public class TeamService {
 
     public List<Team> findAll(){
         return teamRepository.findAll();
+    }
+
+    public List<Team> findAllSorted(Sort sort){
+        return teamRepository.findAll(sort);
     }
 
 }
