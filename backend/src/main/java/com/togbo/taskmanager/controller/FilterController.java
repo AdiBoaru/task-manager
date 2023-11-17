@@ -75,9 +75,11 @@ public class FilterController {
         return taskRepository.findAll(specification);
     }
 
-    @PostMapping
+   /* @PostMapping
     public List<Task> findTasks(@RequestBody RequestDto requestDto){
         Specification<Task> specification = filterSpecificationService.getDynamicSpecification(requestDto.getListSearchRequestDto(), requestDto.getSearchOperator());
         return taskRepository.findAll(specification);
     }
+
+    */
 }
