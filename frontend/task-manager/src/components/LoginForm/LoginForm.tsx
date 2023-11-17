@@ -1,15 +1,17 @@
-import { NavLink } from "react-router-dom";
+
+import { NavLink, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { loginSchema } from "../../constants/formValidations";
 import { TLoginFormData } from "../../interfaces/TLoginFormData";
-import { REGISTER } from "../../constants/routePaths";
+import { HOME, REGISTER } from "../../constants/routePaths";
 import FormInput from "../../UI/FormInput/FormInput";
 import Button from "../../UI/Button/Button";
 import useToastify from "../../hooks/useToastify";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const { notification } = useToastify();
   const methods = useForm<TLoginFormData>({
     mode: "onBlur",
@@ -17,18 +19,16 @@ const LoginForm = () => {
   });
   const { handleSubmit } = methods;
   const onSubmit: SubmitHandler<TLoginFormData> = (data: TLoginFormData) => {
-    notification(
-      "Please verify your email to confirm your registration.",
-      "success"
-    );
     console.log(data);
-    fetch("localhost:8080/account/login", {
+    fetch("http://localhost:8080/register/login", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
     });
+    notification("You logged in successfully.", "success");
+    navigate(HOME);
   };
 
   return (
@@ -36,7 +36,7 @@ const LoginForm = () => {
       <form
         data-testid="register-form"
         className="flex flex-col justify-around flex-wrap h-full relative"
-        onSubmit={handleSubmit(onSubmit, onInvalid)}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <div>
           <FormInput
@@ -79,7 +79,7 @@ const LoginForm = () => {
           <Button
             testId="register-button"
             type="submit"
-            style="text-secondaryColor text-xl border rounded-[10px] py-3 mx-4 my-7 w-[20%] hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor "
+            style="text-secondaryColor text-xl border border-secondaryColor rounded-[10px] py-3 mx-4 my-7 w-[20%] hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor "
           >
             Login
           </Button>

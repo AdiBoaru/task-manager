@@ -10,7 +10,6 @@ const LandingPage = () => {
   return (
     <div className="flex flex-col h-screen w-screen bg-primaryColor overflow-hidden">
       <div className="h-1/6 flex justify-between px-[12rem] items-center">
-
         <Logo />
         <NavLink
           data-testid="landing-page-login-btn"
@@ -31,7 +30,7 @@ const LandingPage = () => {
             </h2>
             <NavLink
               data-testid="landing-page-register-btn"
-              className="text-secondaryColor text-xl border rounded-md p-3 hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor"
+              className="text-secondaryColor text-xl border border-secondaryColor rounded-md p-3 hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor"
               to={REGISTER}
             >
               Register Now

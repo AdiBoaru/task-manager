@@ -1,10 +1,9 @@
 package com.togbo.taskmanager.model;
 
-import com.togbo.taskmanager.enums.Role;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -27,43 +26,21 @@ public class Account {
     @Column(name = "created_date")
     private LocalDate createdDate;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
     @Column(
             name = "verification_code")
     private UUID verificationCode;
     @Column(name = "email_verified")
-    private boolean isEmailVerified;
-    private boolean enabled = false;
-
-
+    private Boolean isEmailVerified;
     public Account() {
     }
 
 
-    public Account(String email, String password, LocalDate createdDate) {
+    public Account(String email, String password, UUID verificationCode) {
         this.email = email;
         this.password = password;
         this.createdDate = LocalDate.now();
-    }
-
-    public Account(String email, String password, LocalDate createdDate, UUID verificationCode, boolean isEmailVerified, boolean enabled) {
-        this.email = email;
-        this.password = password;
-        this.createdDate = createdDate;
         this.verificationCode = verificationCode;
-        this.isEmailVerified = isEmailVerified;
-        this.enabled = enabled;
-    }
-
-    public Account(String email, String password, LocalDate createdDate, Role role, UUID verificationCode, boolean isEmailVerified, boolean enabled) {
-        this.email = email;
-        this.password = password;
-        this.createdDate = createdDate;
-        this.role = role;
-        this.verificationCode = verificationCode;
-        this.isEmailVerified = isEmailVerified;
-        this.enabled = enabled;
+        this.isEmailVerified = false;
     }
 
     public Long getId() {
@@ -83,22 +60,6 @@ public class Account {
     }
 
 */
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
 
     public UUID getVerificationCode() {
         return verificationCode;

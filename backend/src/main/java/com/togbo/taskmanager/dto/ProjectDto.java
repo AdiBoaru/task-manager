@@ -6,21 +6,21 @@ import com.togbo.taskmanager.model.Task;
 import java.time.LocalDate;
 import java.util.Set;
 
-public class ProjectDTO {
-    private Long id;
+public class ProjectDto {
     private String title;
     private String description;
-    private LocalDate creationDate;
     private LocalDate dueDate;
+    private String teamSize;
     private Set<Employee> employees;
     private Set<Task> tasks;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public ProjectDto(String title, String description, LocalDate dueDate, String teamSize, Set<Employee> employees, Set<Task> tasks) {
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.teamSize = teamSize;
+        this.employees = employees;
+        this.tasks = tasks;
     }
 
     public String getTitle() {
@@ -39,12 +39,12 @@ public class ProjectDTO {
         this.description = description;
     }
 
-    public LocalDate getCreationDate() {
-        return creationDate;
+    public String getTeamSize() {
+        return teamSize;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
+    public void setTeamSize(String teamSize) {
+        this.teamSize = teamSize;
     }
 
     public LocalDate getDueDate() {

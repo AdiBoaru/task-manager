@@ -1,15 +1,29 @@
-import { Route, Routes } from "react-router-dom";
-import { ROUTES } from "../constants/routes";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { Fragment } from "react";
 
+import { ROUTES } from "../constants/routes";
+import { DEFAULT } from "../constants/routePaths";
+import Layout from "./Layout/Layout";
+
 const SwitchRoutes = () => {
+  const { pathname } = useLocation();
+
   return (
     <Routes data-testid="switch-routes">
-      {ROUTES.map(({ path, element }, index) => (
-        <Fragment key={index}>
-          <Route path={path} element={element} />
-        </Fragment>
-      ))}
+      <Route
+        path={DEFAULT}
+        element={
+          pathname !== "/landing-page" &&
+          pathname !== "/login" &&
+          pathname !== "/register" && <Layout />
+        }
+      >
+        {ROUTES.map(({ path, element }, index) => (
+          <Fragment key={index}>
+            <Route path={path} element={element} />
+          </Fragment>
+        ))}
+      </Route>
     </Routes>
   );
 };
