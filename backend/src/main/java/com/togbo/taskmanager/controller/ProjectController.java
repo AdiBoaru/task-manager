@@ -96,6 +96,4 @@ public class ProjectController {
 
         return new ResponseEntity<>("Project deleted successfully", HttpStatus.OK);
     }
-
-
 }
