@@ -1,5 +1,6 @@
 package com.togbo.taskmanager.services;
 
+import com.togbo.taskmanager.model.Project;
 import com.togbo.taskmanager.model.Team;
 import com.togbo.taskmanager.repository.TeamRepository;
 import org.springframework.stereotype.Service;
@@ -27,4 +28,5 @@ public class TeamService {
     public List<Team> findAll(){
         return teamRepository.findAll();
     }
+
 }
