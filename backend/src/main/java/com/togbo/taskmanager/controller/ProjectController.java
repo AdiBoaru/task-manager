@@ -51,6 +51,13 @@ public class ProjectController {
         return new ResponseEntity<>(projectService.findById(id), HttpStatus.FOUND);
     }
 
+    @GetMapping("/sort")
+    public List<Project> sortProject(@RequestParam String key, @RequestParam(defaultValue = "ASC") String direction){
+        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+        Sort sort = Sort.by(sortDirection, key);
+        return projectService.findAllSorted(sort);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Project> createProject(@RequestBody ProjectDto projectDto) {
         Optional<Project> projectOptional = projectService.findByTitle(projectDto.getTitle());
@@ -90,10 +97,5 @@ public class ProjectController {
         return new ResponseEntity<>("Project deleted successfully", HttpStatus.OK);
     }
 
-    @GetMapping("/sort")
-    public List<Project> sortProject(@RequestParam String key, @RequestParam(defaultValue = "ASC") String direction){
-        Sort.Direction sortDirection = Sort.Direction.fromString(direction);
-        Sort sort = Sort.by(sortDirection, key);
-        return projectService.findAllSorted(sort);
-    }
+
 }
