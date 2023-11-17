@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "employees")
@@ -41,6 +40,10 @@ public class Employee {
             inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
     private Set<Task> tasks = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
+
     public Employee() {
     }
 
@@ -68,6 +71,15 @@ public class Employee {
         this.uuid = uuid;
     }
 */
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
     public Role getRole() {
         return role;
     }
