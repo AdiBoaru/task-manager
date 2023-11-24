@@ -1,5 +1,5 @@
 package com.togbo.taskmanager.security.config.client;
-
+/*
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -43,3 +43,5 @@ public class WebSecurityConfig {
         return http.build();
     }
 }
+
+ */

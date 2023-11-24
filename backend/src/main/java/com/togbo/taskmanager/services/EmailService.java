@@ -5,14 +5,9 @@ import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
 import com.togbo.taskmanager.repository.EmployeeRepository;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
@@ -20,13 +15,20 @@ import java.util.UUID;
 public class EmailService {
     private final AccountRepository accountRepository;
     private final EmployeeRepository employeeRepository;
-    private final JavaMailSender javaMailSender;
+  //  private final JavaMailSender javaMailSender;
     private static final String COMPANY_NAME = "Task Flow";
 
-    public EmailService(AccountRepository accountRepository, EmployeeRepository employeeRepository, JavaMailSender javaMailSender) {
+ /*   public EmailService(AccountRepository accountRepository, EmployeeRepository employeeRepository, JavaMailSender javaMailSender) {
         this.accountRepository = accountRepository;
         this.employeeRepository = employeeRepository;
         this.javaMailSender = javaMailSender;
+    }
+
+  */
+
+    public EmailService(AccountRepository accountRepository, EmployeeRepository employeeRepository) {
+        this.accountRepository = accountRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     public void register(AccountEmployeeDto accountEmployeeDTO, String url) throws MessagingException, UnsupportedEncodingException {
@@ -65,7 +67,7 @@ public class EmailService {
                 + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
                 + "Thank you,<br>"
                 + COMPANY_NAME;
-
+/*
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
@@ -81,8 +83,11 @@ public class EmailService {
         helper.setText(content, true);
 
         javaMailSender.send(message);
+ */
+
     }
 
     //verify what kind of sender host to use
 
 }
+

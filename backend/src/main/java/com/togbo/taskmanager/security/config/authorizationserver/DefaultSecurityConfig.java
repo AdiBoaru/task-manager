@@ -1,5 +1,5 @@
 package com.togbo.taskmanager.security.config.authorizationserver;
-
+/*
 import com.togbo.taskmanager.services.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,3 +30,5 @@ public class DefaultSecurityConfig {
                 .authenticationProvider(customAuthenticationProvider);
     }
 }
+
+ */

@@ -7,11 +7,11 @@ import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
 import com.togbo.taskmanager.repository.EmployeeRepository;
 import com.togbo.taskmanager.services.EmailService;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 
 @RestController
