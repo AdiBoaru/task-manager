@@ -12,15 +12,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 
-public class CustomeEmployeeDetailService implements UserDetailsService {
+public class CustomEmployeeDetailService implements UserDetailsService {
 
     private AccountRepository accountRepository;
     private EmployeeRepository employeeRepository;
 
-    public CustomeEmployeeDetailService(AccountRepository accountRepository, EmployeeRepository employeeRepository) {
+    public CustomEmployeeDetailService(AccountRepository accountRepository, EmployeeRepository employeeRepository) {
         this.accountRepository = accountRepository;
         this.employeeRepository = employeeRepository;
     }

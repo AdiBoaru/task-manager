@@ -5,6 +5,8 @@ import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
 import com.togbo.taskmanager.repository.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -16,6 +18,8 @@ public class EmailService {
     private final AccountRepository accountRepository;
     private final EmployeeRepository employeeRepository;
   //  private final JavaMailSender javaMailSender;
+
+    private final PasswordEncoder passwordEncoder;
     private static final String COMPANY_NAME = "Task Flow";
 
  /*   public EmailService(AccountRepository accountRepository, EmployeeRepository employeeRepository, JavaMailSender javaMailSender) {
@@ -26,9 +30,10 @@ public class EmailService {
 
   */
 
-    public EmailService(AccountRepository accountRepository, EmployeeRepository employeeRepository) {
+    public EmailService(AccountRepository accountRepository, EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
         this.employeeRepository = employeeRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void register(AccountEmployeeDto accountEmployeeDTO, String url) throws MessagingException, UnsupportedEncodingException {
@@ -38,7 +43,7 @@ public class EmailService {
 
         Account account = new Account();
         account.setEmail(accountEmployeeDTO.getEmail());
-        account.setPassword(accountEmployeeDTO.getPassword());
+        account.setPassword(passwordEncoder.encode(accountEmployeeDTO.getPassword()));
         account.setCreatedDate(accountEmployeeDTO.getCreatedDate());
         account.setEmailVerified(false);
         account.setVerificationCode(UUID.randomUUID());
