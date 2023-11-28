@@ -1,5 +1,6 @@
 package com.togbo.taskmanager.config;
 
+import com.togbo.taskmanager.security.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,8 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationFilterConfig extends OncePerRequestFilter {
 
+    private final JwtService jwtService;
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request, //is our request -> we can intercept every request and extract data from it
@@ -22,6 +25,7 @@ public class JwtAuthenticationFilterConfig extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
         final String jwtToken;
+        final String email;
 
         if(authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -29,5 +33,6 @@ public class JwtAuthenticationFilterConfig extends OncePerRequestFilter {
         }
 
         jwtToken = authorizationHeader.substring(7);
+        email = jwtService.extractEmail();// todo extrac email from jwtToken
     }
 }
