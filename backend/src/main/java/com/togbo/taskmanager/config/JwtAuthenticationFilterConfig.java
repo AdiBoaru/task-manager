@@ -20,6 +20,14 @@ public class JwtAuthenticationFilterConfig extends OncePerRequestFilter {
             HttpServletResponse response, //is our response -> after we intercept a request we can provide new response with new data
             FilterChain filterChain //is the chain of responsibility design pattern
     ) throws ServletException, IOException {
+        final String authorizationHeader = request.getHeader("Authorization");
+        final String jwtToken;
 
+        if(authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        jwtToken = authorizationHeader.substring(7);
     }
 }
