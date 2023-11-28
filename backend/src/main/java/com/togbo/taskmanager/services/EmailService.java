@@ -5,11 +5,14 @@ import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
 import com.togbo.taskmanager.repository.EmployeeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
@@ -17,22 +20,14 @@ import java.util.UUID;
 public class EmailService {
     private final AccountRepository accountRepository;
     private final EmployeeRepository employeeRepository;
-  //  private final JavaMailSender javaMailSender;
-
+    private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
     private static final String COMPANY_NAME = "Task Flow";
 
- /*   public EmailService(AccountRepository accountRepository, EmployeeRepository employeeRepository, JavaMailSender javaMailSender) {
+    public EmailService(AccountRepository accountRepository, EmployeeRepository employeeRepository, JavaMailSender javaMailSender, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
         this.employeeRepository = employeeRepository;
         this.javaMailSender = javaMailSender;
-    }
-
-  */
-
-    public EmailService(AccountRepository accountRepository, EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder) {
-        this.accountRepository = accountRepository;
-        this.employeeRepository = employeeRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -72,11 +67,11 @@ public class EmailService {
                 + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
                 + "Thank you,<br>"
                 + COMPANY_NAME;
-/*
+
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom(fromAddress, COMPANY_NAME);
+        helper.setFrom(fromAddress);
         helper.setTo(toAddress);
         helper.setSubject(subject);
 
@@ -88,11 +83,8 @@ public class EmailService {
         helper.setText(content, true);
 
         javaMailSender.send(message);
- */
-
+        //make use of spring security token to verify email activation
     }
-
     //verify what kind of sender host to use
-
 }
 

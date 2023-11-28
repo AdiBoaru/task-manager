@@ -1,5 +1,6 @@
 package com.togbo.taskmanager.controller;
 
+import com.togbo.taskmanager.dto.AccountEmployeeDto;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,16 +35,18 @@ public class AccountController {
         return accountService.findById(id);
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<Account> saveAccount(@RequestBody Account account){
-        accountService.saveAccount(account);
+ /*   @PostMapping("/save")
+    public ResponseEntity<Account> saveAccount(@RequestBody AccountEmployeeDto accountEmployeeDto){
+        accountService.saveAccount(accountEmployeeDto);
 
-        return new ResponseEntity<>(account, HttpStatus.CREATED);
+        return new ResponseEntity<>(, HttpStatus.CREATED);
     }
 
+  */
+
     @PostMapping("/register")
-    public void registerAccount(@RequestBody Account account){
-        accountService.saveAccount(account);
+    public void registerAccount(@RequestBody AccountEmployeeDto accountEmployeeDto){
+        accountService.saveAccount(accountEmployeeDto);
     }
 
     @PutMapping("/{id}")
