@@ -43,7 +43,7 @@ const RegisterForm = () => {
   } = methods;
 
   const handleRequest = async (data: TRegisterFormData) => {
-    fetch("http://localhost:8080/register", {
+    fetch("http://localhost:8080/register/account", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
