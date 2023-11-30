@@ -28,11 +28,9 @@ public class CustomEmployeeDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmail(email);
 
-        Employee employee = employeeRepository.findByAccount(account);
-
         Set<GrantedAuthority> authorities = new HashSet<>();
 
-        authorities.add(new SimpleGrantedAuthority(employee.getRole().name()));
+        authorities.add(new SimpleGrantedAuthority(account.getRole().name()));
 
         return new User(
                 email,

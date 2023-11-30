@@ -2,9 +2,14 @@ package com.togbo.taskmanager.model;
 
 import com.togbo.taskmanager.enums.Role;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,8 +30,6 @@ public class Employee {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
@@ -47,11 +50,10 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, LocalDate birthDate, Role role, Account account) {
+    public Employee(String firstName, String lastName, LocalDate birthDate, Account account) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
-        this.role = role;
         this.account = account;
     }
 
@@ -78,14 +80,6 @@ public class Employee {
 
     public void setTeam(Team team) {
         this.team = team;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
     public String getFirstName() {
@@ -119,7 +113,6 @@ public class Employee {
     public void setAccount(Account account) {
         this.account = account;
     }
-
 
     @Override
     public String toString() {
