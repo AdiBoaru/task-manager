@@ -41,6 +41,7 @@ public class EmailService {
         account.setPassword(passwordEncoder.encode(accountEmployeeDTO.getPassword()));
         account.setCreatedDate(accountEmployeeDTO.getCreatedDate());
         account.setEmailVerified(false);
+        account.setRole(accountEmployeeDTO.getRole());
         account.setVerificationCode(UUID.randomUUID());
 
         Employee employee = new Employee();
@@ -48,7 +49,6 @@ public class EmailService {
         employee.setFirstName(accountEmployeeDTO.getFirstName());
         employee.setLastName(accountEmployeeDTO.getLastName());
         employee.setBirthDate(accountEmployeeDTO.getBirthDate());
-        employee.setRole(accountEmployeeDTO.getRole());
         employee.setAccount(account);
 
         accountRepository.save(account);

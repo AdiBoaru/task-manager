@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
-
+/*
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/register")
@@ -28,7 +28,7 @@ public class AuthenticationController {
     }
 
     //make use of a mapper
-   /* @PostMapping("/employee")
+   @PostMapping("/employee")
     public void registerEmployee(@RequestBody AccountEmployeeDTO accountEmployeeDTO){
         Account account = new Account();
         account.setEmail(accountEmployeeDTO.getEmail());
@@ -46,7 +46,6 @@ public class AuthenticationController {
         accountRepository.save(account);
         employeeRepository.save(employee);
     }
-    */
     @PostMapping("/login")
     public Employee loginEmployee(@RequestBody AccountEmployeeDto accountEmployeeDTO) throws ResourceNotFoundException {
         Account account = accountRepository.findByEmail(accountEmployeeDTO.getEmail());
@@ -79,3 +78,5 @@ public class AuthenticationController {
         return url;
     }
 }
+*/
+

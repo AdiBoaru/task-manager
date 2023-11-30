@@ -19,7 +19,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
+/*
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
@@ -123,5 +123,6 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService(){
         return new JdbcUserDetailsManager();
     }
-    */
 }
+
+    */

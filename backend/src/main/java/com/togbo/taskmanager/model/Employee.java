@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "employees")
-public class Employee implements UserDetails {
+public class Employee {
     /* @Id
      @GeneratedValue
      @Column(columnDefinition = "VARCHAR(36)")
@@ -30,8 +30,6 @@ public class Employee implements UserDetails {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
@@ -52,49 +50,11 @@ public class Employee implements UserDetails {
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, LocalDate birthDate, Role role, Account account) {
+    public Employee(String firstName, String lastName, LocalDate birthDate, Account account) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
-        this.role = role;
         this.account = account;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
-    }
-
-    @Override
-    public String getPassword() {
-        //password should be here
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
-        //email should be here
-        return null;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 
     public Long getId() {
@@ -120,14 +80,6 @@ public class Employee implements UserDetails {
 
     public void setTeam(Team team) {
         this.team = team;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
     public String getFirstName() {
