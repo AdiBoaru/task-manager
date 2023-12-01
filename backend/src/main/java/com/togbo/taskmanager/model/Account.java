@@ -1,7 +1,7 @@
 package com.togbo.taskmanager.model;
 
 import com.togbo.taskmanager.enums.Role;
-import com.togbo.taskmanager.token.Token;
+import com.togbo.taskmanager.model.token.Token;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

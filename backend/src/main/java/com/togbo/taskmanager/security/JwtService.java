@@ -24,7 +24,7 @@ public class JwtService {
     private long jwtExpiration;
     @Value("${application.security.jwt.refresh-token.expiration}")
     private long refreshExpiration;
-    private static final String SECRET_KEY = "2E8wA9ZCS0ZrNfwSEBMhnCeIR3XahIpL";
+   // private static final String SECRET_KEY = "2E8wA9ZCS0ZrNfwSEBMhnCeIR3XahIpL";
 
 
     public String extractEmail(String token) {
@@ -46,7 +46,7 @@ public class JwtService {
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

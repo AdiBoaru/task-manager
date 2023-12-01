@@ -1,4 +1,4 @@
-package com.togbo.taskmanager.token;
+package com.togbo.taskmanager.model.token;
 
 import com.togbo.taskmanager.model.Account;
 import jakarta.persistence.*;

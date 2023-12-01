@@ -3,14 +3,15 @@ package com.togbo.taskmanager.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.togbo.taskmanager.dto.AccountEmployeeDto;
 import com.togbo.taskmanager.model.Account;
+import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
+import com.togbo.taskmanager.repository.EmployeeRepository;
 import com.togbo.taskmanager.security.JwtService;
-import com.togbo.taskmanager.token.Token;
-import com.togbo.taskmanager.token.TokenRepository;
-import com.togbo.taskmanager.token.TokenType;
+import com.togbo.taskmanager.model.token.Token;
+import com.togbo.taskmanager.repository.TokenRepository;
+import com.togbo.taskmanager.model.token.TokenType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,13 +23,15 @@ import java.io.IOException;
 @Service
 public class AuthenticationService {
     private final AccountRepository accountRepository;
+    private final EmployeeRepository employeeRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationService(AccountRepository repository, TokenRepository tokenRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public AuthenticationService(AccountRepository repository, EmployeeRepository employeeRepository, TokenRepository tokenRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.accountRepository = repository;
+        this.employeeRepository = employeeRepository;
         this.tokenRepository = tokenRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -40,7 +43,14 @@ public class AuthenticationService {
                 accountEmployeeDto.getEmail(),
                 passwordEncoder.encode(accountEmployeeDto.getPassword()),
                 accountEmployeeDto.getRole());
+        Employee employee = new Employee(
+                accountEmployeeDto.getFirstName(),
+                accountEmployeeDto.getLastName(),
+                accountEmployeeDto.getBirthDate(),
+                account);
+
         Account savedUser = accountRepository.save(account);
+        employeeRepository.save(employee);
         var jwtToken = jwtService.generateToken(account);
         var refreshToken = jwtService.generateRefreshToken(account);
         saveUserToken(savedUser, jwtToken);

@@ -1,4 +1,4 @@
-package com.togbo.taskmanager.token;
+package com.togbo.taskmanager.model.token;
 
 public enum TokenType {
     BEARER
