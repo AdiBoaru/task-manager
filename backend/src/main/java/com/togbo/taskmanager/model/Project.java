@@ -1,6 +1,7 @@
 package com.togbo.taskmanager.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -18,10 +19,19 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @Size(min = 2, message = "Title should have at least 2 characters")
     private String title;
+    @NotNull
+    @Size(min = 2, message = "Description should have at least 2 characters")
     private String description;
+    @NotNull
     @Column(name = "creation_date")
     private LocalDate creationDate;
+
+    @Column(name = "team_size")
+    private String teamSize;
     @Column(name = "due_date")
     private LocalDate dueDate;
     @ManyToMany
@@ -36,13 +46,15 @@ public class Project {
     private Set<Task> tasks = new HashSet<>();
 
     public Project() {
+        this.creationDate = LocalDate.now();
     }
 
 
-    public Project(String title, String description, LocalDate creationDate, LocalDate dueDate) {
+    public Project(String title, String description, String teamSize,LocalDate dueDate) {
         this.title = title;
         this.description = description;
-        this.creationDate = creationDate;
+        this.creationDate = LocalDate.now();
+        this.teamSize = teamSize;
         this.dueDate = dueDate;
     }
 
@@ -68,6 +80,14 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getTeamSize() {
+        return teamSize;
+    }
+
+    public void setTeamSize(String teamSize) {
+        this.teamSize = teamSize;
     }
 
     public LocalDate getCreationDate() {

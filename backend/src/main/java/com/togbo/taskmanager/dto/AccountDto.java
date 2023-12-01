@@ -2,7 +2,7 @@ package com.togbo.taskmanager.dto;
 
 import java.time.LocalDate;
 
-public class AccountDTO {
+public class AccountDto {
     private Long id;
     private String email;
     private String password;

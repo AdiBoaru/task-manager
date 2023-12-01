@@ -1,8 +1,12 @@
 package com.togbo.taskmanager.controller;
 
+import com.togbo.taskmanager.model.Account;
+import com.togbo.taskmanager.model.Employee;
+import com.togbo.taskmanager.model.Project;
 import com.togbo.taskmanager.model.Task;
 import com.togbo.taskmanager.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +34,24 @@ public class TaskController {
         return taskService.findById(id);
     }
 
+    @GetMapping("/tasksByProjects")
+    public List<Task> findTasksByProjects(@RequestBody Project project){
+        return taskService.findTasksByProject(project);
+    }
+
+    @GetMapping("/tasksByEmployee")
+    public List<Task> findTasksByEmployee(@RequestBody Account account){
+        Employee employee = taskService.findEmployee(account);
+
+        return taskService.findTasksByEmployee(employee);
+    }
+    @GetMapping("/sort")
+    public List<Task> sortedTask(@RequestParam String value, @RequestParam(defaultValue = "ASC") String direction){
+        Sort.Direction sortedDirection = Sort.Direction.fromString(direction);
+        Sort sort = Sort.by(sortedDirection, value);
+        return taskService.findAllSorted(sort);
+    }
+
     @PostMapping("/save")
     public ResponseEntity<Task> saveProject(@RequestBody Task task){
         taskService.addTask(task);
@@ -50,4 +72,6 @@ public class TaskController {
 
         return  new ResponseEntity<>(null, HttpStatus.OK);
     }
+
+
 }

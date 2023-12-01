@@ -1,21 +1,13 @@
 package com.togbo.taskmanager.data;
 
-import com.togbo.taskmanager.enums.Role;
-import com.togbo.taskmanager.model.Account;
-import com.togbo.taskmanager.model.Employee;
-import com.togbo.taskmanager.repository.AccountRepository;
-import jakarta.annotation.PostConstruct;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.time.LocalDate;
@@ -32,7 +24,7 @@ public class DataLoader {
         this.sessionFactory = sessionFactory;
     }
 
-    @PostConstruct
+ /*   @PostConstruct
     @Transactional
     public void load() {
         try (Session session = sessionFactory.openSession()) {
@@ -46,6 +38,8 @@ public class DataLoader {
             session.getTransaction().commit();
         }
     }
+
+  */
 
  /*   private String getSqlScript(String scriptName) {
         return new String(getClass().getClassLoader().getResourceAsStream(scriptName).readAllBytes());

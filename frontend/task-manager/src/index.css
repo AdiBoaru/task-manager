@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 14px;
+  }
+  
+  .scrollbar::-webkit-scrollbar-track {
+    background: #1E1D27;
+  }
+  
+  .scrollbar::-webkit-scrollbar-thumb {
+    background-color: #C1FB47;
+    /* background: repeating-linear-gradient(
+      45deg,
+      #C1FB47,
+      #C1FB47 5px,
+      #1E1D27 5px,
+      #1E1D27 10px
+    ); */
+    border-radius: 20px;
+    border: 3px solid #1E1D27;
+  }
+      /* Hide scrollbar for Chrome, Safari, and Opera */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+  
+  
+      /* Hide scrollbar for IE, Edge, and Firefox */
+      .no-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+    
+  }

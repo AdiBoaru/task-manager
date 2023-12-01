@@ -1,34 +1,34 @@
 package com.togbo.taskmanager.controller;
 
-import com.togbo.taskmanager.dto.AccountEmployeeDTO;
+import com.togbo.taskmanager.dto.AccountEmployeeDto;
+import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
 import com.togbo.taskmanager.repository.EmployeeRepository;
 import com.togbo.taskmanager.services.EmailService;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
-
+/*
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/register")
-public class AuthController {
+public class AuthenticationController {
     public final AccountRepository accountRepository;
     public final EmployeeRepository employeeRepository;
 
     @Autowired
     public EmailService emailService;
-    public AuthController(AccountRepository accountRepository, EmployeeRepository employeeRepository) {
+    public AuthenticationController(AccountRepository accountRepository, EmployeeRepository employeeRepository) {
         this.accountRepository = accountRepository;
         this.employeeRepository = employeeRepository;
     }
 
     //make use of a mapper
-   /* @PostMapping("/employee")
+   @PostMapping("/employee")
     public void registerEmployee(@RequestBody AccountEmployeeDTO accountEmployeeDTO){
         Account account = new Account();
         account.setEmail(accountEmployeeDTO.getEmail());
@@ -46,14 +46,29 @@ public class AuthController {
         accountRepository.save(account);
         employeeRepository.save(employee);
     }
-
-
-    */
-    @PostMapping("/process_register")
-    public String processRegister(@RequestBody AccountEmployeeDTO account, HttpServletRequest httpServletRequest)
-            throws UnsupportedEncodingException, MessagingException {
-        emailService.register(account, getSiteURL(httpServletRequest));
-        return "register_success";
+    @PostMapping("/login")
+    public Employee loginEmployee(@RequestBody AccountEmployeeDto accountEmployeeDTO) throws ResourceNotFoundException {
+        Account account = accountRepository.findByEmail(accountEmployeeDTO.getEmail());
+        Employee employee = null;
+        if(account != null){
+            if(account.getPassword().equals(accountEmployeeDTO.getPassword())){
+                employee = employeeRepository.findByAccount(account);
+            }else
+                throw new ResourceNotFoundException("bad request");
+        }
+        return employee;
+    }
+    @PostMapping("/account")
+    public String processRegister(@RequestBody AccountEmployeeDto accountEmployeeDTO, HttpServletRequest httpServletRequest)
+            throws UnsupportedEncodingException, ResourceNotFoundException {
+        try {
+            emailService.register(accountEmployeeDTO, getSiteURL(httpServletRequest));
+            return "register_success";
+        } catch (Exception e) {
+            // Log the exception
+            e.printStackTrace(); // or use a logging framework
+            return "register_failure";
+        }
     }
 
     private String getSiteURL(HttpServletRequest request) {
@@ -63,3 +78,5 @@ public class AuthController {
         return url;
     }
 }
+*/
+

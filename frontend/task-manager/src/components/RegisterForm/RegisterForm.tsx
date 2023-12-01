@@ -5,7 +5,7 @@ import {
   Controller,
   useController,
 } from "react-hook-form";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Select, { CSSObjectWithLabel, SingleValue } from "react-select";
 import { ErrorMessage } from "@hookform/error-message";
@@ -15,7 +15,14 @@ import { registerSchema } from "../../constants/formValidations";
 import { LOGIN } from "../../constants/routePaths";
 import FormInput from "../../UI/FormInput/FormInput";
 import Button from "../../UI/Button/Button";
+import useToastify from "../../hooks/useToastify";
 
+const ROLES = [
+  { label: "DEVELOPER", id: "DEVELOPER" },
+  { label: "PROJECT_MANAGER", id: "PROJECT_MANAGER" },
+  { label: "TEAM_LEAD", id: "TEAM_LEAD" },
+  { label: "TESTER", id: "TESTER" },
+];
 type TRole = {
   label: string;
   value?: string;
@@ -23,6 +30,8 @@ type TRole = {
 };
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
+  const { notification } = useToastify();
   const methods = useForm<TRegisterFormData>({
     mode: "onChange",
     resolver: yupResolver<TRegisterFormData>(registerSchema),
@@ -32,18 +41,31 @@ const RegisterForm = () => {
     handleSubmit,
     formState: { errors },
   } = methods;
-  const onInvalid = (errors: any) => console.error(errors);
-  const onSubmit: SubmitHandler<TRegisterFormData> = (
-    data: TRegisterFormData
-  ) => {
-    console.log(data);
-    fetch("http://localhost:8080/register/process_register", {
+
+  const handleRequest = async (data: TRegisterFormData) => {
+    fetch("http://localhost:8080/register/account", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
     });
+  };
+  const onInvalid = (errors: any) => console.error(errors);
+  const onSubmit: SubmitHandler<TRegisterFormData> = async (
+    data: TRegisterFormData
+  ) => {
+    console.log(data);
+    try {
+      await handleRequest(data);
+    } catch (error: any) {
+      console.error(error.response.data.message);
+    }
+    notification(
+      "Please verify your email to confirm your registration.",
+      "success"
+    );
+    navigate(LOGIN);
   };
   const { field: roleField } = useController({ name: "role", control });
   const handleRoleChange = (option: SingleValue<TRole>) => {
@@ -140,10 +162,7 @@ const RegisterForm = () => {
                 id="role"
                 data-testid="role-select"
                 onChange={handleRoleChange}
-                options={[
-                  { label: "test", id: "test" },
-                  { label: "test2", id: "test2" },
-                ]}
+                options={ROLES}
                 placeholder="Choose your role"
                 styles={colorStyles}
               />
@@ -170,7 +189,7 @@ const RegisterForm = () => {
         <Button
           testId="register-button"
           type="submit"
-          style="text-secondaryColor text-xl border rounded-[10px] py-3 mx-4 my-7 w-[20%] hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor "
+          style="text-secondaryColor text-xl border border-secondaryColor rounded-[10px] py-3 mx-4 my-7 w-[20%] hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor "
         >
           Register
         </Button>
