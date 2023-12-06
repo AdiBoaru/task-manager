@@ -15,7 +15,7 @@ class AccountServiceTest {
 
     @BeforeEach
     void setUp(){
-        accountServiceTest = accountRepositoryTest.findAll();
+     //   accountServiceTest = accountRepositoryTest.findAll();
     }
 
     @Test
