@@ -10,11 +10,11 @@ public class ProjectDto {
     private String title;
     private String description;
     private LocalDate dueDate;
-    private String teamSize;
+    private Integer teamSize;
     private Set<Employee> employees;
     private Set<Task> tasks;
 
-    public ProjectDto(String title, String description, LocalDate dueDate, String teamSize, Set<Employee> employees, Set<Task> tasks) {
+    public ProjectDto(String title, String description, LocalDate dueDate, Integer teamSize, Set<Employee> employees, Set<Task> tasks) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -39,11 +39,11 @@ public class ProjectDto {
         this.description = description;
     }
 
-    public String getTeamSize() {
+    public Integer getTeamSize() {
         return teamSize;
     }
 
-    public void setTeamSize(String teamSize) {
+    public void setTeamSize(Integer teamSize) {
         this.teamSize = teamSize;
     }
 

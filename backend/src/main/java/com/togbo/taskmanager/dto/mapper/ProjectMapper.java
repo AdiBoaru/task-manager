@@ -9,7 +9,7 @@ public class ProjectMapper {
         return new Project(
                 projectDto.getTitle(),
                 projectDto.getDescription(),
-                projectDto.getTitle(),
+                projectDto.getTeamSize(),
                 projectDto.getDueDate()
         );
     }

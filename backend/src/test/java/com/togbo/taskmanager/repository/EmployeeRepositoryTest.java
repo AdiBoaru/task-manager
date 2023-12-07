@@ -15,7 +15,8 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EmployeeRepositoryTest {
+@DataJpaTest
+class EmployeeRepositoryTest {
 
     @Autowired
     EmployeeRepository employeeRepository;

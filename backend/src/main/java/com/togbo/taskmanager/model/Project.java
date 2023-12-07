@@ -1,6 +1,7 @@
 package com.togbo.taskmanager.model;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
@@ -31,7 +32,7 @@ public class Project {
     private LocalDate creationDate;
 
     @Column(name = "team_size")
-    private String teamSize;
+    private Integer teamSize;
     @Column(name = "due_date")
     private LocalDate dueDate;
     @ManyToMany
@@ -50,7 +51,7 @@ public class Project {
     }
 
 
-    public Project(String title, String description, String teamSize,LocalDate dueDate) {
+    public Project(String title, String description, Integer teamSize,LocalDate dueDate) {
         this.title = title;
         this.description = description;
         this.creationDate = LocalDate.now();
@@ -82,11 +83,11 @@ public class Project {
         this.description = description;
     }
 
-    public String getTeamSize() {
+    public Integer getTeamSize() {
         return teamSize;
     }
 
-    public void setTeamSize(String teamSize) {
+    public void setTeamSize(Integer teamSize) {
         this.teamSize = teamSize;
     }
 
