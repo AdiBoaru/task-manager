@@ -16,6 +16,7 @@ import { LOGIN } from "../../constants/routePaths";
 import FormInput from "../../UI/FormInput/FormInput";
 import Button from "../../UI/Button/Button";
 import useToastify from "../../hooks/useToastify";
+import { useState } from "react";
 
 const ROLES = [
   { label: "DEVELOPER", id: "DEVELOPER" },
@@ -42,7 +43,7 @@ const RegisterForm = () => {
     formState: { errors },
   } = methods;
 
-  const handleRequest = async (data: TRegisterFormData) => {
+  /*const handleRequest = async (data: TRegisterFormData) => {
     fetch("http://localhost:8080/register/account", {
       method: "POST",
       body: JSON.stringify(data),
@@ -51,8 +52,9 @@ const RegisterForm = () => {
       },
     });
   };
+*/
   const onInvalid = (errors: any) => console.error(errors);
-  const onSubmit: SubmitHandler<TRegisterFormData> = async (
+/*   const onSubmit: SubmitHandler<TRegisterFormData> = async (
     data: TRegisterFormData
   ) => {
     console.log(data);
@@ -67,6 +69,7 @@ const RegisterForm = () => {
     );
     navigate(LOGIN);
   };
+  */
   const { field: roleField } = useController({ name: "role", control });
   const handleRoleChange = (option: SingleValue<TRole>) => {
     roleField.onChange(option?.label);
@@ -82,7 +85,37 @@ const RegisterForm = () => {
       borderRadius: "10px",
     }),
   };
+  
+  //jwt implementation
+  const [token, setToken] = useState(null);
 
+  const onSubmit: SubmitHandler<TRegisterFormData> = async (
+    data: TRegisterFormData
+  ) => {
+    try {
+      const response = await handleRequest(data);
+      const token = response.headers.get('Authorization');
+      setToken(token);
+      notification(
+        'Please verify your email to confirm your registration.',
+        'success'
+      );
+      navigate(LOGIN);
+    } catch (error: any) {
+      console.error(error.response.data.message);
+    }
+  };
+
+  const handleRequest = async (data: TRegisterFormData) => {
+    return fetch('http://localhost:8080/register/account', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  };
+  //jwt implementation
   return (
     <FormProvider {...methods}>
       <form
@@ -190,6 +223,13 @@ const RegisterForm = () => {
           testId="register-button"
           type="submit"
           style="text-secondaryColor text-xl border border-secondaryColor rounded-[10px] py-3 mx-4 my-7 w-[20%] hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor "
+          onClick={() => {
+            handleSubmit(onSubmit, onInvalid)();
+            if (token) {
+              // Store the token in local storage
+              localStorage.setItem('token', token);
+            }
+          }}
         >
           Register
         </Button>
