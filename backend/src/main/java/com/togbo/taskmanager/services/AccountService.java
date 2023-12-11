@@ -1,6 +1,8 @@
 package com.togbo.taskmanager.services;
 
 import com.togbo.taskmanager.dto.AccountEmployeeDto;
+import com.togbo.taskmanager.dto.mapper.AccountMapper;
+import com.togbo.taskmanager.dto.mapper.EmployeeMapper;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
@@ -57,25 +59,11 @@ public class AccountService {
 
    */
     public void saveAccount(AccountEmployeeDto accountEmployeeDTO){
-        Account account = new Account();
-        account.setEmail(accountEmployeeDTO.getEmail());
-        account.setPassword(passwordEncoder.encode(accountEmployeeDTO.getPassword()));
-        account.setCreatedDate(accountEmployeeDTO.getCreatedDate());
-        account.setEmailVerified(false);
-        account.setRole(accountEmployeeDTO.getRole());
-        account.setVerificationCode(UUID.randomUUID());
-
-        Employee employee = new Employee();
-        employee.setId(accountEmployeeDTO.getId());
-        employee.setFirstName(accountEmployeeDTO.getFirstName());
-        employee.setLastName(accountEmployeeDTO.getLastName());
-        employee.setBirthDate(accountEmployeeDTO.getBirthDate());
-        employee.setAccount(account);
+        Account account = AccountMapper.mapToAccount(accountEmployeeDTO);
+        Employee employee = EmployeeMapper.mapToEmployee(accountEmployeeDTO, account);
 
         accountRepository.save(account);
         employeeRepository.save(employee);
-
-
     }
 
     public void deleteAccount(Long id, Account account) {

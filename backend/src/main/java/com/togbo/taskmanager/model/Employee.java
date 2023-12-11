@@ -50,11 +50,25 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, LocalDate birthDate, Account account) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.account = account;
+    /*   public Employee() {
+        }
+
+        public Employee(String firstName, String lastName, LocalDate birthDate, Account account) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.birthDate = birthDate;
+            this.account = account;
+        }
+
+      */
+    private Employee(EmployeeBuilder employeeBuilder){
+        this.firstName = employeeBuilder.firstName;
+        this.lastName = employeeBuilder.lastName;
+        this.birthDate = employeeBuilder.birthDate;
+        this.account = employeeBuilder.account;
+        this.projects = employeeBuilder.projects;
+        this.tasks = employeeBuilder.tasks;
+        this.team = employeeBuilder.team;
     }
 
     public Long getId() {
@@ -123,5 +137,42 @@ public class Employee {
                 ", birthDate=" + birthDate +
                 ", account=" + account +
                 '}';
+    }
+
+    public static class EmployeeBuilder{
+        //required fields
+        private String firstName;
+        private String lastName;
+        private LocalDate birthDate;
+        private Account account;
+
+        //optional fields
+        private Set<Project> projects = new HashSet<>();
+        private Set<Task> tasks = new HashSet<>();
+        private Team team;
+
+
+        public EmployeeBuilder(String firstName, String lastName, LocalDate birthDate, Account account) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.birthDate = birthDate;
+            this.account = account;
+        }
+
+        public void setProjects(Set<Project> projects) {
+            this.projects = projects;
+        }
+
+        public void setTasks(Set<Task> tasks) {
+            this.tasks = tasks;
+        }
+
+        public void setTeam(Team team) {
+            this.team = team;
+        }
+
+        public Employee build(){
+            return new Employee(this);
+        }
     }
 }
