@@ -1,14 +1,18 @@
 package com.togbo.taskmanager.services;
 
 import com.togbo.taskmanager.dto.AccountEmployeeDto;
+import com.togbo.taskmanager.enums.Role;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.repository.AccountRepository;
 import com.togbo.taskmanager.repository.EmployeeRepository;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -20,26 +24,13 @@ class AccountServiceTest {
     private AccountService accountServiceTest;
     @Mock
     private AccountRepository accountRepositoryTest;
-    @Mock
-    private EmployeeRepository employeeRepositoryTest;
-    @Mock
-    private PasswordEncoder passwordEncoder;
-    @Mock
-    private EmailService emailService;
     AutoCloseable autoCloseable;
-    @Mock
-    AccountEmployeeDto accountEmployeeDto;
     @Mock
     Account account;
 
     @BeforeEach
     void setUp(){
         autoCloseable = MockitoAnnotations.openMocks(this);
-        accountServiceTest = new AccountService(
-                accountRepositoryTest,
-                passwordEncoder,
-                emailService,
-                employeeRepositoryTest);
     }
 
     @AfterEach
@@ -59,13 +50,29 @@ class AccountServiceTest {
     }
 
     @Test
-    @Disabled
+    @DisplayName("Delete the object from the DB")
     void deleteAccount() {
+        //given
+        mock(Account.class);
+        mock(AccountRepository.class, Mockito.CALLS_REAL_METHODS);
+
+        //when
+        //when(accountRepositoryTest.delete(account)).thenReturn(account);
+
+        //then
+        assertThat(accountRepositoryTest.findByEmail(account.getEmail())).isNull();
     }
 
     @Test
-    @Disabled
     void updateAccount() {
+        mock(Account.class);
+        mock(AccountRepository.class);
+        Account newAccount = new Account("newEmail@yahoo.com","123456", Role.DEVELOPER);
+
+        Optional<Account> testedAccount = accountRepositoryTest.findById(1L);
+        accountRepositoryTest.save(newAccount);
+
+        assertThat(accountRepositoryTest.findByEmail("newEmail@yahoo.com"));
     }
 
     @Test

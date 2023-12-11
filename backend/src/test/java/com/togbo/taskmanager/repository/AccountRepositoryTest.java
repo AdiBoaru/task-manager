@@ -27,6 +27,7 @@ class AccountRepositoryTest {
     void setUp() {
         String email = "test@yahoo.com";
         account = new Account(email, "12345", Role.TESTER);
+
         accountRepository.save(account);
     }
 
@@ -38,10 +39,15 @@ class AccountRepositoryTest {
 
     //Test Case Success
     @Test
-    void checkIfAccountFindByEmailExists(){
+    void shouldFindUserByEmail(){
+        //given
         Account accountExpected = accountRepository.findByEmail("test@yahoo.com");
+
+        //when
+        //then
         assertThat(account.getEmail()).isEqualTo(accountExpected.getEmail());
         assertThat(account.getRole()).isEqualTo(Role.TESTER);
+        assertThat(account.getPassword()).isEqualTo("12345");
 
     }
 
