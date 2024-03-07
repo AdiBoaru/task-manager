@@ -24,7 +24,10 @@ public class EmailService {
     private final PasswordEncoder passwordEncoder;
     private static final String COMPANY_NAME = "Task Flow";
 
-    public EmailService(AccountRepository accountRepository, EmployeeRepository employeeRepository, JavaMailSender javaMailSender, PasswordEncoder passwordEncoder) {
+    public EmailService(AccountRepository accountRepository,
+                        EmployeeRepository employeeRepository,
+                        JavaMailSender javaMailSender,
+                        PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
         this.employeeRepository = employeeRepository;
         this.javaMailSender = javaMailSender;

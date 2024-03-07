@@ -6,21 +6,16 @@ import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name = "projects")
 public class Project {
-  /*  @Id
-    @Column(columnDefinition = "VARCHAR(36)")
-    private UUID uuid;
-
-   */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotNull
     @Size(min = 2, message = "Title should have at least 2 characters")
     private String title;
@@ -30,7 +25,6 @@ public class Project {
     @NotNull
     @Column(name = "creation_date")
     private LocalDate creationDate;
-
     @Column(name = "team_size")
     private Integer teamSize;
     @Column(name = "due_date")
@@ -117,6 +111,19 @@ public class Project {
 
     public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return Objects.equals(id, project.id) && Objects.equals(title, project.title) && Objects.equals(description, project.description) && Objects.equals(creationDate, project.creationDate) && Objects.equals(teamSize, project.teamSize) && Objects.equals(dueDate, project.dueDate) && Objects.equals(employees, project.employees) && Objects.equals(tasks, project.tasks);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, creationDate, teamSize, dueDate, employees, tasks);
     }
 
     @Override

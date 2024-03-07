@@ -17,26 +17,18 @@ import java.util.UUID;
 @Entity
 @Table(name = "accounts")
 public class Account implements UserDetails {
-    /*
-    @Id
-    @Column(columnDefinition = "VARCHAR(36)")
-    private UUID uuid;
-*/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Email
     @NotBlank
     private String email;
     private String password;
     @Column(name = "created_date")
     private LocalDate createdDate;
-
     @Enumerated(EnumType.STRING)
     private Role role;
-    @Column(
-            name = "verification_code")
+    @Column(name = "verification_code")
     private UUID verificationCode;
     @Column(name = "email_verified")
     private Boolean isEmailVerified;
@@ -45,7 +37,6 @@ public class Account implements UserDetails {
     private List<Token> tokens;
     public Account() {
     }
-
 
     public Account(String email, String password, LocalDate createdDate, Role role, UUID verificationCode, Boolean isEmailVerified) {
         this.email = email;
@@ -106,16 +97,6 @@ public class Account implements UserDetails {
         this.id = id;
     }
 
-  /*  public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-*/
-
     public Role getRole() {
         return role;
     }
@@ -130,10 +111,6 @@ public class Account implements UserDetails {
 
     public void setEmailVerified(Boolean emailVerified) {
         isEmailVerified = emailVerified;
-    }
-
-    public UUID getVerificationCode() {
-        return verificationCode;
     }
 
     public void setVerificationCode(UUID verificationCode) {

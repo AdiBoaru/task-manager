@@ -15,13 +15,6 @@ import java.util.Set;
 @Entity
 @Table(name = "employees")
 public class Employee {
-    /* @Id
-     @GeneratedValue
-     @Column(columnDefinition = "VARCHAR(36)")
-     private UUID uuid;
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "first_name")
     private String firstName;
@@ -50,18 +43,16 @@ public class Employee {
     public Employee() {
     }
 
-    /*   public Employee() {
-        }
 
-        public Employee(String firstName, String lastName, LocalDate birthDate, Account account) {
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.birthDate = birthDate;
-            this.account = account;
-        }
+    public Employee(String firstName, String lastName, LocalDate birthDate, Account account) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.account = account;
+    }
 
-      */
-    private Employee(EmployeeBuilder employeeBuilder){
+
+    private Employee(EmployeeBuilder employeeBuilder) {
         this.firstName = employeeBuilder.firstName;
         this.lastName = employeeBuilder.lastName;
         this.birthDate = employeeBuilder.birthDate;
@@ -78,16 +69,6 @@ public class Employee {
     public void setId(Long id) {
         this.id = id;
     }
-
- /*   public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
-*/
-
     public Team getTeam() {
         return team;
     }
@@ -139,7 +120,7 @@ public class Employee {
                 '}';
     }
 
-    public static class EmployeeBuilder{
+    public static class EmployeeBuilder {
         //required fields
         private String firstName;
         private String lastName;
@@ -171,7 +152,7 @@ public class Employee {
             this.team = team;
         }
 
-        public Employee build(){
+        public Employee build() {
             return new Employee(this);
         }
     }

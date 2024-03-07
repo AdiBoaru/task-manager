@@ -24,14 +24,13 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody AccountEmployeeDto accountEmployeeDto
-    ) {
+            @RequestBody AccountEmployeeDto accountEmployeeDto) {
         return ResponseEntity.ok(authenticationService.register(accountEmployeeDto));
     }
+
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest request
-    ) {
+            @RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
