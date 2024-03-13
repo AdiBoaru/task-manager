@@ -1,4 +1,4 @@
-package com.togbo.taskmanager.services;
+package java.com.togbo.taskmanager.services;
 
 import com.togbo.taskmanager.dto.AccountEmployeeDto;
 import com.togbo.taskmanager.enums.Role;
@@ -6,11 +6,11 @@ import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.repository.AccountRepository;
 import com.togbo.taskmanager.repository.EmployeeRepository;
+import com.togbo.taskmanager.services.AccountService;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 

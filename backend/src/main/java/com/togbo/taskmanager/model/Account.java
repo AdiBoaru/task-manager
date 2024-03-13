@@ -5,9 +5,6 @@ import com.togbo.taskmanager.model.token.Token;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -16,7 +13,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "accounts")
-public class Account implements UserDetails {
+public class Account{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -59,35 +56,6 @@ public class Account implements UserDetails {
      * fix parameter of simplegrantedauthorirty
      * @return
      */
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(Role.TEAM_LEAD.name()));
-    }
-
-    @Override
-    public String getUsername() {
-        return null;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
 
     public Long getId() {
         return id;
@@ -123,6 +91,10 @@ public class Account implements UserDetails {
 
     public void setEmailVerified(boolean emailVerified) {
         this.isEmailVerified = emailVerified;
+    }
+
+    public UUID getVerificationCode() {
+        return verificationCode;
     }
 
     public String getEmail() {

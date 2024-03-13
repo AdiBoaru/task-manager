@@ -41,9 +41,11 @@ class AccountRepositoryTest {
     @Test
     void shouldFindUserByEmail(){
         //given
-        Account accountExpected = accountRepository.findByEmail("test@yahoo.com");
+        String email = "test@yahoo.com";
 
         //when
+        Account accountExpected = accountRepository.findByEmail(email);
+
         //then
         assertThat(account.getEmail()).isEqualTo(accountExpected.getEmail());
         assertThat(account.getRole()).isEqualTo(Role.TESTER);
@@ -54,7 +56,13 @@ class AccountRepositoryTest {
     //Test Case Failure
     @Test
     void checkIfAccountNotEqualWithExpectedEmail(){
-        Account accountExpected = accountRepository.findByEmail("te@yahoo.com");
+        //given
+        String wrongEmail = "te@yahoo.com";
+
+        //when
+        Account accountExpected = accountRepository.findByEmail(wrongEmail);
+
+        //then
         assertThat(accountExpected).isNull();
     }
 

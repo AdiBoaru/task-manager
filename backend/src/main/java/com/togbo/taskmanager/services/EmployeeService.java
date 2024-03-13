@@ -11,18 +11,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @Service
 public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+
     public void addEmployee(Employee employee){
         employeeRepository.save(employee);
-    }
-
-    public void deleteEmployee(Long id, Employee employee){
-        employeeRepository.deleteById(id);
     }
 
     public void deleteEmployeeById(Long id){
@@ -31,11 +29,21 @@ public class EmployeeService {
 
     public void updateEmployee(Long id, Employee employee){
         Optional<Employee> foundEmployee = employeeRepository.findById(id);
-        if(foundEmployee.isPresent()){
-            employeeRepository.save(employee);
+        foundEmployee.ifPresent(value -> updateEmployeeFields(value, employee));
+    }
+    private void updateEmployeeFields(Employee foundEmployee, Employee state){
+        checkForNullState(state.getFirstName(), foundEmployee::setFirstName);
+        checkForNullState(state.getLastName(), foundEmployee::setLastName);
+        checkForNullState(state.getBirthDate(), foundEmployee::setBirthDate);
+        checkForNullState(state.getAccount(), foundEmployee::setAccount);
+        checkForNullState(state.getProjects(), foundEmployee::setProjects);
+        checkForNullState(state.getTasks(), foundEmployee::setTasks);
+    }
+    private <T> void checkForNullState(T value, Consumer<T> state){
+        if (value != null){
+            state.accept(value);
         }
     }
-
     public List<Employee> findAll(){
         return employeeRepository.findAll();
     }
@@ -51,6 +59,7 @@ public class EmployeeService {
 
     public void updateEmployeeTeamId(Long employeeId, Team team) {
         Optional<Employee> employee  = employeeRepository.findById(employeeId);
+        //employee.ifPresent(employee.get().setTeam(team));
         if(employee.isPresent()){
             employee.get().setTeam(team);
         }

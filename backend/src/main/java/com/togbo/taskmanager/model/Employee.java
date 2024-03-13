@@ -2,9 +2,6 @@ package com.togbo.taskmanager.model;
 
 import com.togbo.taskmanager.enums.Role;
 import jakarta.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -111,6 +108,22 @@ public class Employee {
         this.account = account;
     }
 
+    public Set<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
+    }
+
+    public Set<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
@@ -122,7 +135,7 @@ public class Employee {
                 '}';
     }
 
-    public static class EmployeeBuilder {
+    private static class EmployeeBuilder {
         //required fields
         private String firstName;
         private String lastName;

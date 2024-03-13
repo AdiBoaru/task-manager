@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/employee")
@@ -27,12 +26,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Employee findById(@PathVariable Long id){
-//        Optional<Employee> employee = Optional.ofNullable(employeeService.findById(id));
-//
-//        return employee.map(value -> new ResponseEntity<>(value, HttpStatus.FOUND))
-//                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
-        return employeeService.findById(id);
+    public ResponseEntity<Employee> findById(@PathVariable Long id){
+        Employee employee = employeeService.findById(id);
+        return ResponseEntity.ok(employee);
     }
 
     @GetMapping("/sort")
