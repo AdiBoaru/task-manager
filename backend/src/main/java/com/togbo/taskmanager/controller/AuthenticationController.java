@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
-/*
+
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/register")
@@ -29,7 +29,7 @@ public class AuthenticationController {
 
     //make use of a mapper
    @PostMapping("/employee")
-    public void registerEmployee(@RequestBody AccountEmployeeDTO accountEmployeeDTO){
+    public void registerEmployee(@RequestBody AccountEmployeeDto accountEmployeeDTO){
         Account account = new Account();
         account.setEmail(accountEmployeeDTO.getEmail());
         account.setPassword(accountEmployeeDTO.getPassword());
@@ -40,7 +40,7 @@ public class AuthenticationController {
         employee.setFirstName(accountEmployeeDTO.getFirstName());
         employee.setLastName(accountEmployeeDTO.getLastName());
         employee.setBirthDate(accountEmployeeDTO.getBirthDate());
-        employee.setRole(accountEmployeeDTO.getRole());
+     //   employee.set(accountEmployeeDTO.getRole());
         employee.setAccount(account);
 
         accountRepository.save(account);
@@ -78,5 +78,4 @@ public class AuthenticationController {
         return url;
     }
 }
-*/
 

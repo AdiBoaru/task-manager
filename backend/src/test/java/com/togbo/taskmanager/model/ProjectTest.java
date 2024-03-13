@@ -2,22 +2,35 @@ package com.togbo.taskmanager.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Description;
 
+import javax.management.DescriptorKey;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProjectTest {
-  /*  @Test
-    public void modelProjectTest(){
-        Project project = new Project("Maraton", "parsi", LocalDate.now(),
-                LocalDate.of(2025, 10, 10));
+    @Test
+    @Description("Create Project with 5 params")
+    void createProjectWith5Params() {
+        //given
+        String title = "Project 1";
+        String description = "Project 1 description";
+        LocalDate creationDate = LocalDate.now();
+        Integer teamSize = 5;
+        LocalDate dueDate = LocalDate.of(2024, 12, 23);
+        Set<Employee> employees = new HashSet<>();
+        Set<Task> tasks = new HashSet<>();
 
-        Assertions.assertTrue(project.getTitle().equals("Maraton")
-                && project.getDescription().equals("parsi")
-                && project.getCreationDate().equals(LocalDate.now())
-                && project.getDueDate().equals(LocalDate.of(2025, 10, 10)));
+        //when
+        Project project = new Project(title, description, teamSize, dueDate);
+
+        //then
+        assertEquals(title, project.getTitle());
+        assertEquals(description, project.getDescription());
+        assertEquals(creationDate, project.getCreationDate());
+        assertEquals(teamSize, project.getTeamSize());
     }
-
-   */
 }

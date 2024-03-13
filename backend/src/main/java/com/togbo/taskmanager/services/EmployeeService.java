@@ -30,6 +30,7 @@ public class EmployeeService {
     public void updateEmployee(Long id, Employee employee){
         Optional<Employee> foundEmployee = employeeRepository.findById(id);
         foundEmployee.ifPresent(value -> updateEmployeeFields(value, employee));
+
     }
     private void updateEmployeeFields(Employee foundEmployee, Employee state){
         checkForNullState(state.getFirstName(), foundEmployee::setFirstName);
@@ -38,6 +39,8 @@ public class EmployeeService {
         checkForNullState(state.getAccount(), foundEmployee::setAccount);
         checkForNullState(state.getProjects(), foundEmployee::setProjects);
         checkForNullState(state.getTasks(), foundEmployee::setTasks);
+
+        employeeRepository.save(foundEmployee);
     }
     private <T> void checkForNullState(T value, Consumer<T> state){
         if (value != null){
