@@ -16,6 +16,7 @@ import {
 } from "../../interfaces/TCreateTeamData";
 import Button from "../../UI/Button/Button";
 import FormInput from "../../UI/FormInput/FormInput";
+import { useEffect, useState } from "react";
 
 const NewTeamForm = () => {
   const methods = useForm<TCreateTeamData>({
@@ -46,6 +47,55 @@ const NewTeamForm = () => {
     employeesField.onChange(option);
   };
 
+
+  const [employeeOptions, setEmployeeOptions] = useState([]);
+  const fetchEmployeeOptions = async () => {
+  try {
+    const response = await fetch('http://localhost:8080/employee'); 
+    if (response.ok) {
+      const data =  await response.json();
+      console.log('Fetched employee data:', data); // Debugging statement
+      const options = data.map((employee: { id: any; firstName: any; lastName: any; }) => ({
+        value: employee.id,
+        label: `${employee.firstName} ${employee.lastName}`,
+      }));
+      setEmployeeOptions(options); // Set the employee options
+    } else {
+      console.error('Failed to fetch employees');
+    }
+  } catch (error) {
+    console.error('Error fetching employees:', error);
+  }
+};
+
+
+/* from here
+  const [employeeOptions, setEmployeeOptions] = useState([]);
+
+  useEffect(() => {
+    fetchEmployeeOptions(); // Fetch employee options when the component mounts
+  }, []);
+  
+  const fetchEmployeeOptions = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/employee'); 
+      if (response.ok) {
+        const data =  await response.json();
+        console.log('Fetched employee data:', data);
+        const options = data.map((employee: { id: any; firstName: any; lastName: any; }) => ({
+          value: employee.id,
+          label: `${employee.firstName} ${employee.lastName}`,
+        }));
+        setEmployeeOptions(options); // Set the employee options
+      } else {
+        console.error('Failed to fetch employees');
+      }
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
+  //till here recently addd 
+*/
   const colorStyles = {
     control: (styles: CSSObjectWithLabel) => ({
       ...styles,
@@ -90,11 +140,14 @@ const NewTeamForm = () => {
                 menuPosition="fixed"
                 menuPortalTarget={document.body}
                 onChange={handleEmployeesPick}
-                options={[
+                
+                options={fetchEmployeeOptions}
+                /*{[
                   { value: "Toghi", label: "Toghi", id: "1" },
                   { value: "Ditz", label: "Ditz", id: "2" },
                   { value: "Cici", label: "Cici", id: "3" },
                 ]}
+                */
                 isMulti
                 placeholder="Choose your employees"
                 styles={colorStyles}
