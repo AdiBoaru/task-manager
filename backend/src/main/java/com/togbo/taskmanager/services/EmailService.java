@@ -10,7 +10,6 @@ import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -21,17 +20,14 @@ public class EmailService {
     private final AccountRepository accountRepository;
     private final EmployeeRepository employeeRepository;
     private final JavaMailSender javaMailSender;
-    private final PasswordEncoder passwordEncoder;
     private static final String COMPANY_NAME = "Task Flow";
 
     public EmailService(AccountRepository accountRepository,
                         EmployeeRepository employeeRepository,
-                        JavaMailSender javaMailSender,
-                        PasswordEncoder passwordEncoder) {
+                        JavaMailSender javaMailSender) {
         this.accountRepository = accountRepository;
         this.employeeRepository = employeeRepository;
         this.javaMailSender = javaMailSender;
-        this.passwordEncoder = passwordEncoder;
     }
 
     public void register(AccountEmployeeDto accountEmployeeDTO, String url) throws MessagingException, UnsupportedEncodingException {
@@ -41,7 +37,7 @@ public class EmailService {
 
         Account account = new Account();
         account.setEmail(accountEmployeeDTO.getEmail());
-        account.setPassword(passwordEncoder.encode(accountEmployeeDTO.getPassword()));
+        account.setPassword(accountEmployeeDTO.getPassword());
         account.setCreatedDate(accountEmployeeDTO.getCreatedDate());
         account.setEmailVerified(false);
         account.setRole(accountEmployeeDTO.getRole());

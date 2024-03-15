@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TeamService {
@@ -22,10 +23,16 @@ public class TeamService {
         teamRepository.save(team);
     }
 
+    public void updateTeam(Team team){
+        teamRepository.save(team);
+    }
     public Team findByName(String name){
         return teamRepository.findByName(name);
     }
 
+    public Optional<Team> findById(Long id){
+        return teamRepository.findById(id);
+    }
     public List<Team> findAll(){
         return teamRepository.findAll();
     }
@@ -34,4 +41,7 @@ public class TeamService {
         return teamRepository.findAll(sort);
     }
 
+    public void deleteById(Long id){
+        teamRepository.deleteById(id);
+    }
 }

@@ -9,7 +9,7 @@ public class TeamEmployeeDto {
 
     private String name;
 
-    private Set<Employee> employees = new HashSet<>();
+    private Set<Employee> employees;
 
     public TeamEmployeeDto(String name, Set<Employee> employeesTeam) {
         this.name = name;

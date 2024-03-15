@@ -10,8 +10,6 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.time.LocalDate;
-import java.util.UUID;
 
 @Component
 public class DataLoader {
@@ -53,21 +51,23 @@ public class DataLoader {
     public DataSourceInitializer dataSourceInitializer() {
         DataSourceInitializer initializer = new DataSourceInitializer();
         initializer.setDataSource(dataSource);
-        initializer.setDatabasePopulator(databasePopulator());
+        initializer.setDatabasePopulator(databasePopulate());
         return initializer;
     }
 
-    private ResourceDatabasePopulator databasePopulator() {
-        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+    private ResourceDatabasePopulator databasePopulate() {
+        ResourceDatabasePopulator populate= new ResourceDatabasePopulator();
         Resource sqlAccount = new ClassPathResource("data_account.sql");
         Resource sqlTask = new ClassPathResource("data_task.sql");
         Resource sqlEmployee = new ClassPathResource("data_employee.sql");
         Resource sqlProject = new ClassPathResource("data_project.sql");
-        populator.addScript(sqlAccount);
-        populator.addScript(sqlTask);
-        populator.addScript(sqlEmployee);
-        populator.addScript(sqlProject);
-        return populator;
+        Resource sqlTeam = new ClassPathResource("data_team.sql");
+        populate.addScript(sqlAccount);
+        populate.addScript(sqlTask);
+        populate.addScript(sqlEmployee);
+        populate.addScript(sqlProject);
+        populate.addScript(sqlTeam);
+        return populate;
     }
 
 }

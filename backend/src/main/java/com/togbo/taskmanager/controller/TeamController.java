@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/team")
 public class TeamController {
 
@@ -63,7 +64,16 @@ public class TeamController {
 
         return new ResponseEntity<>(team, HttpStatus.CREATED);
     }
-
+    @PutMapping("{/id}")
+    public void updateTeam(@PathVariable Long id, @RequestBody Team team){
+        if(teamService.findById(id).isPresent()){
+            teamService.updateTeam(team);
+        }
+    }
+    @DeleteMapping("/{id}")
+    public void deleteTeam(@PathVariable Long id){
+        teamService.deleteById(id);
+    }
 
 
 }

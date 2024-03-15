@@ -8,8 +8,6 @@ import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
 import com.togbo.taskmanager.repository.EmployeeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,13 +18,12 @@ import java.util.UUID;
 public class AccountService {
 
     private AccountRepository accountRepository;
-    private PasswordEncoder passwordEncoder;
+ //   private PasswordEncoder passwordEncoder;
     private EmailService emailService;
     private EmployeeRepository employeeRepository;
 
-    public AccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder, EmailService emailService, EmployeeRepository employeeRepository) {
+    public AccountService(AccountRepository accountRepository, EmailService emailService, EmployeeRepository employeeRepository) {
         this.accountRepository = accountRepository;
-        this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
         this.employeeRepository = employeeRepository;
     }
