@@ -39,6 +39,7 @@ public class EmployeeService {
         checkForNullState(state.getAccount(), foundEmployee::setAccount);
         checkForNullState(state.getProjects(), foundEmployee::setProjects);
         checkForNullState(state.getTasks(), foundEmployee::setTasks);
+        checkForNullState(state.getTeam(), foundEmployee::setTeam);
 
         employeeRepository.save(foundEmployee);
     }

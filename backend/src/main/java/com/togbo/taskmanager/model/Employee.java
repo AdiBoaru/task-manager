@@ -1,5 +1,6 @@
 package com.togbo.taskmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.togbo.taskmanager.enums.Role;
 import jakarta.persistence.*;
 
@@ -37,6 +38,7 @@ public class Employee {
 
     @ManyToOne
     @JoinColumn(name = "team_id")
+    @JsonIgnore
     private Team team;
 
     public Employee() {
