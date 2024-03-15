@@ -64,7 +64,7 @@ public class TeamController {
 
         return new ResponseEntity<>(team, HttpStatus.CREATED);
     }
-    @PutMapping("{/id}")
+    @PutMapping("/{id}")
     public void updateTeam(@PathVariable Long id, @RequestBody Team team){
         if(teamService.findById(id).isPresent()){
             teamService.updateTeam(team);
