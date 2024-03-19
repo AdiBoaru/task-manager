@@ -1,20 +1,15 @@
-import { useEffect, useState } from "react";
-import TeamTable from "../../UI/Table/TeamTable/TeamTable";
+import Table from "../../UI/Table/Table";
+import { useGetTeamsQuery } from "../../services/api/api";
 
 const TeamsPage = () => {
-  const [teams, setTeams] = useState([]);
-  const URL = "http://localhost:8080/team";
+  const { data } = useGetTeamsQuery();
+  console.log(data);
 
-  useEffect(() => {
-    fetch(URL)
-      .then((res) => res.json())
-      .then((teams) => setTeams(teams));
-  }, []);
-
+  if (!data) return null;
 
   return (
     <div className="flex items-center justify-center h-[calc(100vh-200px)] w-full bg-primaryColor text-primaryColor">
-      <TeamTable  data={teams}/>
+      <Table data={data} />
     </div>
   );
 };

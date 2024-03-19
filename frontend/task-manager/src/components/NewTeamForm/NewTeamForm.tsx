@@ -47,29 +47,29 @@ const NewTeamForm = () => {
     employeesField.onChange(option);
   };
 
-
   const [employeeOptions, setEmployeeOptions] = useState([]);
   const fetchEmployeeOptions = async () => {
-  try {
-    const response = await fetch('http://localhost:8080/employee'); 
-    if (response.ok) {
-      const data =  await response.json();
-      console.log('Fetched employee data:', data); // Debugging statement
-      const options = data.map((employee: { id: any; firstName: any; lastName: any; }) => ({
-        value: employee.id,
-        label: `${employee.firstName} ${employee.lastName}`,
-      }));
-      setEmployeeOptions(options); // Set the employee options
-    } else {
-      console.error('Failed to fetch employees');
+    try {
+      const response = await fetch("http://localhost:8080/employee");
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Fetched employee data:", data); // Debugging statement
+        const options = data.map(
+          (employee: { id: any; firstName: any; lastName: any }) => ({
+            value: employee.id,
+            label: `${employee.firstName} ${employee.lastName}`,
+          })
+        );
+        setEmployeeOptions(options); // Set the employee options
+      } else {
+        console.error("Failed to fetch employees");
+      }
+    } catch (error) {
+      console.error("Error fetching employees:", error);
     }
-  } catch (error) {
-    console.error('Error fetching employees:', error);
-  }
-};
+  };
 
-
-/* from here
+  /* from here
   const [employeeOptions, setEmployeeOptions] = useState([]);
 
   useEffect(() => {
@@ -106,73 +106,8 @@ const NewTeamForm = () => {
       zIndex: 9999,
     }),
   };
+
   return (
-    <FormProvider {...methods}>
-      <form
-        data-testid="create-project-form"
-        className="flex flex-col items-center justify-start pt-8 pb-16 px-4 sm:px-8 rounded-md border border-gray-300 max-w-lg w-full"
-        onSubmit={handleSubmit(onSubmit, onInvalid)}
-      >
-        <FormInput
-          testId="team-name"
-          inputTestId="team-name-input"
-          errorTestId="team-name-error"
-          labelStyle="text-gray-700 text-lg font-medium mb-2"
-          inputStyle="w-full p-3 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500"
-          placeholder="Enter your team name"
-          type="text"
-          labelText="Team name"
-          inputId="teamName"
-          name="teamName"
-          control={control}
-          rules={{ required: "Team name is required" }}
-        />
-        <div className="w-full">
-          <label className="text-gray-700 text-lg font-medium mb-2">Select your team members</label>
-          <Controller
-            name="employeesPick"
-            control={control}
-            rules={{ required: "Choose your employees" }}
-            render={({ field }) => (
-              <Select
-                {...field}
-                id="employees"
-                menuPosition="fixed"
-                menuPortalTarget={document.body}
-                onChange={handleEmployeesPick}
-                
-                options={fetchEmployeeOptions}
-                /*{[
-                  { value: "Toghi", label: "Toghi", id: "1" },
-                  { value: "Ditz", label: "Ditz", id: "2" },
-                  { value: "Cici", label: "Cici", id: "3" },
-                ]}
-                */
-                isMulti
-                placeholder="Choose your employees"
-                styles={colorStyles}
-              />
-            )}
-          />
-          <ErrorMessage
-            errors={errors}
-            name={"employeesPick"}
-            render={({ message }) => (
-              <p className="text-red-600 pl-1">{message}</p>
-            )}
-          />
-        </div>
-        <Button
-          testId="create-button"
-          type="submit"
-          style="text-primaryColor text-lg border border-primaryColor rounded-md py-3 mt-6 w-full bg-primaryColor hover:bg-blue-700 hover:text-white"
-        >
-          Create
-        </Button>
-      </form>
-    </FormProvider>
-  );
-/*  return (
     <FormProvider {...methods}>
       <form
         data-testid="create-project-form"
@@ -236,7 +171,6 @@ const NewTeamForm = () => {
       </form>
     </FormProvider>
   );
-  */
 };
 
 export default NewTeamForm;
