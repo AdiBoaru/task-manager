@@ -5,10 +5,7 @@ import com.togbo.taskmanager.enums.Role;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "employees")
@@ -124,6 +121,26 @@ public class Employee {
 
     public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(id, employee.id) &&
+                Objects.equals(firstName, employee.firstName) &&
+                Objects.equals(lastName, employee.lastName) &&
+                Objects.equals(birthDate, employee.birthDate) &&
+                Objects.equals(account, employee.account) &&
+                Objects.equals(projects, employee.projects) &&
+                Objects.equals(tasks, employee.tasks) &&
+                Objects.equals(team, employee.team);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, birthDate, account, projects, tasks, team);
     }
 
     @Override

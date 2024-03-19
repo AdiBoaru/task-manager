@@ -9,15 +9,25 @@ public class TeamEmployeeDto {
 
     private String name;
 
+    private int size;
     private Set<Employee> employees;
 
-    public TeamEmployeeDto(String name, Set<Employee> employeesTeam) {
+    public TeamEmployeeDto(String name, int size, Set<Employee> employeesTeam) {
         this.name = name;
+        this.size = size;
         this.employees = employeesTeam;
     }
 
     public String getName() {
         return name;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 
     public void setName(String name) {

@@ -9,6 +9,7 @@ public class TeamEmployeeMapper {
     public static Team mapToTeam(TeamEmployeeDto teamDto) {
         return new Team(
                 teamDto.getName(),
+                teamDto.getSize(),
                 teamDto.getEmployees()
         );
     }

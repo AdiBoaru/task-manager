@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -29,49 +30,47 @@ public class TeamController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Team>> findAll(){
+    public ResponseEntity<List<Team>> findAll() {
         List<Team> teams = teamService.findAll();
 
-        if(teams.isEmpty()){
+        if (teams.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         return new ResponseEntity<>(teams, HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public Optional<Team> findById(@PathVariable Long id) {
+        return teamService.findById(id);
+    }
+
     @GetMapping("/sort")
-    public List<Team> findAllSorted(@RequestParam String value, @RequestParam(defaultValue = "ASC") String direction){
+    public List<Team> findAllSorted(@RequestParam String value, @RequestParam(defaultValue = "ASC") String direction) {
         Sort.Direction sortedDirection = Sort.Direction.fromString(direction);
         Sort sort = Sort.by(sortedDirection, value);
         return teamService.findAllSorted(sort);
     }
+
     @PostMapping
-    public ResponseEntity<Team> createTeam(@RequestBody TeamEmployeeDto teamEmployeeDto){
-        Team team = teamService.findByName(teamEmployeeDto.getName());
-
-        if (team != null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> createTeam(@RequestBody TeamEmployeeDto teamEmployeeDto) {
+        if(!teamService.createTeam(teamEmployeeDto)){
+            String badRequestMessage = "A team with " + teamEmployeeDto.getName() + " name, already exits";
+            return ResponseEntity.badRequest().body(badRequestMessage);
         }
-        team = TeamEmployeeMapper.mapToTeam(teamEmployeeDto);
-
-        Set<Employee> employees = teamEmployeeDto.getEmployees();
-
-        if (employees != null && !employees.isEmpty()) {
-            for (Employee employee : employees) {
-                employeeService.updateEmployeeTeamId(employee.getId(), team);
-            }
-        }
-        teamService.createTeam(team);
-
-        return new ResponseEntity<>(team, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}")
-    public void updateTeam(@PathVariable Long id, @RequestBody Team team){
-        if(teamService.findById(id).isPresent()){
-            teamService.updateTeam(team);
+    public void updateTeam(@PathVariable Long id, @RequestBody Team team) {
+        Optional<Team> currentTeam = teamService.findById(id);
+        if (currentTeam.isPresent()) {
+            teamService.updateTeam(currentTeam.get(), team);
         }
     }
+
     @DeleteMapping("/{id}")
-    public void deleteTeam(@PathVariable Long id){
+    public void deleteTeam(@PathVariable Long id) {
         teamService.deleteById(id);
     }
 
