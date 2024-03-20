@@ -1,19 +1,18 @@
-import { headerData } from "../../../constants/tableResource";
 import useTable from "../../../hooks/useTable";
 import ArrowsFilter from "../TableArrowsFilter/ArrowsFilter";
 
-const TableHeader = () => {
+const TableHeader = ({ headerData }: any) => {
   const { handleSortClick, sort } = useTable();
 
   return (
     <thead className="sticky top-0 bg-secondaryColor">
       <tr>
-        {headerData.map(({ id, header }) => (
+        {headerData.map((val: any) => (
           <ArrowsFilter
-            colTitle={header}
+            colTitle={val}
             sortTable={handleSortClick}
             sort={sort}
-            key={id}
+            key={val}
           />
         ))}
       </tr>
