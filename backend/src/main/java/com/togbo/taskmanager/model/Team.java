@@ -12,6 +12,7 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Integer size;
     private String name;
 
     @OneToMany(mappedBy = "team")
@@ -21,8 +22,9 @@ public class Team {
     public Team() {
     }
 
-    public Team(String name, Set<Employee> employeesTeam) {
+    public Team(String name, int size,Set<Employee> employeesTeam) {
         this.name = name;
+        this.size = size;
         this.employeesTeam = employeesTeam;
     }
 
@@ -32,6 +34,14 @@ public class Team {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
     }
 
     public String getName() {
@@ -48,5 +58,15 @@ public class Team {
 
     public void setEmployees(Set<Employee> employees) {
         this.employeesTeam = employees;
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", size=" + size +
+                ", name='" + name + '\'' +
+                ", employeesTeam=" + employeesTeam +
+                '}';
     }
 }
