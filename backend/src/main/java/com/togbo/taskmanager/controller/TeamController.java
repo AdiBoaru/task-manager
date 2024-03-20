@@ -1,9 +1,7 @@
 package com.togbo.taskmanager.controller;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.togbo.taskmanager.dto.TeamEmployeeDto;
-import com.togbo.taskmanager.dto.mapper.TeamEmployeeMapper;
-import com.togbo.taskmanager.model.Employee;
+import com.togbo.taskmanager.exceptions.InvalidTeamException;
 import com.togbo.taskmanager.model.Team;
 import com.togbo.taskmanager.services.EmployeeService;
 import com.togbo.taskmanager.services.TeamService;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -53,7 +50,7 @@ public class TeamController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createTeam(@RequestBody TeamEmployeeDto teamEmployeeDto) {
+    public ResponseEntity<String> createTeam(@RequestBody TeamEmployeeDto teamEmployeeDto) throws InvalidTeamException {
         if(!teamService.createTeam(teamEmployeeDto)){
             String badRequestMessage = "A team with " + teamEmployeeDto.getName() + " name, already exits";
             return ResponseEntity.badRequest().body(badRequestMessage);

@@ -32,9 +32,6 @@ public class EmailService {
 
     public void register(AccountEmployeeDto accountEmployeeDTO, String url) throws MessagingException, UnsupportedEncodingException {
 
-        //accountEmployeeDTO.setVerificationCode(UUID.randomUUID());
-        //countEmployeeDTO.setEmailVerified(false);
-
         Account account = new Account();
         account.setEmail(accountEmployeeDTO.getEmail());
         account.setPassword(accountEmployeeDTO.getPassword());

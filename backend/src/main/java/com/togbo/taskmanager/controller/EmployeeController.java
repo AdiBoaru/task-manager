@@ -37,7 +37,7 @@ public class EmployeeController {
         Sort sort = Sort.by(sortedDirection, value);
         return employeeService.findAllSorted(sort);
     }
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Employee> saveEmployee(@RequestBody Employee employee){
         employeeService.addEmployee(employee);
 

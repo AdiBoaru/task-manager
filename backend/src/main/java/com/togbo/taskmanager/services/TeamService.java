@@ -2,6 +2,8 @@ package com.togbo.taskmanager.services;
 
 import com.togbo.taskmanager.dto.TeamEmployeeDto;
 import com.togbo.taskmanager.dto.mapper.TeamEmployeeMapper;
+import com.togbo.taskmanager.enums.TeamSize;
+import com.togbo.taskmanager.exceptions.InvalidTeamException;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.model.Team;
 import com.togbo.taskmanager.repository.TeamRepository;
@@ -19,15 +21,23 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final EmployeeService employeeService;
 
-    public TeamService(TeamRepository teamRepository, EmployeeService employeeService){
+    public TeamService(TeamRepository teamRepository, EmployeeService employeeService) {
         this.teamRepository = teamRepository;
         this.employeeService = employeeService;
     }
 
-    public boolean createTeam(TeamEmployeeDto teamEmployeeDto){
+    public boolean createTeam(TeamEmployeeDto teamEmployeeDto) throws InvalidTeamException {
         Team team = teamRepository.findByName(teamEmployeeDto.getName());
-        if(isTeamAbsent(team)){
+        if (!isTeamPresent(team)) {
             team = TeamEmployeeMapper.mapToTeam(teamEmployeeDto);
+            System.out.println(team);
+
+            int teamSize = checkTeamSize(teamEmployeeDto.getSize());
+            int employeeSize = teamEmployeeDto.getEmployees().size();
+
+            if(teamSize < employeeSize){
+                throw  new InvalidTeamException("Too many employees for current team size");
+            }
             updateEmployeeID(team.getEmployees(), team);
             teamRepository.save(team);
             return true;
@@ -35,46 +45,60 @@ public class TeamService {
         return false;
     }
 
-    private void updateEmployeeID(Set<Employee> employeeSet, Team team){
-        for(Employee employee : employeeSet){
-            employeeService.updateEmployeeTeamId(employee.getId(),team);
+    private void updateEmployeeID(Set<Employee> employeeSet, Team team) {
+        for (Employee employee : employeeSet) {
+            employeeService.updateEmployeeTeamId(employee.getId(), team);
         }
     }
-    private boolean isTeamAbsent(Team team){
-        return team == null;
+
+    private int checkTeamSize(int size) throws InvalidTeamException {
+        switch (size) {
+            case 3:
+                return TeamSize.SMALL;
+            case 5:
+                return TeamSize.MEDIUM;
+            case 10:
+                return TeamSize.LARGE;
+            default:
+                throw new InvalidTeamException("Team size is invalid");
+        }
     }
-    /**
-     * Update only non-null values of the object Team
-     */
-    public void updateTeam(Team currentTeam, Team team){
-        checkForNullState(team.getName(),currentTeam::setName);
+
+    private boolean isTeamPresent(Team team) {
+        return team != null;
+    }
+
+    public void updateTeam(Team currentTeam, Team team) {
+        checkForNullState(team.getName(), currentTeam::setName);
         checkForNullState(team.getSize(), currentTeam::setSize);
-        checkForNullState(team.getEmployees(),currentTeam::setEmployees);
+        checkForNullState(team.getEmployees(), currentTeam::setEmployees);
 
         teamRepository.save(currentTeam);
     }
-    private <T> void checkForNullState(T team, Consumer<T> state){
-        if(team != null){
+
+    private <T> void checkForNullState(T team, Consumer<T> state) {
+        if (team != null) {
             state.accept(team);
         }
     }
 
-    public Team findByName(String name){
+    public Team findByName(String name) {
         return teamRepository.findByName(name);
     }
 
-    public Optional<Team> findById(Long id){
+    public Optional<Team> findById(Long id) {
         return teamRepository.findById(id);
     }
-    public List<Team> findAll(){
+
+    public List<Team> findAll() {
         return teamRepository.findAll();
     }
 
-    public List<Team> findAllSorted(Sort sort){
+    public List<Team> findAllSorted(Sort sort) {
         return teamRepository.findAll(sort);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         teamRepository.deleteById(id);
     }
 }
