@@ -24,10 +24,6 @@ public class TeamService {
         this.employeeService = employeeService;
     }
 
-    //check if team exists
-    //save only if team doesn`t exits
-    //check if employee have a team or not
-
     public boolean createTeam(TeamEmployeeDto teamEmployeeDto){
         Team team = teamRepository.findByName(teamEmployeeDto.getName());
         if(isTeamAbsent(team)){
