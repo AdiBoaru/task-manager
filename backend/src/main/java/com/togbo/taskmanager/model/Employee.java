@@ -3,6 +3,9 @@ package com.togbo.taskmanager.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.togbo.taskmanager.enums.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -14,13 +17,17 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "first_name")
+    @NotBlank
     private String firstName;
     @Column(name = "last_name")
+    @NotBlank
     private String lastName;
     @Column(name = "birth_date")
+    @NotNull
     private LocalDate birthDate;
 
     @OneToOne
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
@@ -93,6 +100,9 @@ public class Employee {
 
     public LocalDate getBirthDate() {
         return birthDate;
+    }
+    public String getFullName(){
+        return firstName + " " + lastName;
     }
 
     public void setBirthDate(LocalDate birthDate) {
