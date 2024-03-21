@@ -60,7 +60,6 @@ public class TeamController {
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
     @PutMapping("/{id}")
     public void updateTeam(@PathVariable Long id, @RequestBody Team team) {
         Optional<Team> currentTeam = teamService.findById(id);
