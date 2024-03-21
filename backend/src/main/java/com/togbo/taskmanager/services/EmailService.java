@@ -45,7 +45,7 @@ public class EmailService {
         content = content.replace("[[name]]", employee.getFullName());
 
         String verifyToken = account.getVerificationCode().toString();
-        String verifyURL = "http://localhost:8080/register/" + verifyToken;
+        String verifyURL = "http://localhost:8080/register/verify/" + verifyToken;
 
      /*   if (isEmailVerified(verifyURL, account)) {
             account.setEmailVerified(true);

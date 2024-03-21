@@ -76,13 +76,34 @@ public class AccountService {
         }
     }
 
+    public void updateAccountEmailVerified(Account account){
+        account.setEmailVerified(true);
+        accountRepository.save(account);
+    }
+
+    /*TODO
+    de terminat si optimizat metoda updateStateOfAccountOnlyIfNotNull
+     */
     public void updateAccount(Long id, Account account) {
         Optional<Account> foundAccount = accountRepository.findById(id);
         if (foundAccount.isPresent()) {
-            accountRepository.save(account);
+            updateStateOfAccountOnlyIfNotNull(foundAccount.get(), account);
         }
     }
+    private void updateStateOfAccountOnlyIfNotNull(Account existingAccount, Account account){
+        if(account.getEmail() != null){
+            existingAccount.setEmail(account.getEmail());
+        }
+        if(account.getPassword() != null){
+            existingAccount.setPassword(account.getPassword());
+        }
+        if(account.getRole() != null){
+            existingAccount.setRole(account.getRole());
+        }
 
+        accountRepository.save(existingAccount);
+
+    }
     public List<Account> findAll(){
         return accountRepository.findAll();
     }

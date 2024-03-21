@@ -39,13 +39,13 @@ public class Account{
     public Account() {
     }
 
-    public Account(String email, String password, LocalDate createdDate, Role role, UUID verificationCode, Boolean isEmailVerified) {
+    public Account(String email, String password, LocalDate createdDate, Role role, UUID verificationCode) {
         this.email = email;
         this.password = password;
         this.createdDate = createdDate;
         this.role = role;
         this.verificationCode = verificationCode;
-        this.isEmailVerified = isEmailVerified;
+        this.isEmailVerified = false;
     }
 
     public Account(String email, String password, Role role) {

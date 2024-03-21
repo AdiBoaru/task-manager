@@ -16,10 +16,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -57,10 +59,16 @@ public class AccountController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/{token}")
-    public String verifyEmail(@PathVariable String token){
-        System.out.println("we are here");
-        return "redirect:http://localhost:5173/login";
+    @GetMapping("/verify/{token}")
+    public RedirectView verifyEmail(@PathVariable UUID token){
+        Account account = accountRepository.findByVerificationCode(token);
+        if(account != null){
+            accountService.updateAccountEmailVerified(account);
+
+            return new RedirectView("http://localhost:5173/login");
+        }else
+            return new RedirectView("http://localhost:5173/error");
+
     }
     //make use of a mapper
     @PostMapping("/employee")
@@ -72,7 +80,7 @@ public class AccountController {
     public Employee loginEmployee(@RequestBody AccountEmployeeDto accountEmployeeDTO) throws ResourceNotFoundException {
         Account account = accountRepository.findByEmail(accountEmployeeDTO.getEmail());
         Employee employee = null;
-        if (account != null) {
+        if (account != null && account.isEmailVerified()) {
             if (account.getPassword().equals(accountEmployeeDTO.getPassword())) {
                 employee = employeeRepository.findByAccount(account);
             } else

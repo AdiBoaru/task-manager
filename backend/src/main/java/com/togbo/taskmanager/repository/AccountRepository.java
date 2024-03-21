@@ -9,4 +9,5 @@ import java.util.UUID;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
     Account findByEmail(String email);
+    Account findByVerificationCode(UUID token);
 }
