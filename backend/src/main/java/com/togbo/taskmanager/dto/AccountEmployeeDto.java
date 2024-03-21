@@ -30,9 +30,6 @@ public class AccountEmployeeDto{
         this.password = password;
     }
 
-    public String getFullName(){
-        return firstName + " " + lastName;
-    }
     public UUID getVerificationCode() {
         return verificationCode;
     }

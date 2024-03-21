@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/employee")
 public class EmployeeController {
     private final EmployeeService employeeService;
@@ -37,7 +38,7 @@ public class EmployeeController {
         Sort sort = Sort.by(sortedDirection, value);
         return employeeService.findAllSorted(sort);
     }
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Employee> saveEmployee(@RequestBody Employee employee){
         employeeService.addEmployee(employee);
 

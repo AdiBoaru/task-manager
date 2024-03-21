@@ -22,7 +22,7 @@ public class Team {
     public Team() {
     }
 
-    public Team(String name, int size,Set<Employee> employeesTeam) {
+    public Team(String name, int size, Set<Employee> employeesTeam) {
         this.name = name;
         this.size = size;
         this.employeesTeam = employeesTeam;

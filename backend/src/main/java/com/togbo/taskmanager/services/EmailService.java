@@ -17,53 +17,21 @@ import java.util.UUID;
 
 @Service
 public class EmailService {
-    private final AccountRepository accountRepository;
-    private final EmployeeRepository employeeRepository;
     private final JavaMailSender javaMailSender;
     private static final String COMPANY_NAME = "Task Flow";
 
-    public EmailService(AccountRepository accountRepository,
-                        EmployeeRepository employeeRepository,
-                        JavaMailSender javaMailSender) {
-        this.accountRepository = accountRepository;
-        this.employeeRepository = employeeRepository;
+    public EmailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
-    public void register(AccountEmployeeDto accountEmployeeDTO, String url) throws MessagingException, UnsupportedEncodingException {
-
-        //accountEmployeeDTO.setVerificationCode(UUID.randomUUID());
-        //countEmployeeDTO.setEmailVerified(false);
-
-        Account account = new Account();
-        account.setEmail(accountEmployeeDTO.getEmail());
-        account.setPassword(accountEmployeeDTO.getPassword());
-        account.setCreatedDate(accountEmployeeDTO.getCreatedDate());
-        account.setEmailVerified(false);
-        account.setRole(accountEmployeeDTO.getRole());
-        account.setVerificationCode(UUID.randomUUID());
-
-        Employee employee = new Employee();
-        employee.setId(accountEmployeeDTO.getId());
-        employee.setFirstName(accountEmployeeDTO.getFirstName());
-        employee.setLastName(accountEmployeeDTO.getLastName());
-        employee.setBirthDate(accountEmployeeDTO.getBirthDate());
-        employee.setAccount(account);
-
-        accountRepository.save(account);
-        employeeRepository.save(employee);
-
-
-        sendVerificationEmail(accountEmployeeDTO, url);
-    }
-
-    private void sendVerificationEmail(AccountEmployeeDto accountEmployeeDTO, String httpServletRequest) throws MessagingException, UnsupportedEncodingException {
-        String toAddress = accountEmployeeDTO.getEmail();
+    public void sendVerificationEmail(Account account, Employee employee) throws MessagingException, UnsupportedEncodingException {
+        String toAddress = account.getEmail();
         String fromAddress = "adi.boaru@yahoo.com";
         String subject = "Please verify your registration";
+        String verifyLink = "Verify your email to activate your account";
         String content = "Dear [[name]],<br>"
                 + "Please click the link below to verify your registration:<br>"
-                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
+                + "<h3><a href=\"[[URL]]\" target=\"_self\">" + verifyLink + "</a></h3>"
                 + "Thank you,<br>"
                 + COMPANY_NAME;
 
@@ -74,16 +42,27 @@ public class EmailService {
         helper.setTo(toAddress);
         helper.setSubject(subject);
 
-        content = content.replace("[[name]]", accountEmployeeDTO.getFullName());
-        String verifyURL = "http://localhost:5173/login";//httpServletRequest + "/verify?code=" + accountEmployeeDTO.getVerificationCode();
+        content = content.replace("[[name]]", employee.getFullName());
+
+        String verifyToken = account.getVerificationCode().toString();
+        String verifyURL = "http://localhost:8080/register/" + verifyToken;
+
+     /*   if (isEmailVerified(verifyURL, account)) {
+            account.setEmailVerified(true);
+        }
+
+      */
 
         content = content.replace("[[URL]]", verifyURL);
 
         helper.setText(content, true);
 
         javaMailSender.send(message);
-        //make use of spring security token to verify email activation
     }
-    //verify what kind of sender host to use
+
+    private boolean isEmailVerified(String url, Account account) {
+        String token = url.substring(28);
+        return token.equals(account.getVerificationCode().toString());
+    }
 }
 

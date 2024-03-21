@@ -3,13 +3,16 @@ package com.togbo.taskmanager.services;
 import com.togbo.taskmanager.dto.AccountEmployeeDto;
 import com.togbo.taskmanager.dto.mapper.AccountMapper;
 import com.togbo.taskmanager.dto.mapper.EmployeeMapper;
+import com.togbo.taskmanager.exceptions.InvalidAccountException;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
 import com.togbo.taskmanager.repository.EmployeeRepository;
+import jakarta.mail.MessagingException;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,46 +24,49 @@ public class AccountService {
  //   private PasswordEncoder passwordEncoder;
     private EmailService emailService;
     private EmployeeRepository employeeRepository;
-
-    public AccountService(AccountRepository accountRepository, EmailService emailService, EmployeeRepository employeeRepository) {
+    private EmployeeService employeeService;
+    public AccountService(AccountRepository accountRepository, EmailService emailService, EmployeeRepository employeeRepository, EmployeeService employeeService) {
         this.accountRepository = accountRepository;
         this.emailService = emailService;
         this.employeeRepository = employeeRepository;
+        this.employeeService = employeeService;
     }
 
-  /*  public void saveAccount1(AccountEmployeeDto accountEmployeeDTO, String url) throws MessagingException, UnsupportedEncodingException{
-    //accountEmployeeDTO.setVerificationCode(UUID.randomUUID());
-        //countEmployeeDTO.setEmailVerified(false);
+    /**
+     * Saves the provided account and employee details.
+     *
+     * This method retrieves an account by email from the repository. If the account
+     * does not exist, it creates a new account based on the provided DTO and maps
+     * the account and employee data to corresponding entities. Finally, it adds the
+     * employee to the system and persists the account and employee entities.
+     *
+     * @param accountEmployeeDTO
+     * @throws InvalidAccountException
+     */
+    public void saveAccountAndEmployee(AccountEmployeeDto accountEmployeeDTO) throws InvalidAccountException, MessagingException, UnsupportedEncodingException {
+        Account account = accountRepository.findByEmail(accountEmployeeDTO.getEmail());
+        if(!isAccountPresent(account)){
+            account = AccountMapper.mapToAccount(accountEmployeeDTO);
+            UUID verificationCode = generateVerificationToken();
+            account.setVerificationCode(verificationCode);
 
-        Account account = new Account();
-        account.setEmail(accountEmployeeDTO.getEmail());
-        account.setPassword(passwordEncoder.encode(accountEmployeeDTO.getPassword()));
-        account.setCreatedDate(accountEmployeeDTO.getCreatedDate());
-        account.setEmailVerified(false);
-        account.setVerificationCode(UUID.randomUUID());
+            Employee employee = EmployeeMapper.mapToEmployee(accountEmployeeDTO, account);
 
-        Employee employee = new Employee();
-        employee.setId(accountEmployeeDTO.getId());
-        employee.setFirstName(accountEmployeeDTO.getFirstName());
-        employee.setLastName(accountEmployeeDTO.getLastName());
-        employee.setBirthDate(accountEmployeeDTO.getBirthDate());
-        employee.setRole(accountEmployeeDTO.getRole());
-        employee.setAccount(account);
+            emailService.sendVerificationEmail(account,employee);
 
-        accountRepository.save(account);
-        employeeRepository.save(employee);
+            employeeService.addEmployee(employee);
+            accountRepository.save(account);
 
+        }else
+            throw new InvalidAccountException("There is an account with the current email " + accountEmployeeDTO.getEmail());
 
-      //  emailService.sendVerificationEmail(accountEmployeeDTO, url);
     }
 
-   */
-    public void saveAccount(AccountEmployeeDto accountEmployeeDTO){
-        Account account = AccountMapper.mapToAccount(accountEmployeeDTO);
-        Employee employee = EmployeeMapper.mapToEmployee(accountEmployeeDTO, account);
-
-        accountRepository.save(account);
-        employeeRepository.save(employee);
+    private UUID generateVerificationToken(){
+        return UUID.randomUUID();
+    }
+    private boolean isAccountPresent(Account account){
+        return account != null;
     }
 
     public void deleteAccount(Long id, Account account) {
