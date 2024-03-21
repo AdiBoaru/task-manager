@@ -33,7 +33,7 @@ class TeamRepositoryTest {
         account = new Account("test@yahoo.com", "12345", Role.DEVELOPER);
         employees = new HashSet<>();
         employees.add(new Employee("Les", "Des", LocalDate.now(), account));
-        team = new Team("Team Name",employees);
+        team = new Team("Team Name",3,employees);
 
         teamRepository.save(team);
     }
