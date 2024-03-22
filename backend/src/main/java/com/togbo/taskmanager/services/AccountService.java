@@ -16,6 +16,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @Service
 public class AccountService {
@@ -81,28 +82,23 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    /*TODO
-    de terminat si optimizat metoda updateStateOfAccountOnlyIfNotNull
-     */
-    public void updateAccount(Long id, Account account) {
+    public void isAccountUpdated(Long id, Account account) {
         Optional<Account> foundAccount = accountRepository.findById(id);
         if (foundAccount.isPresent()) {
-            updateStateOfAccountOnlyIfNotNull(foundAccount.get(), account);
+            updateStateOfAccountOnlyIfNotNull(foundAccount.get(),account);
         }
     }
     private void updateStateOfAccountOnlyIfNotNull(Account existingAccount, Account account){
-        if(account.getEmail() != null){
-            existingAccount.setEmail(account.getEmail());
-        }
-        if(account.getPassword() != null){
-            existingAccount.setPassword(account.getPassword());
-        }
-        if(account.getRole() != null){
-            existingAccount.setRole(account.getRole());
-        }
+        checkIfStateIsNull(account.getEmail(), existingAccount::setEmail);
+        checkIfStateIsNull(account.getPassword(), existingAccount::setPassword);
+        checkIfStateIsNull(account.getRole(), existingAccount::setRole);
 
         accountRepository.save(existingAccount);
-
+    }
+    private <T> void checkIfStateIsNull(T value, Consumer<T> state){
+        if(value != null){
+            state.accept(value);
+        }
     }
     public List<Account> findAll(){
         return accountRepository.findAll();
@@ -117,7 +113,12 @@ public class AccountService {
         accountRepository.deleteById(id);
     }
 
-    //verify if account already exists by email
+    /**
+     * Verify if the Account is present by email
+     * @param email
+     * @return
+     * @throws ResourceNotFoundException
+     */
     public boolean isAccountPresent(String email) throws ResourceNotFoundException{
         List<Account> accounts = accountRepository.findAll();
         for(Account a : accounts){

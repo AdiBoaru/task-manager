@@ -32,6 +32,7 @@ public class AccountController {
     public final EmailService emailService;
     public final AccountService accountService;
     public final EmployeeService employeeService;
+
     public AccountController(AccountRepository accountRepository,
                              EmployeeRepository employeeRepository,
                              EmailService emailService,
@@ -60,16 +61,17 @@ public class AccountController {
     }
 
     @GetMapping("/verify/{token}")
-    public RedirectView verifyEmail(@PathVariable UUID token){
+    public RedirectView verifyEmail(@PathVariable UUID token) {
         Account account = accountRepository.findByVerificationCode(token);
-        if(account != null){
+        if (account != null) {
             accountService.updateAccountEmailVerified(account);
 
             return new RedirectView("http://localhost:5173/login");
-        }else
+        } else
             return new RedirectView("http://localhost:5173/error");
 
     }
+
     //make use of a mapper
     @PostMapping("/employee")
     public void registerAccountEmployee(@RequestBody AccountEmployeeDto accountEmployeeDTO) throws InvalidAccountException, MessagingException, UnsupportedEncodingException {
@@ -102,11 +104,26 @@ public class AccountController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Account> updateAccount(@PathVariable Long id, @RequestBody Account account) {
+        accountService.isAccountUpdated(id, account);
+
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
     private String getSiteURL(HttpServletRequest request) {
         String url = "http://localhost:5173/login";
         String siteURL = request.getRequestURL().toString();
         //return siteURL.replace(request.getServletPath(), "");
         return url;
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteAccountById(@PathVariable Long id){
+        Optional<Account> account = accountRepository.findById(id);
+        if(account.isPresent()){
+            accountService.deleteAccountById(account.get().getId());
+        }
     }
 }
 
