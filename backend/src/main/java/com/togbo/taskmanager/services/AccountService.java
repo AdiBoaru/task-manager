@@ -8,7 +8,6 @@ import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
-import com.togbo.taskmanager.repository.EmployeeRepository;
 import jakarta.mail.MessagingException;
 import org.springframework.stereotype.Service;
 
@@ -22,20 +21,18 @@ import java.util.function.Consumer;
 public class AccountService {
 
     private AccountRepository accountRepository;
- //   private PasswordEncoder passwordEncoder;
     private EmailService emailService;
-    private EmployeeRepository employeeRepository;
     private EmployeeService employeeService;
-    public AccountService(AccountRepository accountRepository, EmailService emailService, EmployeeRepository employeeRepository, EmployeeService employeeService) {
+
+    public AccountService(AccountRepository accountRepository, EmailService emailService, EmployeeService employeeService) {
         this.accountRepository = accountRepository;
         this.emailService = emailService;
-        this.employeeRepository = employeeRepository;
         this.employeeService = employeeService;
     }
 
     /**
      * Saves the provided account and employee details.
-     *
+     * <p>
      * This method retrieves an account by email from the repository. If the account
      * does not exist, it creates a new account based on the provided DTO and maps
      * the account and employee data to corresponding entities. Finally, it adds the
@@ -46,38 +43,41 @@ public class AccountService {
      */
     public void saveAccountAndEmployee(AccountEmployeeDto accountEmployeeDTO) throws InvalidAccountException, MessagingException, UnsupportedEncodingException {
         Account account = accountRepository.findByEmail(accountEmployeeDTO.getEmail());
-        if(!isAccountPresent(account)){
+        if (!isAccountPresent(account)) {
             account = AccountMapper.mapToAccount(accountEmployeeDTO);
-            UUID verificationCode = generateVerificationToken();
-            account.setVerificationCode(verificationCode);
+            if (emailFormatValidation(account.getEmail())) {
+                UUID verificationCode = generateVerificationToken();
+                account.setVerificationCode(verificationCode);
 
-            Employee employee = EmployeeMapper.mapToEmployee(accountEmployeeDTO, account);
+                Employee employee = EmployeeMapper.mapToEmployee(accountEmployeeDTO, account);
 
-            emailService.sendVerificationEmail(account,employee);
+                emailService.sendVerificationEmail(account, employee);
 
-            employeeService.addEmployee(employee);
-            accountRepository.save(account);
-
-        }else
+                employeeService.addEmployee(employee);
+                accountRepository.save(account);
+            } else
+                throw new InvalidAccountException("Invalid email format");
+        } else
             throw new InvalidAccountException("There is an account with the current email " + accountEmployeeDTO.getEmail());
 
     }
 
-    private UUID generateVerificationToken(){
+    private UUID generateVerificationToken() {
         return UUID.randomUUID();
     }
-    private boolean isAccountPresent(Account account){
+
+    /**
+     * Verify if the Account is not null by given account
+     *
+     * @param account
+     * @return @{code true} if there is an account
+     * {@code false} if there isn`t an account
+     */
+    private boolean isAccountPresent(Account account) {
         return account != null;
     }
 
-    public void deleteAccount(Long id, Account account) {
-        Optional<Account> foundAccount = accountRepository.findById(id);
-        if (foundAccount.isPresent()) {
-            accountRepository.delete(account);
-        }
-    }
-
-    public void updateAccountEmailVerified(Account account){
+    public void updateAccountEmailVerified(Account account) {
         account.setEmailVerified(true);
         accountRepository.save(account);
     }
@@ -85,47 +85,54 @@ public class AccountService {
     public void isAccountUpdated(Long id, Account account) {
         Optional<Account> foundAccount = accountRepository.findById(id);
         if (foundAccount.isPresent()) {
-            updateStateOfAccountOnlyIfNotNull(foundAccount.get(),account);
+            updateStateOfAccountOnlyIfNotNull(foundAccount.get(), account);
         }
     }
-    private void updateStateOfAccountOnlyIfNotNull(Account existingAccount, Account account){
+
+    private void updateStateOfAccountOnlyIfNotNull(Account existingAccount, Account account) {
         checkIfStateIsNull(account.getEmail(), existingAccount::setEmail);
         checkIfStateIsNull(account.getPassword(), existingAccount::setPassword);
         checkIfStateIsNull(account.getRole(), existingAccount::setRole);
 
         accountRepository.save(existingAccount);
     }
-    private <T> void checkIfStateIsNull(T value, Consumer<T> state){
-        if(value != null){
+
+    private <T> void checkIfStateIsNull(T value, Consumer<T> state) {
+        if (value != null) {
             state.accept(value);
         }
     }
-    public List<Account> findAll(){
+
+    public List<Account> findAll() {
         return accountRepository.findAll();
     }
 
-    public Account findById(Long id){
+    public Account findById(Long id) {
         Optional<Account> foundAccount = accountRepository.findById(id);
         return foundAccount.orElse(null);
     }
 
-    public void deleteAccountById(Long id){
+    public void deleteAccountById(Long id) {
         accountRepository.deleteById(id);
     }
 
     /**
-     * Verify if the Account is present by email
-     * @param email
-     * @return
-     * @throws ResourceNotFoundException
+     * Validates the format of an email address.
+     * <p>
+     * The email address must:
+     * - Start with a letter.
+     * - End with either "@yahoo.com" or "@gmail.com".
+     *
+     * @param email The email address to be validated
+     * @return {@code true} if the email address is valid @{code false} if the email addres is invalid
      */
-    public boolean isAccountPresent(String email) throws ResourceNotFoundException{
-        List<Account> accounts = accountRepository.findAll();
-        for(Account a : accounts){
-            if(a.getEmail().equals(email)){
-                throw new ResourceNotFoundException("Account with this email " + email + " already exists");
-            }
+    private boolean emailFormatValidation(String email) {
+        String yahoo = "@yahoo.com";
+        String gmail = "@gmail.com";
+        char firstCharacter = email.charAt(0);
+        if (Character.isLetter(firstCharacter)) {
+            return email.endsWith(yahoo) || email.endsWith(gmail);
         }
-        return true;
+        return false;
     }
 }
