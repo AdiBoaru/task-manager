@@ -14,6 +14,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * TODO
+ * **Task Categories and Tags**:
+ * Allow users to categorize tasks into different categories or assign tags to tasks for better organization and filtering.
+ */
 @Service
 public class TaskService {
     @Autowired
@@ -21,48 +26,48 @@ public class TaskService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public void addTask(Task task){
+
+    public List<Task> findAll() {
+        return taskRepository.findAll();
+    }
+
+    public Optional<Task> findById(Long id) {
+        return taskRepository.findById(id);
+    }
+
+    public List<Task> findTasksByProject(Project project) {
+        return taskRepository.findTasksByProject(project.getId());
+    }
+
+    public List<Task> findTasksByEmployee(Employee employee) {
+        return taskRepository.findTasksByEmployee(employee.getId());
+    }
+
+    public void addTask(Task task) {
         taskRepository.save(task);
     }
 
-    public void deleteTask(Task task){
+    public void deleteTask(Task task) {
         taskRepository.delete(task);
     }
 
-    public void updateTask(UUID id, Task task){
+    public void updateTask(Long id, Task task) {
         Optional<Task> foundTask = taskRepository.findById(id);
-        if(foundTask.isPresent()){
+        if (foundTask.isPresent()) {
             taskRepository.save(task);
         }
     }
 
-    public List<Task> findAll(){
-        return taskRepository.findAll();
-    }
 
-    public Task findById(UUID id){
-        Optional<Task> foundTask = taskRepository.findById(id);
-
-        return foundTask.orElse(null);
-    }
-
-    public void deleteById(UUID id){
+    public void deleteById(Long id) {
         taskRepository.deleteById(id);
     }
 
-    public List<Task> findTasksByProject(Project project){
-        return taskRepository.findTasksByProject(project.getId());
-    }
-
-    public List<Task> findTasksByEmployee(Employee employee){
-        return taskRepository.findTasksByEmployee(employee.getId());
-    }
-
-    public Employee findEmployee(Account account){
+    public Employee findEmployee(Account account) {
         return employeeRepository.findEmployeeByAccount(account.getId());
     }
 
-    public List<Task> findAllSorted(Sort sort){
+    public List<Task> findAllSorted(Sort sort) {
         return taskRepository.findAll(sort);
     }
 }

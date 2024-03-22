@@ -3,6 +3,7 @@ package com.togbo.taskmanager.model;
 import com.togbo.taskmanager.enums.Priority;
 import com.togbo.taskmanager.enums.Status;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -17,7 +18,9 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String name;
+    @NotBlank
     private String description;
     private File file;
     @Column(name = "start_date")
@@ -34,20 +37,15 @@ public class Task {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    public Task() {
-    }
-
-    public Task(String name, String description, File file, LocalDate startDate, LocalDate dueDate, Status status, Priority priority) {
+    public Task(String name, String description, File file, LocalDate dueDate, Status status, Priority priority) {
         this.name = name;
         this.description = description;
         this.file = file;
-        this.startDate = startDate;
+        this.startDate = LocalDate.now();
         this.dueDate = dueDate;
         this.status = status;
         this.priority = priority;
     }
-
-
 
     public void setId(Long id) {
         this.id = id;
