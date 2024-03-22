@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface TaskRepository extends JpaRepository<Task, UUID>, JpaSpecificationExecutor {
+public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExecutor {
     @Query(value = "SELECT t.* FROM tasks t WHERE t.project_id = :projectId", nativeQuery = true)
     List<Task> findTasksByProject(@Param("projectId")Long projectId);
     @Query(value = "SELECT t.* FROM employee_task t where t.employee_id = :employeeId", nativeQuery = true)

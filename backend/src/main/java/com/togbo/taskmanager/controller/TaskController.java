@@ -12,25 +12,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/task")
 public class TaskController {
-    private TaskService taskService;
+    private final TaskService taskService;
 
-    @Autowired
     public TaskController(TaskService taskService){
         this.taskService = taskService;
     }
 
     @GetMapping
-    public List<Task> findAll(){
-        return taskService.findAll();
+    public ResponseEntity<List<Task>> findAllTasks(){
+        List<Task> tasks = taskService.findAll();
+        return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/{id}")
-    public Task findTaskById(@PathVariable UUID id){
+    public Optional<Task> findTaskById(@PathVariable Long id){
         return taskService.findById(id);
     }
 
@@ -60,14 +62,14 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> updateProject(@PathVariable UUID id, @RequestBody Task task){
+    public ResponseEntity<Task> updateProject(@PathVariable Long id, @RequestBody Task task){
         taskService.updateTask(id, task);
 
         return new ResponseEntity<>(task, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Task> deleteProject(@PathVariable UUID id){
+    public ResponseEntity<Task> deleteProject(@PathVariable Long id){
         taskService.deleteById(id);
 
         return  new ResponseEntity<>(null, HttpStatus.OK);

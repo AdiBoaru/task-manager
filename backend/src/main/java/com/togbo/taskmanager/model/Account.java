@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "accounts")
-public class Account{
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,16 +36,8 @@ public class Account{
 
     @OneToMany(mappedBy = "account")
     private List<Token> tokens;
-    public Account() {
-    }
 
-    public Account(String email, String password, LocalDate createdDate, Role role, UUID verificationCode) {
-        this.email = email;
-        this.password = password;
-        this.createdDate = createdDate;
-        this.role = role;
-        this.verificationCode = verificationCode;
-        this.isEmailVerified = false;
+    public Account() {
     }
 
     public Account(String email, String password, Role role) {
@@ -56,8 +48,10 @@ public class Account{
         this.isEmailVerified = false;
     }
 
-    /**todo
+    /**
+     * todo
      * fix parameter of simplegrantedauthorirty
+     *
      * @return
      */
 
