@@ -1,7 +1,6 @@
 package com.togbo.taskmanager.model;
 
 import com.togbo.taskmanager.enums.Role;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
@@ -27,7 +26,7 @@ class AccountTest {
         Boolean isEmailVerified = false;
 
         //when
-        Account account = new Account(email, password, localDate, role, uuid, isEmailVerified);
+        Account account = new Account(email, password, localDate, role, uuid);
 
         //then
         assertEquals("test@yahoo.com", account.getEmail());

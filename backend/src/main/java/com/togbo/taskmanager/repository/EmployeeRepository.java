@@ -15,4 +15,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Employee findEmployeeByAccount(@Param("accountId")Long accountId);
     Employee findByAccount(Account account);
 
+
 }
