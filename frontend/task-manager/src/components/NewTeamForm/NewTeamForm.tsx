@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -7,18 +8,42 @@ import {
   FormProvider,
   Controller,
 } from "react-hook-form";
-import Select, { CSSObjectWithLabel, MultiValue } from "react-select";
+import Select, {
+  CSSObjectWithLabel,
+  MultiValue,
+  SingleValue,
+} from "react-select";
 
 import { newTeamSchema } from "../../constants/formValidations";
 import {
   TCreateTeamData,
   TEmployeesPick,
+  TTeamSizePick,
 } from "../../interfaces/TCreateTeamData";
 import Button from "../../UI/Button/Button";
 import FormInput from "../../UI/FormInput/FormInput";
-import { useEffect, useState } from "react";
+import {
+  useCreateTeamMutation,
+  useGetEmployeesQuery,
+} from "../../services/api/api";
+import { useNavigate } from "react-router-dom";
+import ROUTESPATHS from "../../constants/routePaths";
 
-const NewTeamForm = () => {
+type TNewTeamForm = {
+  handleClose: () => void;
+};
+
+const NewTeamForm = ({ handleClose }: TNewTeamForm) => {
+  const [teamSize, setTeamSize] = useState<number>(0);
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [createTeam] = useCreateTeamMutation();
+  const { data } = useGetEmployeesQuery();
+  const navigate = useNavigate();
+  console.log(data);
+  useEffect(() => {
+    setTeamMembers([]);
+  }, [teamSize]);
+
   const methods = useForm<TCreateTeamData>({
     mode: "onChange",
     resolver: yupResolver<TCreateTeamData>(newTeamSchema),
@@ -28,74 +53,34 @@ const NewTeamForm = () => {
     handleSubmit,
     formState: { errors },
   } = methods;
+
   const onInvalid = (errors: any) => console.error(errors);
   const onSubmit: SubmitHandler<TCreateTeamData> = (data: TCreateTeamData) => {
     console.log(data);
-    fetch("http://localhost:8080/team", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    createTeam(data);
+    navigate(ROUTESPATHS.TEAMS);
   };
+
   const { field: employeesField } = useController({
-    name: "employeesPick",
+    name: "employeesTeam",
     control,
   });
+
+  const { field: teamSizeField } = useController({
+    name: "size",
+    control,
+  });
+
   const handleEmployeesPick = (option: MultiValue<TEmployeesPick>) => {
     employeesField.onChange(option);
+    setTeamMembers(option as any);
   };
 
-  const [employeeOptions, setEmployeeOptions] = useState([]);
-  const fetchEmployeeOptions = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/employee");
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Fetched employee data:", data); // Debugging statement
-        const options = data.map(
-          (employee: { id: any; firstName: any; lastName: any }) => ({
-            value: employee.id,
-            label: `${employee.firstName} ${employee.lastName}`,
-          })
-        );
-        setEmployeeOptions(options); // Set the employee options
-      } else {
-        console.error("Failed to fetch employees");
-      }
-    } catch (error) {
-      console.error("Error fetching employees:", error);
-    }
+  const handleTeamSizePick = (option: SingleValue<TTeamSizePick>) => {
+    teamSizeField.onChange(option?.value);
+    setTeamSize(+option?.value!);
   };
 
-  /* from here
-  const [employeeOptions, setEmployeeOptions] = useState([]);
-
-  useEffect(() => {
-    fetchEmployeeOptions(); // Fetch employee options when the component mounts
-  }, []);
-  
-  const fetchEmployeeOptions = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/employee'); 
-      if (response.ok) {
-        const data =  await response.json();
-        console.log('Fetched employee data:', data);
-        const options = data.map((employee: { id: any; firstName: any; lastName: any; }) => ({
-          value: employee.id,
-          label: `${employee.firstName} ${employee.lastName}`,
-        }));
-        setEmployeeOptions(options); // Set the employee options
-      } else {
-        console.error('Failed to fetch employees');
-      }
-    } catch (error) {
-      console.error('Error fetching employees:', error);
-    }
-  };
-  //till here recently addd 
-*/
   const colorStyles = {
     control: (styles: CSSObjectWithLabel) => ({
       ...styles,
@@ -111,7 +96,7 @@ const NewTeamForm = () => {
     <FormProvider {...methods}>
       <form
         data-testid="create-project-form"
-        className="flex flex-col bg-primaryColor items-center justify-start z-10 pt-20 rounded-[20px] border border-secondaryColor h-[40%] w-[40%] laptop:h-[55%]"
+        className="flex flex-col bg-primaryColor items-center gap-3 z-10 py-10 rounded-[20px] border border-secondaryColor h-auto w-[40%] laptop:h-[55%]"
         onSubmit={handleSubmit(onSubmit, onInvalid)}
       >
         <FormInput
@@ -119,43 +104,77 @@ const NewTeamForm = () => {
           inputTestId="team-name-input"
           errorTestId="team-name-error"
           labelStyle="px-4 text-white text-lg"
-          inputStyle="mb-[10px] w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
+          inputStyle="w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
           placeholder="Enter your team name"
           type="text"
           labelText="Team name"
           inputId="teamName"
-          name="teamName"
+          name="name"
         />
         <div>
           <label className="ml-3 text-white text-lg">
-            Select your team members
+            Select your team size
+            <Controller
+              data-testid="controller"
+              name="size"
+              control={control}
+              rules={{ required: "Choose your team size" }}
+              render={() => (
+                <Select
+                  id="size"
+                  menuPosition="fixed"
+                  menuPortalTarget={document.body}
+                  data-testid="teamSize-select"
+                  onChange={handleTeamSizePick}
+                  options={[
+                    { value: 3, label: "Small (3)" },
+                    { value: 5, label: "Medium (5)" },
+                    { value: 10, label: "Large (10)" },
+                  ]}
+                  placeholder="Choose your team size"
+                  styles={colorStyles}
+                />
+              )}
+            />
           </label>
-          <Controller
-            data-testid="controller"
-            name="employeesPick"
-            control={control}
-            rules={{ required: "Choose your employees" }}
-            render={() => (
-              <Select
-                id="employees"
-                menuPosition="fixed"
-                menuPortalTarget={document.body}
-                data-testid="employees-select"
-                onChange={handleEmployeesPick}
-                options={[
-                  { value: "Toghi", label: "Toghi", id: "1" },
-                  { value: "Ditz", label: "Ditz", id: "2" },
-                  { value: "Cici", label: "Cici", id: "3" },
-                ]}
-                isMulti
-                placeholder="Choose your employees"
-                styles={colorStyles}
-              />
-            )}
-          />
           <ErrorMessage
             errors={errors}
-            name={"employeesPick"}
+            name={"size"}
+            render={({ message }) => (
+              <p className="text-red-600 pl-5">{message}</p>
+            )}
+          />
+        </div>
+        <div>
+          <label className="ml-3 text-white text-lg">
+            Select your team members
+            <Controller
+              data-testid="controller"
+              name="employeesTeam"
+              control={control}
+              rules={{ required: "Choose your employees" }}
+              render={() => (
+                <Select
+                  id="employees"
+                  options={data}
+                  isMulti
+                  menuPosition="fixed"
+                  menuPortalTarget={document.body}
+                  data-testid="employees-select"
+                  onChange={handleEmployeesPick}
+                  getOptionLabel={(option: TEmployeesPick) => option.fullName}
+                  getOptionValue={(option: any) => option.id}
+                  isOptionDisabled={() => teamMembers.length >= teamSize}
+                  placeholder="Choose your employees"
+                  styles={colorStyles}
+                  value={teamMembers}
+                />
+              )}
+            />
+          </label>
+          <ErrorMessage
+            errors={errors}
+            name={"employeesTeam"}
             render={({ message }) => (
               <p className="text-red-600 pl-5 ">{message}</p>
             )}
@@ -164,9 +183,17 @@ const NewTeamForm = () => {
         <Button
           testId="create-button"
           type="submit"
-          style="text-secondaryColor text-xl border border-secondaryColor rounded-[10px] py-3 my-7 w-[25rem] hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor "
+          style="text-secondaryColor text-xl border border-secondaryColor rounded-[10px] py-3 w-[25rem] hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor "
         >
           Create
+        </Button>
+        <Button
+          testId="cancel-button"
+          type="button"
+          style={`text-gray-500 text-xl border border-gray-500 rounded-[10px] py-3 w-[25rem] hover:font-semibold hover:text-white hover:bg-gray-500`}
+          onClick={handleClose}
+        >
+          Cancel
         </Button>
       </form>
     </FormProvider>

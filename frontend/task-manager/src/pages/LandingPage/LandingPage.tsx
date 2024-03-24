@@ -3,7 +3,7 @@ import { BsShieldFillCheck } from "react-icons/bs";
 import { SlOrganization } from "react-icons/sl";
 import { GiProgression } from "react-icons/gi";
 
-import { LOGIN, REGISTER } from "../../constants/routePaths";
+import ROUTEPATHS from "../../constants/routePaths";
 import Logo from "../../UI/Logo/Logo";
 
 const LandingPage = () => {
@@ -13,7 +13,7 @@ const LandingPage = () => {
         <Logo />
         <NavLink
           data-testid="landing-page-login-btn"
-          to={LOGIN}
+          to={ROUTEPATHS.LOGIN}
           className="text-secondaryColor inline-block relative text-3xl transition-all duration-500 before:content-[''] before:absolute before:-bottom-2 before:left-0 before:w-0 before:h-1.5 before:rounded-full before:opacity-0 before:transition-all before:duration-500 before:bg-secondaryColor hover:before:w-full hover:before:opacity-100"
         >
           Login
@@ -31,7 +31,7 @@ const LandingPage = () => {
             <NavLink
               data-testid="landing-page-register-btn"
               className="text-secondaryColor text-xl border border-secondaryColor rounded-md p-3 hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor"
-              to={REGISTER}
+              to={ROUTEPATHS.REGISTER}
             >
               Register Now
             </NavLink>

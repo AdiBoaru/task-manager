@@ -2,7 +2,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { Fragment } from "react";
 
 import { ROUTES } from "../constants/routes";
-import { DEFAULT } from "../constants/routePaths";
+import ROUTEPATHS from "../constants/routePaths";
 import Layout from "./Layout/Layout";
 
 const SwitchRoutes = () => {
@@ -11,7 +11,7 @@ const SwitchRoutes = () => {
   return (
     <Routes data-testid="switch-routes">
       <Route
-        path={DEFAULT}
+        path={ROUTEPATHS.DEFAULT}
         element={
           pathname !== "/landing-page" &&
           pathname !== "/login" &&

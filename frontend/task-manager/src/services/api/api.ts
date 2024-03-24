@@ -5,16 +5,21 @@ import { TTeamsData } from '../../interfaces/TTeamsData';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/' }),
+  tagTypes: ['Team'],
   endpoints: (builder) => 
   ({
     getProjects: builder.query<TProjectsData, void>({
       query: () => 'project',
     }),
-    getTasks: builder.query({
+    getTasks: builder.query<any, void>({
       query: () => `task`,
     }),
     getTeams: builder.query<TTeamsData, void>({
       query: () => `team`,
+      providesTags: ['Team']
+    }),
+    getEmployees: builder.query<any, void>({
+      query: () => `employee`,
     }),
     createProject: builder.mutation({
         query: (resource) => ({
@@ -25,12 +30,13 @@ export const apiSlice = createApi({
     }),
     createTeam: builder.mutation({
       query: (resource) => ({
-        url: '/team/create',
+        url: '/team',
         method: 'POST',
         body: resource,
       }),
+      invalidatesTags: ['Team']
     }),
   }),
 })
 
-export const { useGetProjectsQuery, useGetTasksQuery, useGetTeamsQuery, useCreateProjectMutation, useCreateTeamMutation } = apiSlice;
+export const { useGetProjectsQuery, useGetEmployeesQuery, useGetTasksQuery, useGetTeamsQuery, useCreateProjectMutation, useCreateTeamMutation } = apiSlice;
