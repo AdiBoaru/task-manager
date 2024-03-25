@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**TODo
+ * when create a team name should not contains any number
+ */
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/team")

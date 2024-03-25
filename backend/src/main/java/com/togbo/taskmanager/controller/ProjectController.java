@@ -58,7 +58,7 @@ public class ProjectController {
         return projectService.findAllSorted(sort);
     }
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<Project> createProject(@RequestBody ProjectDto projectDto) {
         Optional<Project> projectOptional = projectService.findByTitle(projectDto.getTitle());
 
