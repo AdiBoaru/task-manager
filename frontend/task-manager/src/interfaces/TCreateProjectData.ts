@@ -7,6 +7,6 @@ export type TEmployeesCount = {
 export type TCreateProjectData = {
     title: string,
     description: string,
-    teamSize?: string,
+    teams?: string[],
     dueDate?: string,
 }

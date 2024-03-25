@@ -20,7 +20,12 @@ const HomePage = () => {
           type="button"
           testId="homePage-addProject-btn"
           onClick={() =>
-            openModalHandler(<NewProjectForm btnStyle={"w-[25rem]"} />)
+            openModalHandler(
+              <NewProjectForm
+                handleClose={closeModalHandler}
+                btnStyle={"w-[25rem]"}
+              />
+            )
           }
         >
           <span className="text-[40px]">
@@ -34,7 +39,9 @@ const HomePage = () => {
           }
           type="button"
           testId="homePage-createTeam-btn"
-          onClick={() => openModalHandler(<NewTeamForm />)}
+          onClick={() =>
+            openModalHandler(<NewTeamForm handleClose={closeModalHandler} />)
+          }
         >
           <span className="text-[40px]">
             <AiOutlineUsergroupAdd />
@@ -43,7 +50,7 @@ const HomePage = () => {
         </Button>
       </div>
       {isOpen && (
-        <Modal handleClose={closeModalHandler} isOpen={isOpen}>
+        <Modal closeModal={closeModalHandler} isOpen={isOpen}>
           {modalContent}
         </Modal>
       )}

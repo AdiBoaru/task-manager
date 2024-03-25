@@ -12,7 +12,7 @@ import { ErrorMessage } from "@hookform/error-message";
 
 import { TRegisterFormData } from "../../interfaces/TRegisterFormData";
 import { registerSchema } from "../../constants/formValidations";
-import { LOGIN } from "../../constants/routePaths";
+import ROUTEPATHS from "../../constants/routePaths";
 import FormInput from "../../UI/FormInput/FormInput";
 import Button from "../../UI/Button/Button";
 import useToastify from "../../hooks/useToastify";
@@ -54,7 +54,7 @@ const RegisterForm = () => {
   };
 */
   const onInvalid = (errors: any) => console.error(errors);
-/*   const onSubmit: SubmitHandler<TRegisterFormData> = async (
+  /*   const onSubmit: SubmitHandler<TRegisterFormData> = async (
     data: TRegisterFormData
   ) => {
     console.log(data);
@@ -85,7 +85,7 @@ const RegisterForm = () => {
       borderRadius: "10px",
     }),
   };
-  
+
   //jwt implementation
   const [token, setToken] = useState(null);
 
@@ -94,24 +94,24 @@ const RegisterForm = () => {
   ) => {
     try {
       const response = await handleRequest(data);
-      const token = response.headers.get('Authorization');
-      setToken(token);
+      const token = response.headers.get("Authorization");
+      setToken(token as any);
       notification(
-        'Please verify your email to confirm your registration.',
-        'success'
+        "Please verify your email to confirm your registration.",
+        "success"
       );
-      navigate(LOGIN);
+      navigate(ROUTEPATHS.LOGIN);
     } catch (error: any) {
       console.error(error.response.data.message);
     }
   };
 
   const handleRequest = async (data: TRegisterFormData) => {
-    return fetch('http://localhost:8080/register/account', {
-      method: 'POST',
+    return fetch("http://localhost:8080/register/account", {
+      method: "POST",
       body: JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
   };
@@ -227,7 +227,7 @@ const RegisterForm = () => {
             handleSubmit(onSubmit, onInvalid)();
             if (token) {
               // Store the token in local storage
-              localStorage.setItem('token', token);
+              localStorage.setItem("token", token);
             }
           }}
         >
@@ -238,7 +238,7 @@ const RegisterForm = () => {
           <NavLink
             data-testid="login-redirect"
             className="text-secondaryColor text-lg"
-            to={LOGIN}
+            to={ROUTEPATHS.LOGIN}
           >
             Login Here
           </NavLink>

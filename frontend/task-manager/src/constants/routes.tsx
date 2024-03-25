@@ -1,61 +1,60 @@
 import { Navigate } from "react-router-dom";
-import {
-  DEFAULT,
-  HOME,
-  LANDING_PAGE,
-  LOGIN,
-  PROJECTS,
-  REGISTER,
-  TEAMS,
-} from "./routePaths";
+import ROUTESPATHS from "./routePaths";
 import LandingPage from "../pages/LandingPage/LandingPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import ProjectsPage from "../pages/ProjectsPage/ProjectsPage";
 import HomePage from "../pages/HomePage/HomePage";
 import TeamsPage from "../pages/TeamsPage/TeamsPage";
+import TasksPage from "../pages/TasksPage/TasksPage";
 
 export const ROUTES = [
   {
-    path: DEFAULT,
+    path: ROUTESPATHS.DEFAULT,
     auth: false,
     roles: [],
-    element: <Navigate to={LANDING_PAGE} />,
+    element: <Navigate to={ROUTESPATHS.LANDING_PAGE} />,
   },
   {
-    path: LANDING_PAGE,
+    path: ROUTESPATHS.LANDING_PAGE,
     auth: false,
     roles: [],
     element: <LandingPage />,
   },
   {
-    path: REGISTER,
+    path: ROUTESPATHS.REGISTER,
     auth: false,
     roles: [],
     element: <RegisterPage />,
   },
   {
-    path: LOGIN,
+    path: ROUTESPATHS.LOGIN,
     auth: false,
     roles: [],
     element: <LoginPage />,
   },
   {
-    path: PROJECTS,
+    path: ROUTESPATHS.PROJECTS,
     auth: true,
     roles: [],
     element: <ProjectsPage />,
   },
   {
-    path: HOME,
+    path: ROUTESPATHS.HOME,
     auth: true,
     roles: [],
     element: <HomePage />,
   },
   {
-    path: TEAMS,
+    path: ROUTESPATHS.TEAMS,
     auth: true,
     roles: [],
     element: <TeamsPage />,
+  },
+  {
+    path: ROUTESPATHS.TASKS,
+    auth: true,
+    roles: [],
+    element: <TasksPage />,
   },
 ];

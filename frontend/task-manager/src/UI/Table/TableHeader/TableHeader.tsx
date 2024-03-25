@@ -5,7 +5,7 @@ const TableHeader = ({ headerData }: any) => {
   const { handleSortClick, sort } = useTable();
 
   return (
-    <thead className="sticky top-0 bg-secondaryColor">
+    <thead className="sticky top-0 bg-secondaryColor drop-shadow-md ">
       <tr>
         {headerData.map((val: any) => (
           <ArrowsFilter

@@ -17,11 +17,12 @@ import {
 import Button from "../../UI/Button/Button";
 import FormInput from "../../UI/FormInput/FormInput";
 
-type TStyle = {
+type TNewProjectFormProps = {
   btnStyle: string;
+  handleClose: () => void;
 };
 
-const NewProjectForm = ({ btnStyle }: TStyle) => {
+const NewProjectForm = ({ btnStyle, handleClose }: TNewProjectFormProps) => {
   const methods = useForm<TCreateProjectData>({
     mode: "onChange",
     resolver: yupResolver<TCreateProjectData>(newProjectSchema),
@@ -36,6 +37,8 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
   const onSubmit: SubmitHandler<TCreateProjectData> = (
     data: TCreateProjectData
   ) => {
+    //TODO du-te in API.js si baga acolo requestu asta
+    console.log(data);
     fetch("http://localhost:8080/project", {
       method: "POST",
       body: JSON.stringify(data),
@@ -46,7 +49,7 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
   };
 
   const { field: employeesField } = useController({
-    name: "teamSize",
+    name: "teams",
     control,
   });
   const handleEmployeesChange = (option: SingleValue<TEmployeesCount>) => {
@@ -57,8 +60,7 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
     control: (styles: CSSObjectWithLabel) => ({
       ...styles,
       width: "25rem",
-      padding: "6px",
-      margin: "4px",
+      padding: "5px",
       borderRadius: "10px",
     }),
   };
@@ -67,7 +69,7 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
     <FormProvider {...methods}>
       <form
         data-testid="create-project-form"
-        className="absolute flex flex-col bg-primaryColor items-center justify-start z-10 pt-20 rounded-[20px] border border-secondaryColor h-[60%] w-[40%] laptop:pt-0 laptop:h-[70%]"
+        className="absolute flex flex-col bg-primaryColor items-center gap-3 z-10 py-10 rounded-[20px] border border-secondaryColor h-auto w-[40%] laptop:pt-0 laptop:h-[70%]"
         onSubmit={handleSubmit(onSubmit, onInvalid)}
       >
         <FormInput
@@ -95,33 +97,31 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
           name="description"
         />
         <div>
-          <label className="ml-3 text-white text-lg">Role</label>
-          <Controller
-            data-testid="controller"
-            name="teamSize"
-            control={control}
-            rules={{ required: "Employees is required" }}
-            render={() => (
-              <Select
-                id="employees"
-                data-testid="employees-select"
-                onChange={handleEmployeesChange}
-                options={[
-                  { value: "5", label: "5", id: "1" },
-                  { value: "5-19", label: "5-19", id: "2" },
-                  { value: "20-39", label: "20-39", id: "3" },
-                ]}
-                placeholder="Choose the number of employees"
-                styles={colorStyles}
-              />
-            )}
-          />
+          <label className="ml-3 text-white text-lg">
+            Teams
+            <Controller
+              data-testid="controller"
+              name="teams"
+              control={control}
+              rules={{ required: "Employees is required" }}
+              render={() => (
+                <Select
+                  id="employees"
+                  data-testid="employees-select"
+                  onChange={handleEmployeesChange}
+                  options={[
+                    //TODO adauga aicia echipele ce vin din API
+                  ]}
+                  placeholder="Choose the number of employees"
+                  styles={colorStyles}
+                />
+              )}
+            />
+          </label>
           <ErrorMessage
             errors={errors}
-            name={"teamSize"}
-            render={({ message }) => (
-              <p className="text-red-600 pl-5 ">{message}</p>
-            )}
+            name={"teams"}
+            render={({ message }) => <p className="text-red-600">{message}</p>}
           />
         </div>
         <FormInput
@@ -134,13 +134,20 @@ const NewProjectForm = ({ btnStyle }: TStyle) => {
           name="dueDate"
           inputId="releaseDate"
         />
-
         <Button
           testId="create-button"
           type="submit"
           style={`${btnStyle} text-secondaryColor text-xl border border-secondaryColor rounded-[10px] py-3 hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor `}
         >
           Create
+        </Button>
+        <Button
+          testId="cancel-button"
+          type="button"
+          style={`text-gray-500 text-xl border border-gray-500 rounded-[10px] py-3 w-[25rem] hover:font-semibold hover:text-white hover:bg-gray-500`}
+          onClick={handleClose}
+        >
+          Cancel
         </Button>
       </form>
     </FormProvider>

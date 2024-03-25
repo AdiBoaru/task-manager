@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { loginSchema } from "../../constants/formValidations";
 import { TLoginFormData } from "../../interfaces/TLoginFormData";
-import { HOME, REGISTER } from "../../constants/routePaths";
+import ROUTEPATHS from "../../constants/routePaths";
 import FormInput from "../../UI/FormInput/FormInput";
 import Button from "../../UI/Button/Button";
 import useToastify from "../../hooks/useToastify";
@@ -28,7 +28,7 @@ const LoginForm = () => {
       },
     });
     notification("You logged in successfully.", "success");
-    navigate(HOME);
+    navigate(ROUTEPATHS.HOME);
   };
 
   return (
@@ -88,7 +88,7 @@ const LoginForm = () => {
             <NavLink
               data-testid="login-redirect"
               className="text-secondaryColor text-lg"
-              to={REGISTER}
+              to={ROUTEPATHS.REGISTER}
             >
               Register Here
             </NavLink>

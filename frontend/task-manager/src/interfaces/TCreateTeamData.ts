@@ -1,10 +1,23 @@
+import { TCreateProjectData } from "./TCreateProjectData";
+
 export type TEmployeesPick = {
-    label: string;
-    value?: string;
-    id?: string;
+    fullName: string;
+    account: any | null;
+    birthDate: string;
+    firstName: string;
+    id: number;
+    lastName: string;
+    projects: TCreateProjectData[]; 
+    tasks: any[];    
   };
 
-export type TCreateTeamData = {
-    teamName: string,
-    employeesPick?: TEmployeesPick[],
-}
+  export type TTeamSizePick = {
+    label: string;
+    value?: number;
+  };
+
+  export type TCreateTeamData = {
+      name: string,
+      employeesTeam?: TEmployeesPick[],
+      size?: number | string
+  }

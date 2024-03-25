@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-import { DEFAULT } from "../../constants/routePaths";
+import ROUTEPATHS from "../../constants/routePaths";
 import classNames from "classnames";
 
 const Logo = ({ mt, style }: { mt?: string; style?: string }) => {
@@ -12,7 +12,7 @@ const Logo = ({ mt, style }: { mt?: string; style?: string }) => {
     >
       <NavLink
         data-testid="landing-page-logo"
-        to={DEFAULT}
+        to={ROUTEPATHS.DEFAULT}
         className="text-secondaryColor text-5xl "
       >
         TaskFlow

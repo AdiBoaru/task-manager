@@ -23,7 +23,7 @@ const FormInput = ({
   } = useFormContext();
 
   return (
-    <div data-testid={testId} className={classNames(`${style} w-fit m-4 `)}>
+    <div data-testid={testId} className={classNames(`${style} w-fit `)}>
       <label className={labelStyle} htmlFor={inputId}>
         {labelText}
       </label>
