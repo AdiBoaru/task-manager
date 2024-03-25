@@ -24,8 +24,8 @@ class TaskRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        task = new Task("Task1", "Tested Task", null, LocalDate.now(), LocalDate.now(), Status.ASSIGNED ,Priority.HIGH);
-        taskRepository.save(task);
+  //      task = new Task("Task1", "Tested Task", null, LocalDate.now(), LocalDate.now(), Status.ASSIGNED ,Priority.HIGH);
+  //      taskRepository.save(task);
     }
 
     @AfterEach

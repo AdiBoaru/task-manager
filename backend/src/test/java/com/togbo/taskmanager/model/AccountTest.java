@@ -26,7 +26,7 @@ class AccountTest {
         Boolean isEmailVerified = false;
 
         //when
-        Account account = new Account(email, password, localDate, role, uuid);
+        Account account = new Account(email, password,role);
 
         //then
         assertEquals("test@yahoo.com", account.getEmail());

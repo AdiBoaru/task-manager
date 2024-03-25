@@ -27,24 +27,36 @@ public class TeamService {
     }
 
     public boolean createTeam(TeamEmployeeDto teamEmployeeDto) throws InvalidTeamException {
-        Team team = teamRepository.findByName(teamEmployeeDto.getName());
-        if (!isTeamPresent(team)) {
-            team = TeamEmployeeMapper.mapToTeam(teamEmployeeDto);
-            System.out.println(team);
+        if(!isTeamNameValid(teamEmployeeDto.getName())) {
+            Team team = teamRepository.findByName(teamEmployeeDto.getName());
+            if (!isTeamPresent(team)) {
+                team = TeamEmployeeMapper.mapToTeam(teamEmployeeDto);
+                System.out.println(team);
 
-            int teamSize = checkTeamSize(teamEmployeeDto.getSize());
-            int employeeSize = teamEmployeeDto.getEmployees().size();
+                int teamSize = checkTeamSize(teamEmployeeDto.getSize());
+                int employeeSize = teamEmployeeDto.getEmployees().size();
 
-            if(teamSize < employeeSize){
-                throw  new InvalidTeamException("Too many employees for current team size");
+                if (teamSize < employeeSize) {
+                    throw new InvalidTeamException("Too many employees for current team size");
+                }
+                updateEmployeeID(team.getEmployees(), team);
+                teamRepository.save(team);
+                return true;
             }
-            updateEmployeeID(team.getEmployees(), team);
-            teamRepository.save(team);
-            return true;
-        }
+        }else
+            throw new InvalidTeamException("Team name should not contain any digit");
         return false;
     }
 
+    /**
+     * Team Name should not contain any digit
+     *
+     * @param name is a string, representing team name
+     * @return a boolean value, true if the string contains any digit, false if doesn`t
+     */
+    private boolean isTeamNameValid(String name){
+        return name.matches(".*\\d.*");
+    }
     private void updateEmployeeID(Set<Employee> employeeSet, Team team) {
         for (Employee employee : employeeSet) {
             employeeService.updateEmployeeTeamId(employee.getId(), team);

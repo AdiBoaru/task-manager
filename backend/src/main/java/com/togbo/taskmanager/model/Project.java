@@ -45,7 +45,7 @@ public class Project {
     }
 
 
-    public Project(String title, String description, Integer teamSize,LocalDate dueDate) {
+    public Project(String title, String description, Integer teamSize, LocalDate dueDate) {
         this.title = title;
         this.description = description;
         this.creationDate = LocalDate.now();
