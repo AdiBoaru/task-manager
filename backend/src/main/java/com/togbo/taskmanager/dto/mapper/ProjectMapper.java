@@ -7,16 +7,16 @@ public class ProjectMapper {
 
     public static Project mapToProject(ProjectDto projectDto){
         return new Project(
-                projectDto.getTitle(),
+                projectDto.getName(),
                 projectDto.getDescription(),
-                projectDto.getTeamSize(),
-                projectDto.getDueDate()
+                projectDto.getDueDate(),
+                projectDto.getTeam()
         );
     }
     public static void mapToUpdateProject(ProjectDto projectDto, Project project){
-        project.setTitle(projectDto.getTitle());
+        project.setName(projectDto.getName());
         project.setDescription(projectDto.getDescription());
-        project.setTeamSize(projectDto.getTeamSize());
+        project.setTeam(projectDto.getTeam());
         project.setDueDate(projectDto.getDueDate());
 
     }

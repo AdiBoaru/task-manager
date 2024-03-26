@@ -1,8 +1,14 @@
 package com.togbo.taskmanager.services;
 
+import com.togbo.taskmanager.dto.ProjectDto;
+import com.togbo.taskmanager.dto.mapper.ProjectMapper;
+import com.togbo.taskmanager.exceptions.ErrorMessage;
+import com.togbo.taskmanager.exceptions.InvalidArgumentException;
+import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.model.Project;
+import com.togbo.taskmanager.model.Team;
 import com.togbo.taskmanager.repository.EmployeeRepository;
 import com.togbo.taskmanager.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.function.Consumer;
 
 @Service
 public class ProjectService {
@@ -20,33 +26,67 @@ public class ProjectService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public void createProject(Project project){
-        projectRepository.save(project);
-    }
+    @Autowired
+    private TeamService teamService;
 
-    public void deleteProject(Long id, Project project){
-        Optional<Project> foundProject = projectRepository.findById(id);
+    public boolean createProject(ProjectDto projectDto) throws InvalidArgumentException{
+        Optional<Project> projectOptional = findByTitle(projectDto.getName());
 
-        if(foundProject.isPresent()){
-            projectRepository.delete(project);
+        if (projectOptional.isPresent()) {
+            throw new InvalidArgumentException("An account with " + projectDto.getName() + " already exists");
+        }else{
+            if(isTeamAssigned(projectDto.getTeam())){
+                throw new InvalidArgumentException("This Team " + projectDto.getTeam().getName() + " is already assigned to a different project");
+            }else {
+                Project project = ProjectMapper.mapToProject(projectDto);
+                projectRepository.save(project);
+                return true;
+            }
         }
     }
 
-    public void updateProject(Long id, Project project){
-        Optional<Project> foundProject = projectRepository.findById(id);
-        if(foundProject.isPresent()){
-            projectRepository.save(project);
+    /**
+     * Check if Team is already assigned or not
+     * @param teamDto represent teamName
+     */
+    private boolean isTeamAssigned(Team teamDto){
+        Team team = teamService.findByName(teamDto.getName());
+        return team != null;
+    }
+
+    public void updateProject(Long id, ProjectDto projectDto) {
+        Optional<Project> currentProject = projectRepository.findById(id);
+        if (currentProject.isPresent()) {
+            Project project = currentProject.get();
+            checkForNullState(projectDto.getName(), project::setName);
+            checkForNullState(projectDto.getDescription(), project::setDescription);
+            checkForNullState(projectDto.getDueDate(), project::setDueDate);
+            checkForNullState(projectDto.getTeam(), project::setTeam);
+
+            projectRepository.save(currentProject.get());
         }
+    }
+
+    private <T> void checkForNullState(T projectDto, Consumer<T> state) {
+        if (projectDto != null) {
+            state.accept(projectDto);
+        }
+    }
+    public void deleteProject(Long id) throws ResourceNotFoundException{
+        Optional<Project> foundProject = projectRepository.findById(id);
+
+        if(foundProject.isPresent()){
+            projectRepository.delete(foundProject.get());
+        }else
+            throw new ResourceNotFoundException("Project with id = " + id + " doesn`t exits");
     }
 
     public List<Project> findAll(){
         return projectRepository.findAll();
     }
 
-    public Project findById(Long id){
-        Optional<Project> foundProject = projectRepository.findById(id);
-
-        return foundProject.orElse(null);
+    public Optional<Project> findById(Long id){
+        return projectRepository.findById(id);
     }
 
     public void deleteById(Long id){
@@ -57,7 +97,7 @@ public class ProjectService {
         return projectRepository.findByEmployee(employee.getId());
     }
     public Optional<Project> findByTitle(String title){
-        return projectRepository.findByTitle(title);
+        return projectRepository.findByName(title);
     }
     public Employee findEmployee(Account account){
         return employeeRepository.findEmployeeByAccount(account.getId());

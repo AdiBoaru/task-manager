@@ -1,10 +1,8 @@
 package com.togbo.taskmanager.model;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Description;
 
-import javax.management.DescriptorKey;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +26,7 @@ class ProjectTest {
         Project project = new Project(title, description, teamSize, dueDate);
 
         //then
-        assertEquals(title, project.getTitle());
+        assertEquals(title, project.getName());
         assertEquals(description, project.getDescription());
         assertEquals(creationDate, project.getCreationDate());
         assertEquals(teamSize, project.getTeamSize());

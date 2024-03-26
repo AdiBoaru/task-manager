@@ -2,6 +2,8 @@ package com.togbo.taskmanager.controller;
 
 import com.togbo.taskmanager.dto.ProjectDto;
 import com.togbo.taskmanager.dto.mapper.ProjectMapper;
+import com.togbo.taskmanager.exceptions.ErrorMessage;
+import com.togbo.taskmanager.exceptions.InvalidArgumentException;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Project;
@@ -37,18 +39,13 @@ public class ProjectController {
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
-    @GetMapping("/findProjectsByEmployee")
-    public List<Project> findProjectByEmployee(@RequestBody Account account) {
-        return projectService.findByEmployee(projectService.findEmployee(account));
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Project> findById(@PathVariable Long id) throws ResourceNotFoundException {
-        Project project = projectService.findById(id);
-        if (project == null) {
-            throw new ResourceNotFoundException("Project not found by this id " + id);
+        Optional<Project> project = projectService.findById(id);
+        if (project.isPresent()) {
+            return new ResponseEntity<>(project.get(),HttpStatus.FOUND);
         }
-        return new ResponseEntity<>(projectService.findById(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/sort")
@@ -59,41 +56,22 @@ public class ProjectController {
     }
 
     @PostMapping()
-    public ResponseEntity<Project> createProject(@RequestBody ProjectDto projectDto) {
-        Optional<Project> projectOptional = projectService.findByTitle(projectDto.getTitle());
-
-        if (projectOptional.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Project> createProject(@RequestBody ProjectDto projectDto) throws InvalidArgumentException {
+        if(projectService.createProject(projectDto)){
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        Project project = ProjectMapper.mapToProject(projectDto);
-        projectService.createProject(project);
-
-        return new ResponseEntity<>(project, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Project> updateProject(@PathVariable Long id, @RequestBody ProjectDto projectDto) throws ResourceNotFoundException {
-        Project project = projectService.findById(id);
-        if (project == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        ProjectMapper.mapToUpdateProject(projectDto, project);
-
-        projectService.updateProject(id, project);
-
-        return new ResponseEntity<>(project, HttpStatus.OK);
+    public ResponseEntity<Project> updateProject(@PathVariable Long id, @RequestBody ProjectDto projectDto){
+        projectService.updateProject(id, projectDto);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProject(@PathVariable Long id) {
-        Project project = projectService.findById(id);
-
-        if (project == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
+    public ResponseEntity<String> deleteProject(@PathVariable Long id) throws ResourceNotFoundException {
         projectService.deleteById(id);
-
         return new ResponseEntity<>("Project deleted successfully", HttpStatus.OK);
     }
 }

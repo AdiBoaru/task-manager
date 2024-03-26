@@ -20,7 +20,7 @@ public class ProjectRepositoryTest {
 
     @BeforeEach
     void setUp(){
-        project = new Project("Project","desc", 5, LocalDate.now());
+//        project = new Project("Project","desc", 5, LocalDate.now());
         projectRepository.save(project);
     }
 
@@ -34,17 +34,17 @@ public class ProjectRepositoryTest {
     @Test
     void findProjectByTitle(){
         String title = "Project";
-        Optional<Project> projectTest = projectRepository.findByTitle(title);
+        Optional<Project> projectTest = projectRepository.findByName(title);
         assertThat(projectTest).isPresent();
         assertThat(projectTest.get().getDescription()).isEqualTo("desc");
-        assertThat(projectTest.get().getTeamSize()).isEqualTo(5);
+        assertThat(projectTest.get().getTeam()).isEqualTo(5);
     }
 
     //Failure case
     @Test
     void failToFindProjectBySpecificTitle(){
         String title = "failTitle";
-        Optional<Project> projectTest = projectRepository.findByTitle(title);
+        Optional<Project> projectTest = projectRepository.findByName(title);
 
         assertThat(projectTest).isNotPresent();
     }
