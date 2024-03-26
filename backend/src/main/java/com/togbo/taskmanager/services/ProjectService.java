@@ -2,7 +2,6 @@ package com.togbo.taskmanager.services;
 
 import com.togbo.taskmanager.dto.ProjectDto;
 import com.togbo.taskmanager.dto.mapper.ProjectMapper;
-import com.togbo.taskmanager.exceptions.ErrorMessage;
 import com.togbo.taskmanager.exceptions.InvalidArgumentException2;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
@@ -47,11 +46,11 @@ public class ProjectService {
 
     /**
      * Check if Team is already assigned or not
-     * @param teamDto represent teamName
+     * @param team represent teamName
      */
-    private boolean isTeamAssigned(Team teamDto){
-        Optional<Team> team = projectRepository.findByTeam(teamDto.getName());
-        return team.isPresent();
+    private boolean isTeamAssigned(Team team){
+        Optional<Project> projectWithTeamId = projectRepository.findByTeamId(team.getId());
+        return projectWithTeamId.isPresent();
     }
 
     public void updateProject(Long id, ProjectDto projectDto) {

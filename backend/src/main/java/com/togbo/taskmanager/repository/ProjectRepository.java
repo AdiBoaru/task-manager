@@ -1,7 +1,6 @@
 package com.togbo.taskmanager.repository;
 
 import com.togbo.taskmanager.model.Project;
-import com.togbo.taskmanager.model.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,5 +15,5 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findByEmployee(@Param("employeeId") Long employeeId);
 
     Optional<Project> findByName(String title);
-    Optional<Team> findByTeam(String name);
+    Optional<Project> findByTeamId(Long id);
 }
