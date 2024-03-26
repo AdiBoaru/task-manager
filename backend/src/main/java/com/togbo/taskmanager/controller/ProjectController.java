@@ -3,7 +3,7 @@ package com.togbo.taskmanager.controller;
 import com.togbo.taskmanager.dto.ProjectDto;
 import com.togbo.taskmanager.dto.mapper.ProjectMapper;
 import com.togbo.taskmanager.exceptions.ErrorMessage;
-import com.togbo.taskmanager.exceptions.InvalidArgumentException;
+import com.togbo.taskmanager.exceptions.InvalidArgumentException2;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Project;
@@ -56,7 +56,7 @@ public class ProjectController {
     }
 
     @PostMapping()
-    public ResponseEntity<Project> createProject(@RequestBody ProjectDto projectDto) throws InvalidArgumentException {
+    public ResponseEntity<Project> createProject(@RequestBody ProjectDto projectDto) throws InvalidArgumentException2 {
         if(projectService.createProject(projectDto)){
             return new ResponseEntity<>(HttpStatus.OK);
         }

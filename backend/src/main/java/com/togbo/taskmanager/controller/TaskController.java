@@ -4,6 +4,7 @@ import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.model.Project;
 import com.togbo.taskmanager.model.Task;
+import com.togbo.taskmanager.repository.TaskRepository;
 import com.togbo.taskmanager.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -20,20 +21,30 @@ import java.util.UUID;
 @RequestMapping("/task")
 public class TaskController {
     private final TaskService taskService;
+    private final TaskRepository taskRepository;
 
-    public TaskController(TaskService taskService){
+    public TaskController(TaskService taskService, TaskRepository taskRepository){
         this.taskService = taskService;
+        this.taskRepository = taskRepository;
     }
 
     @GetMapping
     public ResponseEntity<List<Task>> findAllTasks(){
         List<Task> tasks = taskService.findAll();
+        if(tasks.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/{id}")
-    public Optional<Task> findTaskById(@PathVariable Long id){
-        return taskService.findById(id);
+    public ResponseEntity<Task> findTaskById(@PathVariable Long id){
+        Optional<Task> task = taskRepository.findById(id);
+
+        if(task.isPresent()){
+            return new ResponseEntity<>(task.get(),HttpStatus.FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/tasksByProjects")

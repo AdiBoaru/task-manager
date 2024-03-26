@@ -37,6 +37,9 @@ public class Task {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    public Task() {
+    }
+
     public Task(String name, String description, File file, LocalDate dueDate, Status status, Priority priority) {
         this.name = name;
         this.description = description;

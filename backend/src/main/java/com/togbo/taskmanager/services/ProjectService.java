@@ -3,7 +3,7 @@ package com.togbo.taskmanager.services;
 import com.togbo.taskmanager.dto.ProjectDto;
 import com.togbo.taskmanager.dto.mapper.ProjectMapper;
 import com.togbo.taskmanager.exceptions.ErrorMessage;
-import com.togbo.taskmanager.exceptions.InvalidArgumentException;
+import com.togbo.taskmanager.exceptions.InvalidArgumentException2;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
@@ -29,14 +29,14 @@ public class ProjectService {
     @Autowired
     private TeamService teamService;
 
-    public boolean createProject(ProjectDto projectDto) throws InvalidArgumentException{
+    public boolean createProject(ProjectDto projectDto) throws InvalidArgumentException2 {
         Optional<Project> projectOptional = findByTitle(projectDto.getName());
 
         if (projectOptional.isPresent()) {
-            throw new InvalidArgumentException("An account with " + projectDto.getName() + " already exists");
+            throw new InvalidArgumentException2("An account with " + projectDto.getName() + " already exists");
         }else{
             if(isTeamAssigned(projectDto.getTeam())){
-                throw new InvalidArgumentException("This Team " + projectDto.getTeam().getName() + " is already assigned to a different project");
+                throw new InvalidArgumentException2("This Team " + projectDto.getTeam().getName() + " is already assigned to a different project");
             }else {
                 Project project = ProjectMapper.mapToProject(projectDto);
                 projectRepository.save(project);
@@ -50,8 +50,8 @@ public class ProjectService {
      * @param teamDto represent teamName
      */
     private boolean isTeamAssigned(Team teamDto){
-        Team team = teamService.findByName(teamDto.getName());
-        return team != null;
+        Optional<Team> team = projectRepository.findByTeam(teamDto.getName());
+        return team.isPresent();
     }
 
     public void updateProject(Long id, ProjectDto projectDto) {
