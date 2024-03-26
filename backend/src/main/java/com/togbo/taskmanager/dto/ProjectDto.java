@@ -2,33 +2,34 @@ package com.togbo.taskmanager.dto;
 
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.model.Task;
+import com.togbo.taskmanager.model.Team;
 
 import java.time.LocalDate;
 import java.util.Set;
 
 public class ProjectDto {
-    private String title;
+    private String name;
     private String description;
     private LocalDate dueDate;
-    private Integer teamSize;
+    private Team team;
     private Set<Employee> employees;
     private Set<Task> tasks;
 
-    public ProjectDto(String title, String description, LocalDate dueDate, Integer teamSize, Set<Employee> employees, Set<Task> tasks) {
-        this.title = title;
+    public ProjectDto(String title, String description, LocalDate dueDate, Team teamSize, Set<Employee> employees, Set<Task> tasks) {
+        this.name = title;
         this.description = description;
         this.dueDate = dueDate;
-        this.teamSize = teamSize;
+        this.team = teamSize;
         this.employees = employees;
         this.tasks = tasks;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -39,12 +40,12 @@ public class ProjectDto {
         this.description = description;
     }
 
-    public Integer getTeamSize() {
-        return teamSize;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setTeamSize(Integer teamSize) {
-        this.teamSize = teamSize;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public LocalDate getDueDate() {

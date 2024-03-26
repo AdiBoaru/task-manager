@@ -1,14 +1,11 @@
 package com.togbo.taskmanager.model;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.constraints.*;
-
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "projects")
@@ -16,18 +13,20 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+    @NotBlank
     @Size(min = 2, message = "Title should have at least 2 characters")
-    private String title;
+    private String name;
     @NotNull
-    @Size(min = 2, message = "Description should have at least 2 characters")
+    @Size(min = 5, message = "Description should have at least 5 characters")
     private String description;
     @NotNull
     @Column(name = "creation_date")
     private LocalDate creationDate;
-    @Column(name = "team_size")
-    private Integer teamSize;
+    @OneToOne
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
+    private Team team;
     @Column(name = "due_date")
+    @NotNull
     private LocalDate dueDate;
     @ManyToMany
     @JoinTable(
@@ -45,12 +44,12 @@ public class Project {
     }
 
 
-    public Project(String title, String description, Integer teamSize, LocalDate dueDate) {
-        this.title = title;
+    public Project(String title, String description, LocalDate dueDate, Team team) {
+        this.name = title;
         this.description = description;
         this.creationDate = LocalDate.now();
-        this.teamSize = teamSize;
         this.dueDate = dueDate;
+        this.team = team;
     }
 
     public Long getId() {
@@ -61,12 +60,12 @@ public class Project {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -77,13 +76,6 @@ public class Project {
         this.description = description;
     }
 
-    public Integer getTeamSize() {
-        return teamSize;
-    }
-
-    public void setTeamSize(Integer teamSize) {
-        this.teamSize = teamSize;
-    }
 
     public LocalDate getCreationDate() {
         return creationDate;
@@ -95,6 +87,14 @@ public class Project {
 
     public LocalDate getDueDate() {
         return dueDate;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public void setDueDate(LocalDate dueDate) {
@@ -118,19 +118,15 @@ public class Project {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Project project = (Project) o;
-        return Objects.equals(id, project.id) && Objects.equals(title, project.title) && Objects.equals(description, project.description) && Objects.equals(creationDate, project.creationDate) && Objects.equals(teamSize, project.teamSize) && Objects.equals(dueDate, project.dueDate) && Objects.equals(employees, project.employees) && Objects.equals(tasks, project.tasks);
+        return Objects.equals(id, project.id) && Objects.equals(name, project.name) && Objects.equals(description, project.description) && Objects.equals(creationDate, project.creationDate) && Objects.equals(dueDate, project.dueDate) && Objects.equals(employees, project.employees) && Objects.equals(tasks, project.tasks);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, description, creationDate, teamSize, dueDate, employees, tasks);
-    }
 
     @Override
     public String toString() {
         return "Project{" +
                 "uuid=" + id +
-                ", title='" + title + '\'' +
+                ", title='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", creationDate=" + creationDate +
                 ", dueDate=" + dueDate +

@@ -22,31 +22,6 @@ public class DataLoader {
         this.sessionFactory = sessionFactory;
     }
 
- /*   @PostConstruct
-    @Transactional
-    public void load() {
-        try (Session session = sessionFactory.openSession()) {
-            // Begin a transaction
-            session.beginTransaction();
-
-            // Execute the SQL script
-       //     session.createQuery(getSqlScript("data_employee.sql")).executeUpdate();
-
-            // Commit the transaction
-            session.getTransaction().commit();
-        }
-    }
-
-  */
-
- /*   private String getSqlScript(String scriptName) {
-        return new String(getClass().getClassLoader().getResourceAsStream(scriptName).readAllBytes());
-    }
-
-  */
-
-
-
     @Bean
     public DataSourceInitializer dataSourceInitializer() {
         DataSourceInitializer initializer = new DataSourceInitializer();
@@ -59,14 +34,14 @@ public class DataLoader {
         ResourceDatabasePopulator populate= new ResourceDatabasePopulator();
         Resource sqlAccount = new ClassPathResource("data_account.sql");
         Resource sqlTask = new ClassPathResource("data_task.sql");
+        Resource sqlTeam = new ClassPathResource("data_team.sql");
         Resource sqlEmployee = new ClassPathResource("data_employee.sql");
         Resource sqlProject = new ClassPathResource("data_project.sql");
-        Resource sqlTeam = new ClassPathResource("data_team.sql");
         populate.addScript(sqlAccount);
         populate.addScript(sqlTask);
+        populate.addScript(sqlTeam);
         populate.addScript(sqlEmployee);
         populate.addScript(sqlProject);
-        populate.addScript(sqlTeam);
         return populate;
     }
 
