@@ -1,21 +1,15 @@
 package com.togbo.taskmanager.controller;
 
 import com.togbo.taskmanager.dto.ProjectDto;
-import com.togbo.taskmanager.dto.mapper.ProjectMapper;
-import com.togbo.taskmanager.exceptions.ErrorMessage;
-import com.togbo.taskmanager.exceptions.InvalidArgumentException2;
+import com.togbo.taskmanager.exceptions.InvalidArgumentException;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
-import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Project;
 import com.togbo.taskmanager.services.ProjectService;
-import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,7 +50,7 @@ public class ProjectController {
     }
 
     @PostMapping()
-    public ResponseEntity<Project> createProject(@RequestBody ProjectDto projectDto) throws InvalidArgumentException2 {
+    public ResponseEntity<Project> createProject(@RequestBody ProjectDto projectDto) throws InvalidArgumentException {
         if(projectService.createProject(projectDto)){
             return new ResponseEntity<>(HttpStatus.OK);
         }

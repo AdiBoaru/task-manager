@@ -2,7 +2,7 @@ package com.togbo.taskmanager.services;
 
 import com.togbo.taskmanager.dto.ProjectDto;
 import com.togbo.taskmanager.dto.mapper.ProjectMapper;
-import com.togbo.taskmanager.exceptions.InvalidArgumentException2;
+import com.togbo.taskmanager.exceptions.InvalidArgumentException;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
@@ -28,14 +28,14 @@ public class ProjectService {
     @Autowired
     private TeamService teamService;
 
-    public boolean createProject(ProjectDto projectDto) throws InvalidArgumentException2 {
+    public boolean createProject(ProjectDto projectDto) throws InvalidArgumentException {
         Optional<Project> projectOptional = findByTitle(projectDto.getName());
 
         if (projectOptional.isPresent()) {
-            throw new InvalidArgumentException2("An account with " + projectDto.getName() + " already exists");
+            throw new InvalidArgumentException("An account with " + projectDto.getName() + " already exists");
         }else{
             if(isTeamAssigned(projectDto.getTeam())){
-                throw new InvalidArgumentException2("This Team " + projectDto.getTeam().getName() + " is already assigned to a different project");
+                throw new InvalidArgumentException("This Team " + projectDto.getTeam().getName() + " is already assigned to a different project");
             }else {
                 Project project = ProjectMapper.mapToProject(projectDto);
                 projectRepository.save(project);
