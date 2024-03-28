@@ -1,4 +1,3 @@
-
 import { NavLink, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -19,7 +18,6 @@ const LoginForm = () => {
   });
   const { handleSubmit } = methods;
   const onSubmit: SubmitHandler<TLoginFormData> = (data: TLoginFormData) => {
-    console.log(data);
     fetch("http://localhost:8080/register/login", {
       method: "POST",
       body: JSON.stringify(data),
