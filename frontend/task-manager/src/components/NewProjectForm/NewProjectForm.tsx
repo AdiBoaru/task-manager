@@ -1,5 +1,6 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers/yup";
+
 import {
   useForm,
   SubmitHandler,
@@ -8,14 +9,25 @@ import {
   Controller,
 } from "react-hook-form";
 import Select, { CSSObjectWithLabel, SingleValue } from "react-select";
+import moment from "moment";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import { newProjectSchema } from "../../constants/formValidations";
 import {
   TCreateProjectData,
-  TEmployeesCount,
+  TTeamPick,
 } from "../../interfaces/TCreateProjectData";
 import Button from "../../UI/Button/Button";
 import FormInput from "../../UI/FormInput/FormInput";
+import {
+  useCreateProjectMutation,
+  useGetTeamsQuery,
+} from "../../services/api/api";
+import { useNavigate } from "react-router-dom";
+import ROUTESPATHS from "../../constants/routePaths";
+import { useState } from "react";
+import useToastify from "../../hooks/useToastify";
 
 type TNewProjectFormProps = {
   btnStyle: string;
@@ -23,10 +35,17 @@ type TNewProjectFormProps = {
 };
 
 const NewProjectForm = ({ btnStyle, handleClose }: TNewProjectFormProps) => {
+  const { data: teams } = useGetTeamsQuery();
+  const [createProject] = useCreateProjectMutation();
+  const { notification } = useToastify();
+  const [selectedDate, setSelectedDate] = useState<Date | string>(new Date());
+
+  const navigate = useNavigate();
   const methods = useForm<TCreateProjectData>({
     mode: "onChange",
     resolver: yupResolver<TCreateProjectData>(newProjectSchema),
   });
+
   const {
     control,
     handleSubmit,
@@ -37,31 +56,42 @@ const NewProjectForm = ({ btnStyle, handleClose }: TNewProjectFormProps) => {
   const onSubmit: SubmitHandler<TCreateProjectData> = (
     data: TCreateProjectData
   ) => {
-    //TODO du-te in API.js si baga acolo requestu asta
-    console.log(data);
-    fetch("http://localhost:8080/project", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    createProject(data)
+      .unwrap()
+      .then((response) => console.log(response))
+      .catch(({ data }) => console.log(data));
+    navigate(ROUTESPATHS.PROJECTS);
+    notification("Project created successfully", "success");
   };
 
-  const { field: employeesField } = useController({
-    name: "teams",
+  const { field: teamsField } = useController({
+    name: "team",
     control,
   });
-  const handleEmployeesChange = (option: SingleValue<TEmployeesCount>) => {
-    employeesField.onChange(option?.label);
+  const { field: dateField } = useController({
+    name: "dueDate",
+    control,
+  });
+
+  const handleTeamPick = (option: SingleValue<TTeamPick>) => {
+    teamsField.onChange(option);
+  };
+
+  const handleDatePick = (option: SingleValue<Date>) => {
+    if (option) {
+      dateField.onChange(moment(option).format("YYYY-MM-DD"));
+      setSelectedDate(moment(option).format("YYYY-MM-DD"));
+    }
   };
 
   const colorStyles = {
     control: (styles: CSSObjectWithLabel) => ({
       ...styles,
       width: "25rem",
-      padding: "5px",
+      padding: "6px",
+      margin: "4px",
       borderRadius: "10px",
+      zIndex: 9999,
     }),
   };
 
@@ -82,7 +112,7 @@ const NewProjectForm = ({ btnStyle, handleClose }: TNewProjectFormProps) => {
           type="text"
           labelText="Project name"
           inputId="projectName"
-          name="title"
+          name="name"
         />
         <FormInput
           testId="project-description"
@@ -101,18 +131,20 @@ const NewProjectForm = ({ btnStyle, handleClose }: TNewProjectFormProps) => {
             Teams
             <Controller
               data-testid="controller"
-              name="teams"
+              name="team"
               control={control}
-              rules={{ required: "Employees is required" }}
+              rules={{ required: "Choose a team" }}
               render={() => (
                 <Select
-                  id="employees"
-                  data-testid="employees-select"
-                  onChange={handleEmployeesChange}
-                  options={[
-                    //TODO adauga aicia echipele ce vin din API
-                  ]}
-                  placeholder="Choose the number of employees"
+                  id="teams"
+                  data-testid="teams-select"
+                  onChange={handleTeamPick}
+                  options={teams}
+                  menuPosition="fixed"
+                  menuPortalTarget={document.body}
+                  getOptionLabel={(option: TTeamPick) => option.name}
+                  getOptionValue={(option: any) => option.id}
+                  placeholder="Choose your team"
                   styles={colorStyles}
                 />
               )}
@@ -120,20 +152,31 @@ const NewProjectForm = ({ btnStyle, handleClose }: TNewProjectFormProps) => {
           </label>
           <ErrorMessage
             errors={errors}
-            name={"teams"}
+            name={"team"}
             render={({ message }) => <p className="text-red-600">{message}</p>}
           />
         </div>
-        <FormInput
-          testId="release-date"
-          labelStyle="p-4 text-white text-lg"
-          inputStyle=" mb-[10px] w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
-          labelText="Completion Date"
-          placeholder="Enter your completion date"
-          type="date"
-          name="dueDate"
-          inputId="releaseDate"
-        />
+        <div>
+          <label className="text-white text-lg flex flex-col">
+            Completion Date
+            <Controller
+              data-testid="controller"
+              name="dueDate"
+              control={control}
+              rules={{ required: "Pick a date" }}
+              render={() => (
+                <DatePicker
+                  className="mb-[10px] w-[25rem] p-3 rounded-[10px] text-black focus:border-secondaryColor focus:outline-secondaryColor"
+                  onChange={handleDatePick}
+                  selected={selectedDate as Date}
+                  name="dueDate"
+                  minDate={moment(new Date()).startOf("day").toDate()}
+                />
+              )}
+            />
+          </label>
+        </div>
+
         <Button
           testId="create-button"
           type="submit"

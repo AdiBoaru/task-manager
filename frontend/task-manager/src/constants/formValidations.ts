@@ -22,16 +22,16 @@ export const loginSchema = yup
 export const newProjectSchema = yup
 .object()
 .shape({
-    title: yup.string().min(2, "Name should be at least 2 characters").required('Project name is required.'),
+    name: yup.string().min(2, "Name should be at least 2 characters").required('Project name is required.'),
     description: yup.string().min(6, "Description should be at least 6 characters").required('Description is required'),
-    teams: yup.array().required('Team is required.'),
+    team: yup.object().required('Team is required.'),
     dueDate: yup.string().required('Please choose your completion date.'),
 })
 
 export const newTeamSchema = yup
 .object()
 .shape({
-    name: yup.string().min(2, "Name should be at least 2 characters").required('Team name is required.'),
+    name: yup.string().matches(/^[^\d]*$/, 'Value must not contain any numbers').min(2, "Name should be at least 2 characters").required('Team name is required.'),
     employeesTeam: yup.array().required('Employees is required.'),
     size: yup.string().required('Team size is required.')
 })

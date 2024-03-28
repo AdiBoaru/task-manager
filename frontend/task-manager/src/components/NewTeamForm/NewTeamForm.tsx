@@ -37,9 +37,9 @@ const NewTeamForm = ({ handleClose }: TNewTeamForm) => {
   const [teamSize, setTeamSize] = useState<number>(0);
   const [teamMembers, setTeamMembers] = useState([]);
   const [createTeam] = useCreateTeamMutation();
-  const { data } = useGetEmployeesQuery();
+  const { data: employees } = useGetEmployeesQuery();
   const navigate = useNavigate();
-  console.log(data);
+
   useEffect(() => {
     setTeamMembers([]);
   }, [teamSize]);
@@ -56,7 +56,6 @@ const NewTeamForm = ({ handleClose }: TNewTeamForm) => {
 
   const onInvalid = (errors: any) => console.error(errors);
   const onSubmit: SubmitHandler<TCreateTeamData> = (data: TCreateTeamData) => {
-    console.log(data);
     createTeam(data);
     navigate(ROUTESPATHS.TEAMS);
   };
@@ -156,7 +155,7 @@ const NewTeamForm = ({ handleClose }: TNewTeamForm) => {
               render={() => (
                 <Select
                   id="employees"
-                  options={data}
+                  options={employees}
                   isMulti
                   menuPosition="fixed"
                   menuPortalTarget={document.body}

@@ -1,12 +1,13 @@
-export type TEmployeesCount = {
-    label: string;
-    value?: string;
-    id?: string;
+export type TTeamPick = {
+    id: number;
+    size: number;
+    employees: string[];
+    name: string;
 }
 
 export type TCreateProjectData = {
-    title: string,
+    name: string,
     description: string,
-    teams?: string[],
+    team?: {},
     dueDate?: string,
 }
