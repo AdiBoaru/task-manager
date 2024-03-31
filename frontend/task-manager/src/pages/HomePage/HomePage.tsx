@@ -5,6 +5,7 @@ import useModal from "../../hooks/useModal";
 import NewProjectForm from "../../components/NewProjectForm/NewProjectForm";
 import NewTeamForm from "../../components/NewTeamForm/NewTeamForm";
 import Modal from "../../UI/Modal/Modal";
+import WebSocket from "../../components/WebSocket/WebSocket";
 
 const HomePage = () => {
   const { isOpen, modalContent, openModalHandler, closeModalHandler } =
@@ -13,6 +14,7 @@ const HomePage = () => {
   return (
     <div className="relative bg-primaryColor h-[calc(100vh-200px)]">
       <div className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 flex justify-around w-[70%]">
+        <WebSocket></WebSocket>
         <Button
           style={
             "hover:shadow-[0_5px_30px_rgba(239,_239,_249,_0.4)] cursor-pointer flex flex-col items-center justify-center bg-white h-[400px] w-[500px] rounded-[20px] border-[2px] border-secondaryColor text-xl font-bold"
