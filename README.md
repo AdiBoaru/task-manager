@@ -22,3 +22,9 @@ Steps when i test something
 Kind of test i should have (~to check)
 1 - Test case SUCCESS
 2 - Test case FAILURE
+
+
+
+
+Task
+Task priority

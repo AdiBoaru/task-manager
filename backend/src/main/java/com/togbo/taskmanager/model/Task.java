@@ -22,7 +22,6 @@ public class Task {
     private String name;
     @NotBlank
     private String description;
-    private File file;
     @Column(name = "start_date")
     private LocalDate startDate;
     @Column(name = "due_date")
@@ -40,14 +39,17 @@ public class Task {
     public Task() {
     }
 
-    public Task(String name, String description, File file, LocalDate dueDate, Status status, Priority priority) {
+    public Task(String name, String description, LocalDate dueDate, Status status, Priority priority) {
         this.name = name;
         this.description = description;
-        this.file = file;
         this.startDate = LocalDate.now();
         this.dueDate = dueDate;
         this.status = status;
         this.priority = priority;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
@@ -68,14 +70,6 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
     }
 
     public LocalDate getStartDate() {
@@ -132,7 +126,6 @@ public class Task {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", file=" + file +
                 ", startDate=" + startDate +
                 ", endDate=" + dueDate +
                 ", status=" + status +

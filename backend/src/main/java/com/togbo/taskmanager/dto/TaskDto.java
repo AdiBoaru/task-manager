@@ -13,13 +13,20 @@ public class TaskDto {
     private Long id;
     private String name;
     private String description;
-    private File file;
     private LocalDate startDate;
     private LocalDate dueDate;
     private Status status;
     private Priority priority;
     private Set<Employee> employees;
     private Project project;
+
+    public TaskDto(String name, String description, LocalDate dueDate, Status status, Priority priority) {
+        this.name = name;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.status = status;
+        this.priority = priority;
+    }
 
     public Long getId() {
         return id;
@@ -43,14 +50,6 @@ public class TaskDto {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
     }
 
     public LocalDate getStartDate() {
