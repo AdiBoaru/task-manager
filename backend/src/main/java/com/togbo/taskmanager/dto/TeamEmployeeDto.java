@@ -12,6 +12,9 @@ public class TeamEmployeeDto {
     private int size;
     private Set<Employee> employees;
 
+    public TeamEmployeeDto() {
+    }
+
     public TeamEmployeeDto(String name, int size, Set<Employee> employeesTeam) {
         this.name = name;
         this.size = size;
