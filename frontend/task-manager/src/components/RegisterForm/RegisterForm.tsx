@@ -43,33 +43,8 @@ const RegisterForm = () => {
     formState: { errors },
   } = methods;
 
-  /*const handleRequest = async (data: TRegisterFormData) => {
-    fetch("http://localhost:8080/register/account", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  };
-*/
   const onInvalid = (errors: any) => console.error(errors);
-  /*   const onSubmit: SubmitHandler<TRegisterFormData> = async (
-    data: TRegisterFormData
-  ) => {
-    console.log(data);
-    try {
-      await handleRequest(data);
-    } catch (error: any) {
-      console.error(error.response.data.message);
-    }
-    notification(
-      "Please verify your email to confirm your registration.",
-      "success"
-    );
-    navigate(LOGIN);
-  };
-  */
+
   const { field: roleField } = useController({ name: "role", control });
   const handleRoleChange = (option: SingleValue<TRole>) => {
     roleField.onChange(option?.label);

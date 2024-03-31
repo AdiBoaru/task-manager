@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -125,5 +127,20 @@ public class TaskService {
 
     public List<Task> findAllSorted(Sort sort) {
         return taskRepository.findAll(sort);
+    }
+
+
+    //task send notification
+    public long getTimeRemainingUntilDueDate(Task task){
+        LocalDate start = task.getStartDate();
+        LocalDate end = task.getDueDate();
+
+        long daysRemaining = ChronoUnit.DAYS.between(start,end);
+        long hoursRemaining;
+        if(daysRemaining <= 3){
+            hoursRemaining = ChronoUnit.HOURS.between(start,end);
+            return hoursRemaining;
+        }
+        return daysRemaining;
     }
 }

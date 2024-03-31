@@ -20,7 +20,7 @@ const Table = ({ data }: any) => {
           <div className="text-white text-center w-[100px]">No data</div>
         )}
       </div>
-      <p className="text-white">{data && `Projects: ${data?.length}`}</p>
+      <p className="text-white">{data && `${data?.length}`}</p>
     </div>
   );
 };
