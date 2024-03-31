@@ -2,6 +2,7 @@ package com.togbo.taskmanager.controller;
 
 
 import com.togbo.taskmanager.model.Message;
+import com.togbo.taskmanager.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http://localhost:5173")
 public class WebSocketController {
 
+    @Autowired
+    private TaskService taskService;
     @MessageMapping("/application")
     @SendTo("/all/messages")
     public Message send(final Message message) throws Exception {
