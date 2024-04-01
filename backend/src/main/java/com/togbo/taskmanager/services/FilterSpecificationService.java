@@ -2,10 +2,7 @@ package com.togbo.taskmanager.services;
 
 import com.togbo.taskmanager.dto.SearchRequestDto;
 import com.togbo.taskmanager.enums.SearchOperator;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 

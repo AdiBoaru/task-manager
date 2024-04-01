@@ -2,9 +2,9 @@ package com.togbo.taskmanager.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.togbo.taskmanager.enums.Role;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDate;

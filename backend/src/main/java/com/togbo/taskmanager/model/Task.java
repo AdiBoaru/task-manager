@@ -2,8 +2,8 @@ package com.togbo.taskmanager.model;
 
 import com.togbo.taskmanager.enums.Priority;
 import com.togbo.taskmanager.enums.Status;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 import java.io.File;
 import java.time.LocalDate;

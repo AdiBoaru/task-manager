@@ -4,13 +4,12 @@ import com.togbo.taskmanager.dto.AccountEmployeeDto;
 import com.togbo.taskmanager.dto.mapper.AccountMapper;
 import com.togbo.taskmanager.dto.mapper.EmployeeMapper;
 import com.togbo.taskmanager.exceptions.InvalidAccountException;
-import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
-import jakarta.mail.MessagingException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
@@ -23,12 +22,15 @@ public class AccountService {
     private AccountRepository accountRepository;
     private EmailService emailService;
     private EmployeeService employeeService;
+    private PasswordEncoder passwordEncoder;
 
-    public AccountService(AccountRepository accountRepository, EmailService emailService, EmployeeService employeeService) {
+    public AccountService(AccountRepository accountRepository, EmailService emailService, EmployeeService employeeService, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
         this.emailService = emailService;
         this.employeeService = employeeService;
+        this.passwordEncoder = passwordEncoder;
     }
+
 
     /**
      * Saves the provided account and employee details.
@@ -41,7 +43,7 @@ public class AccountService {
      * @param accountEmployeeDTO
      * @throws InvalidAccountException
      */
-    public void saveAccountAndEmployee(AccountEmployeeDto accountEmployeeDTO) throws InvalidAccountException, MessagingException, UnsupportedEncodingException {
+    public void saveAccountAndEmployee(AccountEmployeeDto accountEmployeeDTO) throws InvalidAccountException, UnsupportedEncodingException, MessagingException {
         Account account = accountRepository.findByEmail(accountEmployeeDTO.getEmail());
         if (!isAccountPresent(account)) {
             account = AccountMapper.mapToAccount(accountEmployeeDTO);

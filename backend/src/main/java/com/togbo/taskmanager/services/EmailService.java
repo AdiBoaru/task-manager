@@ -1,19 +1,15 @@
 package com.togbo.taskmanager.services;
 
-import com.togbo.taskmanager.dto.AccountEmployeeDto;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
-import com.togbo.taskmanager.repository.AccountRepository;
-import com.togbo.taskmanager.repository.EmployeeRepository;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import org.springframework.mail.SimpleMailMessage;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
-import java.util.UUID;
 
 @Service
 public class EmailService {

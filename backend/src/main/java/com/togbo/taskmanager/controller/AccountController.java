@@ -2,6 +2,7 @@ package com.togbo.taskmanager.controller;
 
 import com.togbo.taskmanager.dto.AccountEmployeeDto;
 import com.togbo.taskmanager.dto.mapper.EmployeeMapper;
+import javax.mail.MessagingException;
 import com.togbo.taskmanager.exceptions.InvalidAccountException;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
@@ -11,13 +12,14 @@ import com.togbo.taskmanager.repository.EmployeeRepository;
 import com.togbo.taskmanager.services.AccountService;
 import com.togbo.taskmanager.services.EmailService;
 import com.togbo.taskmanager.services.EmployeeService;
-import jakarta.mail.MessagingException;
-import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +35,7 @@ public class AccountController {
     public final AccountService accountService;
     public final EmployeeService employeeService;
 
+    public AuthenticationManager authenticationManager;
     public AccountController(AccountRepository accountRepository,
                              EmployeeRepository employeeRepository,
                              EmailService emailService,
@@ -74,7 +77,7 @@ public class AccountController {
 
     //make use of a mapper
     @PostMapping("/employee")
-    public void registerAccountEmployee(@RequestBody AccountEmployeeDto accountEmployeeDTO) throws InvalidAccountException, MessagingException, UnsupportedEncodingException {
+    public void registerAccountEmployee(@RequestBody AccountEmployeeDto accountEmployeeDTO) throws InvalidAccountException, MessagingException, UnsupportedEncodingException{
         accountService.saveAccountAndEmployee(accountEmployeeDTO);
     }
 
@@ -92,7 +95,7 @@ public class AccountController {
     }
 
     @PostMapping("/account")
-    public String processRegister(@RequestBody AccountEmployeeDto accountEmployeeDTO, HttpServletRequest httpServletRequest)
+    public String processRegister(@RequestBody AccountEmployeeDto accountEmployeeDTO)
             throws UnsupportedEncodingException, ResourceNotFoundException {
         try {
             //emailService.register(accountEmployeeDTO, getSiteURL(httpServletRequest));
