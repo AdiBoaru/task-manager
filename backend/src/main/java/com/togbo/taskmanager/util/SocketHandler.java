@@ -1,4 +1,4 @@
-package com.togbo.taskmanager.services.websocketservice;
+package com.togbo.taskmanager.util;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
