@@ -69,11 +69,11 @@ public class TeamController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTeam(@PathVariable Long id) {
-        try{
-            teamService.deleteById(id);
-            return new ResponseEntity<>("Team successfully deleted", HttpStatus.OK);
-        }catch (IllegalArgumentException e){
+            Optional<Team> team = teamService.findById(id);
+            if(team.isPresent()){
+                teamService.deleteById(id);
+                return new ResponseEntity<>("Team successfully deleted", HttpStatus.OK);
+            }
             return new ResponseEntity<>("Bad request ", HttpStatus.BAD_REQUEST);
-        }
     }
 }
