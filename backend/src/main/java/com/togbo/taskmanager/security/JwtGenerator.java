@@ -1,9 +1,11 @@
 package com.togbo.taskmanager.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -22,7 +24,7 @@ public class JwtGenerator {
 
         String token = Jwts.builder()
                 .setSubject(username)
-                .setIssuedAt( new Date())
+                .setIssuedAt(new Date())
                 .setExpiration(expireDate)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
@@ -30,7 +32,8 @@ public class JwtGenerator {
         System.out.println(token);
         return token;
     }
-    public String getUsernameFromJWT(String token){
+
+    public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
@@ -46,8 +49,12 @@ public class JwtGenerator {
                     .build()
                     .parseClaimsJws(token);
             return true;
+        } catch (ExpiredJwtException ex) {
+            throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect", ex.fillInStackTrace());
+        } catch (SignatureException ex) {
+            throw new AuthenticationCredentialsNotFoundException("JWT was incorrect", ex.fillInStackTrace());
         } catch (Exception ex) {
-            throw new AuthenticationCredentialsNotFoundException("JWT was exprired or incorrect",ex.fillInStackTrace());
+            throw new AuthenticationCredentialsNotFoundException("JWT error ", ex.fillInStackTrace());
         }
     }
 
