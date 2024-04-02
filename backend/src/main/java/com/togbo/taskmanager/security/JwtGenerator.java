@@ -21,10 +21,10 @@ public class JwtGenerator {
         String username = authentication.getName();
         Date currentDate = new Date();
         Date expireDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);
-        System.out.println("**********" + expireDate);
+
         String token = Jwts.builder()
                 .setSubject(username)
-                .setIssuedAt( new Date())
+                .setIssuedAt(new Date())
                 .setExpiration(expireDate)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
@@ -32,7 +32,8 @@ public class JwtGenerator {
         System.out.println(token);
         return token;
     }
-    public String getUsernameFromJWT(String token){
+
+    public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
@@ -49,11 +50,11 @@ public class JwtGenerator {
                     .parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException ex) {
-            throw new AuthenticationCredentialsNotFoundException("JWT was expired",ex.fillInStackTrace());
-        }catch (SignatureException ex){
-            throw new AuthenticationCredentialsNotFoundException("JWT was incorrect",ex.fillInStackTrace());
-        }catch (Exception ex){
-            throw new AuthenticationCredentialsNotFoundException("Other type of exception",ex.fillInStackTrace());
+            throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect", ex.fillInStackTrace());
+        } catch (SignatureException ex) {
+            throw new AuthenticationCredentialsNotFoundException("JWT was incorrect", ex.fillInStackTrace());
+        } catch (Exception ex) {
+            throw new AuthenticationCredentialsNotFoundException("JWT error ", ex.fillInStackTrace());
         }
     }
 

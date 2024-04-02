@@ -7,6 +7,7 @@ import ProjectsPage from "../pages/ProjectsPage/ProjectsPage";
 import HomePage from "../pages/HomePage/HomePage";
 import TeamsPage from "../pages/TeamsPage/TeamsPage";
 import TasksPage from "../pages/TasksPage/TasksPage";
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
 
 export const ROUTES = [
   {
@@ -56,5 +57,11 @@ export const ROUTES = [
     auth: true,
     roles: [],
     element: <TasksPage />,
+  },
+  {
+    path: ROUTESPATHS.PROFILE,
+    auth: false,
+    roles: [],
+    element: <ProfilePage />,
   },
 ];

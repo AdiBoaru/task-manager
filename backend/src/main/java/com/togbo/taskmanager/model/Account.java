@@ -2,11 +2,8 @@ package com.togbo.taskmanager.model;
 
 import com.togbo.taskmanager.enums.Role;
 import com.togbo.taskmanager.model.token.Token;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -23,7 +20,6 @@ public class Account {
     @NotBlank
     private String email;
     @NotBlank
-    @Size(min = 6, max = 20)
     private String password;
     @Column(name = "created_date")
     private LocalDate createdDate;

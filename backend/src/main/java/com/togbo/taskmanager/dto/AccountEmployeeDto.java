@@ -1,6 +1,7 @@
 package com.togbo.taskmanager.dto;
 
 import com.togbo.taskmanager.enums.Role;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -19,6 +20,9 @@ public class AccountEmployeeDto{
 
     private UUID verificationCode;
     private boolean isEmailVerified;
+
+    public AccountEmployeeDto() {
+    }
 
     public AccountEmployeeDto(String firstName, String lastName, LocalDate birthDate, Role role, String email, String password) {
         this.firstName = firstName;

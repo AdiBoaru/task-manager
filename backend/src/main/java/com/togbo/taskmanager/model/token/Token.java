@@ -1,7 +1,7 @@
 package com.togbo.taskmanager.model.token;
 
 import com.togbo.taskmanager.model.Account;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import com.togbo.taskmanager.token.TokenType;
 @Entity
 @Table(name = "token")
