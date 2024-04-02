@@ -73,8 +73,7 @@ public class TeamController {
             teamService.deleteById(id);
             return new ResponseEntity<>("Team successfully deleted", HttpStatus.OK);
         }catch (IllegalArgumentException e){
-            return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Bad request ", HttpStatus.BAD_REQUEST);
         }
     }
-
 }
