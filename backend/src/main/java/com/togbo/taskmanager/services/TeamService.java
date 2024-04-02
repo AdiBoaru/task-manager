@@ -110,7 +110,7 @@ public class TeamService {
         return teamRepository.findAll(sort);
     }
 
-    public boolean deleteById(Long id) {
+    public void deleteById(Long id) {
         teamRepository.deleteById(id);
     }
 }
