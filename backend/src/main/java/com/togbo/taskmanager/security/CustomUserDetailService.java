@@ -39,6 +39,8 @@ public class CustomUserDetailService implements UserDetailsService {
         }
     }
 
+
+    //de verificat
     public Collection<GrantedAuthority> grantedAuthorities(Role role){
         Collection<GrantedAuthority> collection = new ArrayList<>();
         collection.add(new SimpleGrantedAuthority(role.toString()));

@@ -1,6 +1,7 @@
 package com.togbo.taskmanager.controller;
 
 import com.togbo.taskmanager.dto.AccountEmployeeDto;
+import com.togbo.taskmanager.dto.AuthResponseDTO;
 import com.togbo.taskmanager.dto.LoginDto;
 import com.togbo.taskmanager.dto.mapper.EmployeeMapper;
 import javax.mail.MessagingException;
@@ -10,6 +11,7 @@ import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
 import com.togbo.taskmanager.repository.EmployeeRepository;
+import com.togbo.taskmanager.security.JwtGenerator;
 import com.togbo.taskmanager.services.AccountService;
 import com.togbo.taskmanager.services.EmailService;
 import com.togbo.taskmanager.services.EmployeeService;
@@ -41,18 +43,21 @@ public class AccountController {
     public final EmployeeService employeeService;
 
     public AuthenticationManager authenticationManager;
+    private JwtGenerator jwtGenerator;
     public AccountController(AccountRepository accountRepository,
                              EmployeeRepository employeeRepository,
                              EmailService emailService,
                              AccountService accountService,
                              EmployeeService employeeService,
-                             AuthenticationManager authenticationManager) {
+                             AuthenticationManager authenticationManager,
+                             JwtGenerator jwtGenerator) {
         this.accountRepository = accountRepository;
         this.employeeRepository = employeeRepository;
         this.emailService = emailService;
         this.accountService = accountService;
         this.employeeService = employeeService;
         this.authenticationManager = authenticationManager;
+        this.jwtGenerator = jwtGenerator;
     }
 
     @GetMapping
@@ -104,15 +109,16 @@ public class AccountController {
 
     //using spring security
     @PostMapping("/login1")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDto loginDto){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getEmail(),
                         loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtGenerator.generateToken(authentication);
 
-        return new ResponseEntity<>("Employee login successfully", HttpStatus.OK);
+        return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
     }
 
     @PostMapping("/account")

@@ -2,9 +2,19 @@ import NewProjectForm from "../../components/NewProjectForm/NewProjectForm";
 
 function ProfilePage() {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-    <div className="max-w-3xl bg-white shadow-md rounded-md p-8 flex">
-
+    <div className="grid gap-0 grid-cols-2">
+      <div>
+        <h1>EDIT PROFILE</h1>
+        <div className="">
+          {/* Profile Image */}
+          <img
+            src="profile-image.jpg" 
+            alt="Profile"
+            className="w-32 h-32 rounded-full mx-auto"
+          />
+        </div>
+      </div>
+      <div>
         <div className="py-[3rem] h-[55%] laptop:h-[70%]">
           <NewProjectForm
             btnStyle={""}
@@ -13,7 +23,6 @@ function ProfilePage() {
             }}
           />
         </div>
-      
       </div>
     </div>
   );
