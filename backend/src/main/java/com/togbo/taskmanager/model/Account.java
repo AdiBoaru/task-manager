@@ -20,7 +20,6 @@ public class Account {
     @NotBlank
     private String email;
     @NotBlank
-    @Size(min = 6, max = 20)
     private String password;
     @Column(name = "created_date")
     private LocalDate createdDate;

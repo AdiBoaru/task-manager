@@ -31,7 +31,6 @@ public class AccountService {
         this.passwordEncoder = passwordEncoder;
     }
 
-
     /**
      * Saves the provided account and employee details.
      * <p>
@@ -47,6 +46,10 @@ public class AccountService {
         Account account = accountRepository.findByEmail(accountEmployeeDTO.getEmail());
         if (!isAccountPresent(account)) {
             account = AccountMapper.mapToAccount(accountEmployeeDTO);
+            //i have to find a better approach to encode the password
+            account.setPassword(passwordEncoder.encode(accountEmployeeDTO.getPassword()));
+
+
             if (emailFormatValidation(account.getEmail())) {
                 UUID verificationCode = generateVerificationToken();
                 account.setVerificationCode(verificationCode);

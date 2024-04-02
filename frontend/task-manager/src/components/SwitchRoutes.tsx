@@ -15,7 +15,8 @@ const SwitchRoutes = () => {
         element={
           pathname !== "/landing-page" &&
           pathname !== "/login" &&
-          pathname !== "/register" && <Layout />
+          pathname !== "/register" && <Layout /> 
+    
         }
       >
         {ROUTES.map(({ path, element }, index) => (

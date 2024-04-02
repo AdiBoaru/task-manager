@@ -1,6 +1,7 @@
 package com.togbo.taskmanager.controller;
 
 import com.togbo.taskmanager.dto.AccountEmployeeDto;
+import com.togbo.taskmanager.dto.LoginDto;
 import com.togbo.taskmanager.dto.mapper.EmployeeMapper;
 import javax.mail.MessagingException;
 import com.togbo.taskmanager.exceptions.InvalidAccountException;
@@ -16,6 +17,10 @@ import com.togbo.taskmanager.services.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -40,12 +45,14 @@ public class AccountController {
                              EmployeeRepository employeeRepository,
                              EmailService emailService,
                              AccountService accountService,
-                             EmployeeService employeeService) {
+                             EmployeeService employeeService,
+                             AuthenticationManager authenticationManager) {
         this.accountRepository = accountRepository;
         this.employeeRepository = employeeRepository;
         this.emailService = emailService;
         this.accountService = accountService;
         this.employeeService = employeeService;
+        this.authenticationManager = authenticationManager;
     }
 
     @GetMapping
@@ -81,17 +88,31 @@ public class AccountController {
         accountService.saveAccountAndEmployee(accountEmployeeDTO);
     }
 
+    //without spring security
     @PostMapping("/login")
-    public Employee loginEmployee(@RequestBody AccountEmployeeDto accountEmployeeDTO) throws ResourceNotFoundException {
-        Account account = accountRepository.findByEmail(accountEmployeeDTO.getEmail());
+    public Employee loginEmployee(@RequestBody LoginDto loginDto) throws ResourceNotFoundException {
+        Account account = accountRepository.findByEmail(loginDto.getEmail());
         Employee employee = null;
         if (account != null && account.isEmailVerified()) {
-            if (account.getPassword().equals(accountEmployeeDTO.getPassword())) {
+            if (account.getPassword().equals(loginDto.getPassword())) {
                 employee = employeeRepository.findByAccount(account);
             } else
                 throw new ResourceNotFoundException("bad request");
         }
         return employee;
+    }
+
+    //using spring security
+    @PostMapping("/login1")
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginDto.getEmail(),
+                        loginDto.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return new ResponseEntity<>("Employee login successfully", HttpStatus.OK);
     }
 
     @PostMapping("/account")
