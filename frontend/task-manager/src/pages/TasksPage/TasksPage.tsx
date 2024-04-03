@@ -1,9 +1,9 @@
 import Table from "../../UI/Table/Table";
-import { useGetTasksQuery } from "../../services/api/api";
+import { useGetTasksQuery } from "../../services/TasksApi/api";
 
 const TasksPage = () => {
   const { data, isLoading } = useGetTasksQuery();
-
+ 
   if (isLoading) {
     return <div>Loading....</div>;
   }
