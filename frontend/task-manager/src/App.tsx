@@ -1,16 +1,16 @@
 import { ToastContainer } from "react-toastify";
+import { Provider } from "react-redux";
+import { store } from "./store";
 import SwitchRoutes from "./components/SwitchRoutes";
+
 import "react-toastify/dist/ReactToastify.css";
-import useContextHandler from "./hooks/useContextHandler";
 
 function App() {
-  useContextHandler();
-
   return (
-    <>
+    <Provider store={store}>
       <SwitchRoutes />
       <ToastContainer />
-    </>
+    </Provider>
   );
 }
 

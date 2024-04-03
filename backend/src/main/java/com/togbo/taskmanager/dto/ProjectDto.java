@@ -14,7 +14,7 @@ public class ProjectDto {
     private Team team;
     private Set<Employee> employees;
     private Set<Task> tasks;
-    public ProjectDto(){}
+
     public ProjectDto(String title, String description, LocalDate dueDate, Team teamSize, Set<Employee> employees, Set<Task> tasks) {
         this.name = title;
         this.description = description;
