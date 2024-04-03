@@ -1,31 +1,64 @@
-import NewProjectForm from "../../components/NewProjectForm/NewProjectForm";
+import { useEffect } from "react";
+import NewProfileForm from "../../components/NewProfile/NewProfileForm";
 
 function ProfilePage() {
+  useEffect(() => {
+    const profilePic = document.getElementById(
+      "profile-pic"
+    ) as HTMLImageElement;
+    const inputFile = document.getElementById("input-file") as HTMLInputElement;
+
+    if (inputFile && profilePic) {
+      inputFile.addEventListener("change", function () {
+        if (inputFile.files && inputFile.files[0]) {
+          profilePic.setAttribute(
+            "src",
+            URL.createObjectURL(inputFile.files[0])
+          );
+        }
+      });
+    }
+
+    return () => {
+      if (inputFile && profilePic) {
+        inputFile.removeEventListener("change", () => {});
+      }
+    };
+  }, []);
+
   return (
-    <div className="grid gap-0 grid-cols-2">
-      <div>
-        <h1>EDIT PROFILE</h1>
-        <div className="">
-          {/* Profile Image */}
-          <img
-            src="profile-image.jpg"
-            alt="Profile"
-            className="w-32 h-32 rounded-full mx-auto"
-          />
-        </div>
+    <div className="flex items-center justify-around bg-primaryColor h-screen">
+      <div className="border-b-4 border-indigo-500">
+        <img
+          className="object-contain py-3 mx-4 my-7 h-50 w-[25rem] items-center rounded-full"
+          src="./assets/no-profile-picture-icon.svg"
+          id="profile-pic"
+        />
+        <label
+          className="px-4 text-white text-lg
+     text-gray-500 text-xl border border-secondaryColor rounded-[10px] 
+     py-3 mx-4 my-7 w-[25rem] hover:font-semibold 
+     hover:text-primaryColor hover:bg-secondaryColor"
+          htmlFor="input-file"
+        >
+          Update Profile Picture
+        </label>
+        <input
+          className="hidden"
+          type="file"
+          accept="image/jpeg, image/png, image/jpg"
+          id="input-file"
+        />
       </div>
       <div>
-        <div className="py-[3rem] h-[55%] laptop:h-[70%]">
-          <NewProjectForm
-            btnStyle={""}
-            handleClose={function (): void {
-              throw new Error("Function not implemented.");
-            }}
-          />
-        </div>
+        <NewProfileForm
+          btnStyle={""}
+          handleClose={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
       </div>
     </div>
   );
 }
-
 export default ProfilePage;

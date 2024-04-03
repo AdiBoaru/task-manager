@@ -1,6 +1,22 @@
+import { useEffect, useState } from "react";
 import { IoMdNotificationsOutline } from "react-icons/io";
 
 const Profile = () => {
+  
+  // const [userName, setUserName] = useState('');
+  // const [userRole, setUserRole] = useState('');
+
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     const userData = await fetchDataFromDatabase(); 
+      
+  //     setUserName(userData.name);
+  //     setUserRole(userData.role);
+  //   };
+
+  //   fetchUserData(); 
+  // }, []); 
+
   return (
     <div className="flex items-center mx-20">
       <span className="text-secondaryColor text-[38px] rounded-full">
@@ -19,3 +35,4 @@ const Profile = () => {
 };
 
 export default Profile;
+

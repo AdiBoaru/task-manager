@@ -39,6 +39,14 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ['Team']
     }),
+
+    getProfile: builder.query({
+      query: (id) => ({
+        url: `/account/${id}`,
+        method: 'GET',
+      }),
+     // invalidatesTags: ['Team']
+    }),
   }),
 })
 

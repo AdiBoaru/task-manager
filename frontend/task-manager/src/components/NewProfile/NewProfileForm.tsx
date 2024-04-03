@@ -99,7 +99,7 @@ const NewProfileForm = ({ btnStyle, handleClose }: TNewProjectFormProps) => {
     <FormProvider {...methods}>
       <form
         data-testid="create-project-form"
-        className="absolute flex flex-col bg-primaryColor items-center gap-1 z-10 py-10 rounded-[20px] h-auto w-[40%] laptop:pt-0 laptop:h-[70%]"
+        className="flex flex-col bg-primaryColor items-center gap-1 z-10 py-10 rounded-[20px] h-auto w-[40%] laptop:pt-0 laptop:h-[70%]"
         onSubmit={handleSubmit(onSubmit, onInvalid)}
       >
          <FormInput
@@ -182,16 +182,6 @@ const NewProfileForm = ({ btnStyle, handleClose }: TNewProjectFormProps) => {
           }}
         >
           Update Account
-        </Button>
-
-
-        <Button
-          testId="cancel-button"
-          type="button"
-          style={`text-gray-500 text-xl border border-gray-500 rounded-[10px] py-3 w-[25rem] hover:font-semibold hover:text-white hover:bg-gray-500`}
-          onClick={handleClose}
-        >
-          Cancel
         </Button>
       </form>
     </FormProvider>
