@@ -1,5 +1,5 @@
 import Logo from "../../UI/Logo/Logo";
-import RegisterForm from "../../components/RegisterForm/RegisterForm";
+import RegisterForm from "../../components/Forms/RegisterForm/RegisterForm";
 
 const RegisterPage = () => {
   return (

@@ -4,7 +4,7 @@ export type TButton = {
     type: "button" | "submit" | "reset";
     children: ReactNode;
     testId: string;
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => any;
     disabled?: boolean;
     style?: string;
 }

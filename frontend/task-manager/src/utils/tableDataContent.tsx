@@ -1,8 +1,20 @@
+import Button from "../UI/Button/Button";
+import { useModal } from "../hooks/useModal";
+
 import { TTeamPick } from "../interfaces/TCreateProjectData";
 import { TEmployeesPick } from "../interfaces/TCreateTeamData";
 
-export const renderContent = (data: string | TEmployeesPick[] | TTeamPick) => {
+export const renderTableDataContent = (
+  data: string | TEmployeesPick[] | TTeamPick | any,
+  id: number,
+  deleteHandler: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: number,
+    action: "edit" | "delete"
+  ) => void
+) => {
   let content;
+  const { openModalHandler } = useModal();
 
   if (Array.isArray(data)) {
     content = (
@@ -15,7 +27,28 @@ export const renderContent = (data: string | TEmployeesPick[] | TTeamPick) => {
       </ul>
     );
   } else if (typeof data === "object" && data !== null) {
-    content = data.name;
+    const hasEditKey = Object.hasOwn(data, "edit");
+
+    content = hasEditKey ? (
+      <div className="flex items-center justify-center w-fit gap-3">
+        <Button
+          type="button"
+          testId="edit-icon-button"
+          onClick={(e) => openModalHandler(e, "editTeam")}
+        >
+          {data.edit.editIcon}
+        </Button>
+        <Button
+          type="button"
+          testId="trash-icon-button"
+          onClick={(e) => deleteHandler(e, id, "delete")}
+        >
+          {data.edit.trashIcon}
+        </Button>
+      </div>
+    ) : (
+      data.name
+    );
   } else {
     content = data;
   }
