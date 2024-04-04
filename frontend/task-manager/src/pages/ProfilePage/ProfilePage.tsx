@@ -1,30 +1,58 @@
 import { useEffect } from "react";
 import NewProfileForm from "../../components/NewProfile/NewProfileForm";
 
+
 function ProfilePage() {
   useEffect(() => {
-    const profilePic = document.getElementById(
-      "profile-pic"
-    ) as HTMLImageElement;
+    const profilePic = document.getElementById("profile-pic") as HTMLImageElement;
     const inputFile = document.getElementById("input-file") as HTMLInputElement;
 
+    const handleFileChange = () => {
+      if (inputFile.files && inputFile.files[0]) {
+        const file = inputFile.files[0];
+        profilePic.setAttribute("src", URL.createObjectURL(file));
+
+        // Assuming you have a function to upload the file to the backend API
+        uploadFileToBackend(file);
+      }
+    };
+
     if (inputFile && profilePic) {
-      inputFile.addEventListener("change", function () {
-        if (inputFile.files && inputFile.files[0]) {
-          profilePic.setAttribute(
-            "src",
-            URL.createObjectURL(inputFile.files[0])
-          );
-        }
-      });
+      inputFile.addEventListener("change", handleFileChange);
     }
 
     return () => {
       if (inputFile && profilePic) {
-        inputFile.removeEventListener("change", () => {});
+        inputFile.removeEventListener("change", handleFileChange);
       }
     };
   }, []);
+
+  const uploadFileToBackend = (file : any) => {
+    // Replace the {id} with the actual ID you want to send
+    const url = `/register/image/{id}`;
+
+    // Create form data and append the file
+    const formData = new FormData();
+    formData.append("profilePic", file);
+
+    // Send a POST request to the backend API
+    fetch(url, {
+      method: "PUT",
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to upload profile picture");
+        }
+        // Handle success if needed
+      })
+      .catch((error) => {
+        console.error("Error uploading profile picture:", error);
+        // Handle error if needed
+      });
+  };
+
 
   return (
     <div className="flex items-center justify-around bg-primaryColor h-screen">
