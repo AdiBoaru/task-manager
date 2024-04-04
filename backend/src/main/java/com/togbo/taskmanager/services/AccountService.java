@@ -9,7 +9,10 @@ import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
@@ -87,18 +90,18 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    public void isAccountUpdated(Long id, Account account) {
+    public void isAccountUpdated(Long id, AccountEmployeeDto accountEmployeeDto) {
         Optional<Account> foundAccount = accountRepository.findById(id);
         if (foundAccount.isPresent()) {
-            updateStateOfAccountOnlyIfNotNull(foundAccount.get(), account);
+            updateStateOfAccountOnlyIfNotNull(foundAccount.get(), accountEmployeeDto);
         }
     }
 
-    private void updateStateOfAccountOnlyIfNotNull(Account existingAccount, Account account) {
-        checkIfStateIsNull(account.getEmail(), existingAccount::setEmail);
-        checkIfStateIsNull(account.getPassword(), existingAccount::setPassword);
-        checkIfStateIsNull(account.getRole(), existingAccount::setRole);
-
+    private void updateStateOfAccountOnlyIfNotNull(Account existingAccount, AccountEmployeeDto accountEmployeeDto) {
+        checkIfStateIsNull(accountEmployeeDto.getEmail(), existingAccount::setEmail);
+        checkIfStateIsNull(accountEmployeeDto.getPassword(), existingAccount::setPassword);
+        checkIfStateIsNull(accountEmployeeDto.getRole(), existingAccount::setRole);
+        checkIfStateIsNull(accountEmployeeDto.getImage(), existingAccount::setImage);
         accountRepository.save(existingAccount);
     }
 
@@ -139,5 +142,18 @@ public class AccountService {
             return email.endsWith(yahoo) || email.endsWith(gmail);
         }
         return false;
+    }
+
+    /**
+     * Save image to database
+     */
+    public void updateProfileImage(MultipartFile multipartFile, Long id) {
+        Account account1 = findById(id);
+        try {
+            account1.setImage(multipartFile.getBytes());
+            accountRepository.save(account1);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

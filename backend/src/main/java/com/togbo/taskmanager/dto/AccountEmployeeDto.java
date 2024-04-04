@@ -20,7 +20,7 @@ public class AccountEmployeeDto{
 
     private UUID verificationCode;
     private boolean isEmailVerified;
-
+    private byte[] image;
     public AccountEmployeeDto() {
     }
 
@@ -55,6 +55,14 @@ public class AccountEmployeeDto{
     }
     public void setCreatedDate(LocalDate createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public Long getId() {

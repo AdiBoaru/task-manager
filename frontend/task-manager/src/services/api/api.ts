@@ -6,7 +6,7 @@ import { TTeamPick } from '../../interfaces/TCreateProjectData';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/' }),
-  tagTypes: ['Team', 'Project'],
+  tagTypes: ['Team', 'Project', 'Profile'],
   endpoints: (builder) => 
   ({
     getProjects: builder.query<TProjectsData, void>({
@@ -40,6 +40,14 @@ export const apiSlice = createApi({
       invalidatesTags: ['Team']
     }),
 
+    editProfile: builder.mutation({
+      query: (id) => ({
+        url: '/account/${id}',
+        method: 'PUT',
+      }),
+      invalidatesTags: ['Profile']
+    }),
+
     getProfile: builder.query({
       query: (id) => ({
         url: `/account/${id}`,
@@ -50,4 +58,4 @@ export const apiSlice = createApi({
   }),
 })
 
-export const { useGetProjectsQuery, useGetEmployeesQuery, useGetTasksQuery, useGetTeamsQuery, useCreateProjectMutation, useCreateTeamMutation } = apiSlice;
+export const { useGetProjectsQuery, useGetEmployeesQuery, useGetTasksQuery, useGetTeamsQuery, useCreateProjectMutation, useCreateTeamMutation, useEditProfileMutation } = apiSlice;

@@ -2,6 +2,8 @@ package com.togbo.taskmanager.model;
 
 import com.togbo.taskmanager.enums.Role;
 import com.togbo.taskmanager.model.token.Token;
+import org.hibernate.type.descriptor.sql.LobTypeMappings;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -30,6 +32,9 @@ public class Account {
     @Column(name = "email_verified")
     private Boolean isEmailVerified;
 
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
     @OneToMany(mappedBy = "account")
     private List<Token> tokens;
 
@@ -42,6 +47,12 @@ public class Account {
         this.role = role;
         this.createdDate = LocalDate.now();
         this.isEmailVerified = false;
+    }
+    public Account(String email, String password, Role role,byte[] image){
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.image = image;
     }
 
     /**
@@ -97,6 +108,14 @@ public class Account {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public String getPassword() {

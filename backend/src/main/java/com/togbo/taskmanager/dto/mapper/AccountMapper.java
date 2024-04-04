@@ -14,7 +14,8 @@ public class AccountMapper{
         return new Account(
                 accountEmployeeDto.getEmail(),
                 accountEmployeeDto.getPassword(),
-                accountEmployeeDto.getRole()
+                accountEmployeeDto.getRole(),
+                accountEmployeeDto.getImage()
         );
     }
 

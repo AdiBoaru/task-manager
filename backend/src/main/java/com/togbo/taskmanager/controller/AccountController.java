@@ -3,8 +3,9 @@ package com.togbo.taskmanager.controller;
 import com.togbo.taskmanager.dto.AccountEmployeeDto;
 import com.togbo.taskmanager.dto.AuthResponseDTO;
 import com.togbo.taskmanager.dto.LoginDto;
-import com.togbo.taskmanager.dto.mapper.EmployeeMapper;
+
 import javax.mail.MessagingException;
+
 import com.togbo.taskmanager.exceptions.InvalidAccountException;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
@@ -21,9 +22,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +45,7 @@ public class AccountController {
 
     public AuthenticationManager authenticationManager;
     private JwtGenerator jwtGenerator;
+
     public AccountController(AccountRepository accountRepository,
                              EmployeeRepository employeeRepository,
                              EmailService emailService,
@@ -89,7 +91,7 @@ public class AccountController {
 
     //make use of a mapper
     @PostMapping("/employee")
-    public void registerAccountEmployee(@RequestBody AccountEmployeeDto accountEmployeeDTO) throws InvalidAccountException, MessagingException, UnsupportedEncodingException{
+    public void registerAccountEmployee(@RequestBody AccountEmployeeDto accountEmployeeDTO) throws InvalidAccountException, MessagingException, UnsupportedEncodingException {
         accountService.saveAccountAndEmployee(accountEmployeeDTO);
     }
 
@@ -109,7 +111,7 @@ public class AccountController {
 
     //using spring security
     @PostMapping("/login1")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDto loginDto){
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getEmail(),
@@ -135,10 +137,16 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Account> updateAccount(@PathVariable Long id, @RequestBody Account account) {
-        accountService.isAccountUpdated(id, account);
+    public ResponseEntity<Account> updateAccount(@PathVariable Long id, @RequestBody AccountEmployeeDto accountEmployeeDto) {
+        accountService.isAccountUpdated(id, accountEmployeeDto);
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/image/{id}")
+    public ResponseEntity<String> updateImage(@PathVariable Long id, @RequestParam("image") MultipartFile multipartFile) {
+        accountService.updateProfileImage(multipartFile, id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private String getSiteURL(HttpServletRequest request) {
@@ -149,9 +157,9 @@ public class AccountController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAccountById(@PathVariable Long id){
+    public void deleteAccountById(@PathVariable Long id) {
         Optional<Account> account = accountRepository.findById(id);
-        if(account.isPresent()){
+        if (account.isPresent()) {
             accountService.deleteAccountById(account.get().getId());
         }
     }

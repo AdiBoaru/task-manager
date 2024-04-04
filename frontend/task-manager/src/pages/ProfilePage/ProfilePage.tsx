@@ -28,7 +28,7 @@ function ProfilePage() {
 
   return (
     <div className="flex items-center justify-around bg-primaryColor h-screen">
-      <div className="border-b-4 border-indigo-500">
+      <div className="items-center">
         <img
           className="object-contain py-3 mx-4 my-7 h-50 w-[25rem] items-center rounded-full"
           src="./assets/no-profile-picture-icon.svg"
