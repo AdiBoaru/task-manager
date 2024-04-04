@@ -7,6 +7,7 @@ import com.togbo.taskmanager.dto.LoginDto;
 import javax.mail.MessagingException;
 
 import com.togbo.taskmanager.exceptions.InvalidAccountException;
+import com.togbo.taskmanager.exceptions.InvalidArgumentException;
 import com.togbo.taskmanager.exceptions.ResourceNotFoundException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
@@ -145,8 +146,12 @@ public class AccountController {
 
     @PutMapping("/image/{id}")
     public ResponseEntity<String> updateImage(@PathVariable Long id, @RequestParam("image") MultipartFile multipartFile) {
-        accountService.updateProfileImage(multipartFile, id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try{
+            accountService.updateProfileImage(id, multipartFile);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (InvalidArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     private String getSiteURL(HttpServletRequest request) {

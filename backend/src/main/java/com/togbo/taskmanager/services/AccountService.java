@@ -4,6 +4,7 @@ import com.togbo.taskmanager.dto.AccountEmployeeDto;
 import com.togbo.taskmanager.dto.mapper.AccountMapper;
 import com.togbo.taskmanager.dto.mapper.EmployeeMapper;
 import com.togbo.taskmanager.exceptions.InvalidAccountException;
+import com.togbo.taskmanager.exceptions.InvalidArgumentException;
 import com.togbo.taskmanager.model.Account;
 import com.togbo.taskmanager.model.Employee;
 import com.togbo.taskmanager.repository.AccountRepository;
@@ -146,13 +147,70 @@ public class AccountService {
 
     /**
      * Save image to database
+     * jpe	image/jpeg
+     * jpeg	image/jpeg
+     * jpg	image/jpeg
+     * png	image/png
      */
-    public void updateProfileImage(MultipartFile multipartFile, Long id) {
-        Account account1 = findById(id);
+    public void updateProfileImage(Long id, MultipartFile multipartFile) throws InvalidArgumentException {
+        Account account = findById(id);
+
         try {
-            account1.setImage(multipartFile.getBytes());
-            accountRepository.save(account1);
-        }catch (IOException e){
+            checkImageSizeKilobytes(multipartFile.getBytes());
+            checkImageType(multipartFile.getContentType());
+
+            account.setImage(multipartFile.getBytes());
+            accountRepository.save(account);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void checkImageType(String contentType) throws InvalidArgumentException {
+        final String[] imageTypes = new String[]{"image/jpeg", "image/png", "image/jpe", "image/jpg"};
+        boolean validType = false;
+        for (String type : imageTypes) {
+            if (type.equals(contentType)) {
+                validType = true;
+                break;
+            }
+        }
+        if (!validType) {
+            throw new InvalidArgumentException("Invalid image type. Image should be jpeg, jpe, png, jpg");
+        }
+    }
+
+    //each image should be lest or equal to 5MB
+    private void checkImageSizeKilobytes(byte[] currentImageSize) throws InvalidArgumentException {
+        int currentImageSizeInKilobytes = currentImageSize.length / 1000;
+        boolean validSize = currentImageSizeInKilobytes <= 5000;
+
+        if (!validSize) {
+            throw new InvalidArgumentException("Image size should be less or equal to 5MB");
+        }
+    }
+
+    /**
+     * Print information about image. Used for debugging
+     *
+     * @param multipartFile
+     */
+    private void imageData(MultipartFile multipartFile) {
+        String imageName = multipartFile.getName();
+        String contentType = multipartFile.getContentType();
+        String getOriginalFileName = multipartFile.getOriginalFilename();
+        boolean isEmpty = multipartFile.isEmpty();
+
+        try {
+            byte[] imageSize = multipartFile.getBytes();
+            System.out.println(imageName + "\n"
+
+                    + contentType + "\n"
+                    + getOriginalFileName + "\n"
+                    + isEmpty + "\n"
+                    + imageSize.length / 1000);
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
