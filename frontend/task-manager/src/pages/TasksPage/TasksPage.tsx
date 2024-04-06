@@ -3,7 +3,7 @@ import { useGetTasksQuery } from "../../services/TasksApi/api";
 
 const TasksPage = () => {
   const { data, isLoading } = useGetTasksQuery();
- 
+
   if (isLoading) {
     return <div>Loading....</div>;
   }

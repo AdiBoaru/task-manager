@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { TTeamPick } from "../../interfaces/TCreateProjectData";
+import { TCreateTeamData } from "../../interfaces/TCreateTeamData";
 
 export const apiTeamSlice = createApi({
   reducerPath: "teamApi",
@@ -10,11 +11,9 @@ export const apiTeamSlice = createApi({
       query: () => `team`,
       providesTags: ["Team"],
     }),
-    getTeam: builder.query<TTeamPick, void>({
-      query: (id) => `team/${id}`,
-      transformResponse: (response: { data: TTeamPick }, meta, arg) =>
-        response.data,
-      providesTags: ["Team"],
+    getTeamById: builder.query<TCreateTeamData, number | string>({
+      query: (id: any) => `team/${id}`,
+      providesTags: (result, error, id) => [{ type: "Team", id }],
     }),
     createTeam: builder.mutation({
       query: (resource) => ({
@@ -32,9 +31,10 @@ export const apiTeamSlice = createApi({
       invalidatesTags: ["Team"],
     }),
     updateTeam: builder.mutation({
-      query: (id) => ({
+      query: ({ id, ...body }) => ({
         url: `team/${id}`,
-        method: "PATCH",
+        method: "PUT",
+        body: body,
       }),
       invalidatesTags: ["Team"],
     }),
@@ -43,7 +43,7 @@ export const apiTeamSlice = createApi({
 
 export const {
   useGetTeamsQuery,
-  useGetTeamQuery,
+  useGetTeamByIdQuery,
   useCreateTeamMutation,
   useDeleteTeamMutation,
   useUpdateTeamMutation,

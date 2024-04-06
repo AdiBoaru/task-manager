@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ErrorMessage } from "@hookform/error-message";
-import { yupResolver } from "@hookform/resolvers/yup";
+
 import {
   useForm,
   SubmitHandler,
@@ -14,43 +14,39 @@ import Select, {
   SingleValue,
 } from "react-select";
 
-import { newTeamSchema } from "../../../constants/formValidations";
 import {
   TCreateTeamData,
   TEmployeesPick,
   TTeamSizePick,
 } from "../../../interfaces/TCreateTeamData";
-import Button from "../../../UI/Button/Button";
 import FormInput from "../../../UI/FormInput/FormInput";
-import {
-  useUpdateTeamMutation,
-  useGetTeamQuery,
-} from "../../../services/TeamsApi/api";
+import { useUpdateTeamMutation } from "../../../services/TeamsApi/api";
 import { useGetEmployeesQuery } from "../../../services/EmployeesApi/api";
 import { useNavigate } from "react-router-dom";
 import ROUTESPATHS from "../../../constants/routePaths";
+import useToastify from "../../../hooks/useToastify";
 
 type TEditTeamFormProps = {
-  handleClose: () => void;
+  onSuccess: () => void;
+  prefillFormData?: TCreateTeamData;
 };
 
-const EditTeamForm = ({ handleClose }: TEditTeamFormProps) => {
+const EditTeamForm = ({ onSuccess, prefillFormData }: TEditTeamFormProps) => {
   const [teamSize, setTeamSize] = useState<number>(0);
-  const [teamMembers, setTeamMembers] = useState([]);
+  const [teamMembers, setTeamMembers] = useState(prefillFormData?.employees);
   const [updateTeam] = useUpdateTeamMutation();
   const { data: employees } = useGetEmployeesQuery();
-  const { data: team } = useGetTeamQuery();
+
   const navigate = useNavigate();
-  console.log(team);
+  const { notification } = useToastify();
 
   useEffect(() => {
     setTeamMembers([]);
   }, [teamSize]);
-  console.log(team);
 
   const methods = useForm<TCreateTeamData>({
     mode: "onChange",
-    resolver: yupResolver<TCreateTeamData>(newTeamSchema),
+    defaultValues: prefillFormData,
   });
   const {
     control,
@@ -61,28 +57,33 @@ const EditTeamForm = ({ handleClose }: TEditTeamFormProps) => {
   const onInvalid = (errors: any) => console.error(errors);
   const onSubmit: SubmitHandler<TCreateTeamData> = (data: TCreateTeamData) => {
     console.log(data);
-    // createTeam(data);
-
-    // navigate(ROUTESPATHS.TEAMS);
+    updateTeam(data)
+      .unwrap()
+      .then(() => {
+        onSuccess();
+        navigate(ROUTESPATHS.TEAMS);
+        notification("Team edited successfully", "success");
+      })
+      .catch(({ data }) => console.log(data));
   };
 
-  const { field: employeesField } = useController({
+  const { field: editEmployeesField } = useController({
     name: "employees",
     control,
   });
 
-  const { field: teamSizeField } = useController({
+  const { field: editTeamSizeField } = useController({
     name: "size",
     control,
   });
 
   const handleEmployeesPick = (option: MultiValue<TEmployeesPick>) => {
-    employeesField.onChange(option);
+    editEmployeesField.onChange(option);
     setTeamMembers(option as any);
   };
 
   const handleTeamSizePick = (option: SingleValue<TTeamSizePick>) => {
-    teamSizeField.onChange(option?.value);
+    editTeamSizeField.onChange(option?.value);
     setTeamSize(+option?.value!);
   };
 
@@ -93,26 +94,44 @@ const EditTeamForm = ({ handleClose }: TEditTeamFormProps) => {
       padding: "6px",
       margin: "4px",
       borderRadius: "10px",
-      zIndex: 9999,
+    }),
+    option: (styles: CSSObjectWithLabel, { isSelected, isFocused }: any) => ({
+      ...styles,
+      color: "black",
+      backgroundColor: isSelected ? "lightblue" : undefined,
+      cursor: "pointer",
+      ":hover": {
+        backgroundColor: isFocused ? "lightblue" : "lightgray",
+      },
     }),
   };
+  const options = [
+    { value: 3, label: "Small (3)" },
+    { value: 5, label: "Medium (5)" },
+    { value: 10, label: "Large (10)" },
+  ];
+  const defaultValueForTeamSize = options.find(
+    ({ value }: any) => prefillFormData?.size! <= value
+  );
+
   return (
     <FormProvider {...methods}>
       <form
-        data-testid="create-project-form"
-        className="flex flex-col bg-primaryColor items-center gap-3 z-10 py-10 rounded-[20px] border border-secondaryColor h-auto w-[40%] laptop:h-[55%]"
+        id="edit-team-form"
+        data-testid="edit-team-form"
+        className="flex flex-col bg-primaryColor items-center gap-3 z-50 py-10 rounded-[20px] h-auto w-[40%] laptop:h-[55%]"
         onSubmit={handleSubmit(onSubmit, onInvalid)}
       >
         <FormInput
-          testId="team-name"
-          inputTestId="team-name-input"
-          errorTestId="team-name-error"
+          testId="edit-team-name"
+          inputTestId="edit-team-name-input"
+          errorTestId="edit-team-name-error"
           labelStyle="px-4 text-white text-lg"
           inputStyle="w-[25rem] p-3 rounded-[10px] focus:border-secondaryColor focus:outline-secondaryColor"
           placeholder="Enter your team name"
           type="text"
           labelText="Team name"
-          inputId="teamName"
+          inputId="editTeamName"
           name="name"
         />
         <div>
@@ -122,19 +141,13 @@ const EditTeamForm = ({ handleClose }: TEditTeamFormProps) => {
               data-testid="controller"
               name="size"
               control={control}
-              rules={{ required: "Choose your team size" }}
               render={() => (
                 <Select
-                  id="size"
-                  menuPosition="fixed"
-                  menuPortalTarget={document.body}
+                  id="editSize"
+                  defaultValue={defaultValueForTeamSize}
                   data-testid="teamSize-select"
                   onChange={handleTeamSizePick}
-                  options={[
-                    { value: 3, label: "Small (3)" },
-                    { value: 5, label: "Medium (5)" },
-                    { value: 10, label: "Large (10)" },
-                  ]}
+                  options={options}
                   placeholder="Choose your team size"
                   styles={colorStyles}
                 />
@@ -156,19 +169,16 @@ const EditTeamForm = ({ handleClose }: TEditTeamFormProps) => {
               data-testid="controller"
               name="employees"
               control={control}
-              rules={{ required: "Choose your employees" }}
               render={() => (
                 <Select
-                  id="employees"
+                  id="editEmployees"
                   options={employees}
                   isMulti
-                  menuPosition="fixed"
-                  menuPortalTarget={document.body}
                   data-testid="employees-select"
                   onChange={handleEmployeesPick}
                   getOptionLabel={(option: TEmployeesPick) => option.fullName}
                   getOptionValue={(option: any) => option.id}
-                  isOptionDisabled={() => teamMembers.length >= teamSize}
+                  isOptionDisabled={() => teamMembers!.length >= teamSize}
                   placeholder="Choose your employees"
                   styles={colorStyles}
                   value={teamMembers}
@@ -184,21 +194,6 @@ const EditTeamForm = ({ handleClose }: TEditTeamFormProps) => {
             )}
           />
         </div>
-        <Button
-          testId="create-button"
-          type="submit"
-          style="text-secondaryColor text-xl border border-secondaryColor rounded-[10px] py-3 w-[25rem] hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor "
-        >
-          Edit
-        </Button>
-        <Button
-          testId="cancel-button"
-          type="button"
-          style={`text-gray-500 text-xl border border-gray-500 rounded-[10px] py-3 w-[25rem] hover:font-semibold hover:text-white hover:bg-gray-500`}
-          onClick={handleClose}
-        >
-          Cancel
-        </Button>
       </form>
     </FormProvider>
   );

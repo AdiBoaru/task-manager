@@ -20,23 +20,24 @@ import {
   TEmployeesPick,
   TTeamSizePick,
 } from "../../../interfaces/TCreateTeamData";
-import Button from "../../../UI/Button/Button";
 import FormInput from "../../../UI/FormInput/FormInput";
 import { useCreateTeamMutation } from "../../../services/TeamsApi/api";
 import { useGetEmployeesQuery } from "../../../services/EmployeesApi/api";
 import { useNavigate } from "react-router-dom";
 import ROUTESPATHS from "../../../constants/routePaths";
+import useToastify from "../../../hooks/useToastify";
 
 type TNewTeamForm = {
-  handleClose: () => void;
+  onSuccess: () => void;
 };
 
-const NewTeamForm = ({ handleClose }: TNewTeamForm) => {
+const NewTeamForm = ({ onSuccess }: TNewTeamForm) => {
   const [teamSize, setTeamSize] = useState<number>(0);
   const [teamMembers, setTeamMembers] = useState([]);
   const [createTeam] = useCreateTeamMutation();
   const { data: employees } = useGetEmployeesQuery();
   const navigate = useNavigate();
+  const { notification } = useToastify();
 
   useEffect(() => {
     setTeamMembers([]);
@@ -54,10 +55,14 @@ const NewTeamForm = ({ handleClose }: TNewTeamForm) => {
 
   const onInvalid = (errors: any) => console.error(errors);
   const onSubmit: SubmitHandler<TCreateTeamData> = (data: TCreateTeamData) => {
-    console.log(data);
-    createTeam(data);
-
-    navigate(ROUTESPATHS.TEAMS);
+    createTeam(data)
+      .unwrap()
+      .then(() => {
+        onSuccess();
+        navigate(ROUTESPATHS.TEAMS);
+        notification("Team created successfully", "success");
+      })
+      .catch((error) => console.log(error));
   };
 
   const { field: employeesField } = useController({
@@ -87,15 +92,25 @@ const NewTeamForm = ({ handleClose }: TNewTeamForm) => {
       padding: "6px",
       margin: "4px",
       borderRadius: "10px",
-      zIndex: 9999,
+    }),
+    option: (styles: CSSObjectWithLabel, { isSelected, isFocused }: any) => ({
+      ...styles,
+      color: "black",
+      backgroundColor: isSelected ? "lightblue" : undefined,
+      overflow: "hidden",
+      cursor: "pointer",
+      ":hover": {
+        backgroundColor: isFocused ? "lightblue" : "lightgray",
+      },
     }),
   };
 
   return (
     <FormProvider {...methods}>
       <form
-        data-testid="create-project-form"
-        className="flex flex-col bg-primaryColor items-center gap-3 z-10 py-10 rounded-[20px] border border-secondaryColor h-auto w-[40%] laptop:h-[55%]"
+        id="create-new-team-form"
+        data-testid="create-team-form"
+        className="flex flex-col items-center gap-3 w-full py-10 h-auto laptop:h-[55%]"
         onSubmit={handleSubmit(onSubmit, onInvalid)}
       >
         <FormInput
@@ -121,8 +136,6 @@ const NewTeamForm = ({ handleClose }: TNewTeamForm) => {
               render={() => (
                 <Select
                   id="size"
-                  menuPosition="fixed"
-                  menuPortalTarget={document.body}
                   data-testid="teamSize-select"
                   onChange={handleTeamSizePick}
                   options={[
@@ -157,8 +170,6 @@ const NewTeamForm = ({ handleClose }: TNewTeamForm) => {
                   id="employees"
                   options={employees}
                   isMulti
-                  menuPosition="fixed"
-                  menuPortalTarget={document.body}
                   data-testid="employees-select"
                   onChange={handleEmployeesPick}
                   getOptionLabel={(option: TEmployeesPick) => option.fullName}
@@ -179,21 +190,6 @@ const NewTeamForm = ({ handleClose }: TNewTeamForm) => {
             )}
           />
         </div>
-        <Button
-          testId="create-button"
-          type="submit"
-          style="text-secondaryColor text-xl border border-secondaryColor rounded-[10px] py-3 w-[25rem] hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor "
-        >
-          Create
-        </Button>
-        <Button
-          testId="cancel-button"
-          type="button"
-          style={`text-gray-500 text-xl border border-gray-500 rounded-[10px] py-3 w-[25rem] hover:font-semibold hover:text-white hover:bg-gray-500`}
-          onClick={handleClose}
-        >
-          Cancel
-        </Button>
       </form>
     </FormProvider>
   );

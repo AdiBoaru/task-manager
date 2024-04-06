@@ -18,6 +18,6 @@ export type TTeamSizePick = {
 
 export type TCreateTeamData = {
   name: string;
-  employees?: TEmployeesPick[];
-  size?: number | string;
+  employees: TEmployeesPick[];
+  size: number | string;
 };

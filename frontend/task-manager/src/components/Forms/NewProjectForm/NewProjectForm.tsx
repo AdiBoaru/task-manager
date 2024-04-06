@@ -18,7 +18,6 @@ import {
   TCreateProjectData,
   TTeamPick,
 } from "../../../interfaces/TCreateProjectData";
-import Button from "../../../UI/Button/Button";
 import FormInput from "../../../UI/FormInput/FormInput";
 import { useCreateProjectMutation } from "../../../services/ProjectsApi/api";
 import { useGetTeamsQuery } from "../../../services/TeamsApi/api";
@@ -28,11 +27,10 @@ import { useState } from "react";
 import useToastify from "../../../hooks/useToastify";
 
 type TNewProjectFormProps = {
-  btnStyle: string;
-  handleClose: () => void;
+  onSuccess: () => void;
 };
 
-const NewProjectForm = ({ btnStyle, handleClose }: TNewProjectFormProps) => {
+const NewProjectForm = ({ onSuccess }: TNewProjectFormProps) => {
   const { data: teams } = useGetTeamsQuery();
   const [createProject] = useCreateProjectMutation();
   const { notification } = useToastify();
@@ -56,10 +54,12 @@ const NewProjectForm = ({ btnStyle, handleClose }: TNewProjectFormProps) => {
   ) => {
     createProject(data)
       .unwrap()
-      .then((response) => console.log(response))
+      .then(() => {
+        onSuccess();
+        navigate(ROUTESPATHS.PROJECTS);
+        notification("Project created successfully", "success");
+      })
       .catch(({ data }) => console.log(data));
-    navigate(ROUTESPATHS.PROJECTS);
-    notification("Project created successfully", "success");
   };
 
   const { field: teamsField } = useController({
@@ -89,15 +89,26 @@ const NewProjectForm = ({ btnStyle, handleClose }: TNewProjectFormProps) => {
       padding: "6px",
       margin: "4px",
       borderRadius: "10px",
-      zIndex: 9999,
+      zIndex: 900,
+    }),
+    option: (styles: CSSObjectWithLabel, { isSelected, isFocused }: any) => ({
+      ...styles,
+      color: "black",
+      backgroundColor: isSelected ? "lightblue" : undefined,
+      overflow: "hidden",
+      cursor: "pointer",
+      ":hover": {
+        backgroundColor: isFocused ? "lightblue" : "lightgray",
+      },
     }),
   };
 
   return (
     <FormProvider {...methods}>
       <form
+        id="create-new-project-form"
         data-testid="create-project-form"
-        className="absolute flex flex-col bg-primaryColor items-center gap-3 z-10 py-10 rounded-[20px] border border-secondaryColor h-auto w-[40%] laptop:pt-0 laptop:h-[70%]"
+        className="flex flex-col items-center gap-3 py-10 rounded-[20px] h-auto w-[40%] laptop:pt-0 laptop:h-[70%]"
         onSubmit={handleSubmit(onSubmit, onInvalid)}
       >
         <FormInput
@@ -138,8 +149,6 @@ const NewProjectForm = ({ btnStyle, handleClose }: TNewProjectFormProps) => {
                   data-testid="teams-select"
                   onChange={handleTeamPick}
                   options={teams}
-                  menuPosition="fixed"
-                  menuPortalTarget={document.body}
                   getOptionLabel={(option: TTeamPick) => option.name}
                   getOptionValue={(option: any) => option.id}
                   placeholder="Choose your team"
@@ -173,23 +182,12 @@ const NewProjectForm = ({ btnStyle, handleClose }: TNewProjectFormProps) => {
               )}
             />
           </label>
+          <ErrorMessage
+            errors={errors}
+            name={"dueDate"}
+            render={({ message }) => <p className="text-red-600">{message}</p>}
+          />
         </div>
-
-        <Button
-          testId="create-button"
-          type="submit"
-          style={`${btnStyle} text-secondaryColor text-xl border border-secondaryColor rounded-[10px] py-3 hover:font-semibold hover:text-primaryColor hover:bg-secondaryColor `}
-        >
-          Create
-        </Button>
-        <Button
-          testId="cancel-button"
-          type="button"
-          style={`text-gray-500 text-xl border border-gray-500 rounded-[10px] py-3 w-[25rem] hover:font-semibold hover:text-white hover:bg-gray-500`}
-          onClick={handleClose}
-        >
-          Cancel
-        </Button>
       </form>
     </FormProvider>
   );

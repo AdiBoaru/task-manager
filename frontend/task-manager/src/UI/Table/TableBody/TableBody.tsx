@@ -1,15 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { renderTableDataContent } from "../../../utils/tableDataContent";
 import { BsTrash } from "react-icons/bs";
 import { TbEdit } from "react-icons/tb";
-import { useSelector } from "react-redux";
-import useDelete from "../../../hooks/useDelete";
+import Button from "../../Button/Button";
 
-const TableBody = ({ entries }: any) => {
-  const pageContext = useSelector((state: any) => state.tableContext);
+const TableBody = ({ entries, openModal, setIsConfirmationModal }: any) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const deleteHandler = useDelete(pageContext);
   const handleRowClick = (entryId: string) => {
     navigate(`${pathname}/${entryId}`);
   };
@@ -36,7 +32,42 @@ const TableBody = ({ entries }: any) => {
           >
             {updatedRowData.map((item: any, idx) => (
               <td key={idx} className="p-5 border-b-2 max-h-[50px]">
-                {renderTableDataContent(item, entry.id, deleteHandler)}
+                {Array.isArray(item) ? (
+                  <ul>
+                    {item.length ? (
+                      item.map((el) => <li key={el.id}>{el.fullName}</li>)
+                    ) : (
+                      <li>-</li>
+                    )}
+                  </ul>
+                ) : typeof item === "object" && item !== null && item.edit ? (
+                  <div className="flex items-center justify-center w-fit gap-3">
+                    <Button
+                      type="button"
+                      testId="edit-icon-button"
+                      onClick={(e) => {
+                        openModal(entry.id);
+                        e.stopPropagation();
+                        setIsConfirmationModal(false);
+                      }}
+                    >
+                      {item.edit.editIcon}
+                    </Button>
+                    <Button
+                      type="button"
+                      testId="trash-icon-button"
+                      onClick={(e) => {
+                        openModal(entry.id);
+                        e.stopPropagation();
+                        setIsConfirmationModal(true);
+                      }}
+                    >
+                      {item.edit.trashIcon}
+                    </Button>
+                  </div>
+                ) : (
+                  item
+                )}
               </td>
             ))}
           </tr>

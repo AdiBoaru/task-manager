@@ -51,13 +51,8 @@ const useDelete = (pageContext: string) => {
       console.log("test");
   }
 
-  const deleteHandler = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    id: number,
-    action: "edit" | "delete"
-  ) => {
-    event.stopPropagation();
-    if (action === "delete") {
+  const deleteHandler = (id: number | string) => {
+    if (id) {
       deleteMutation(id);
     }
   };
