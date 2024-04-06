@@ -1,6 +1,6 @@
 import Table from "../../UI/Table/Table";
 
-import { useGetProjectsQuery } from "../../services/api/api";
+import { useGetProjectsQuery } from "../../services/ProjectsApi/api";
 
 const ProjectsPage = () => {
   const { data: projects, isLoading } = useGetProjectsQuery();
