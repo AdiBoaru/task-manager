@@ -37,6 +37,7 @@ const HomePage = () => {
           <NewTeamModal
             confirmBtnForm="create-new-team-form"
             onClose={onClose}
+            onConfirm={() => {}}
             open={open}
             btnText="Create"
           >
@@ -64,6 +65,7 @@ const HomePage = () => {
             confirmBtnForm="create-new-project-form"
             onClose={onClose}
             open={open}
+            onConfirm={() => {}}
             btnText="Create"
           >
             <NewProjectForm onSuccess={onClose} />
